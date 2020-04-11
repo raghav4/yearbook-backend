@@ -19,7 +19,7 @@ const writingSchema = new mongoose.Schema({
 });
 
 const WritingContent = mongoose.model('WrittingContent', writingSchema);
-
+// authorId != userId
 function validateContent(content) {
   const schema = Joi.object({
     authorId: Joi.objectId().required(),

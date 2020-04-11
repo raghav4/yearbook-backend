@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Answer, validate } = require('../../models/user/personalAnswers');
-const { User } = require('../../models/user/user');
+const { Answer, validate } = require('../../models/user/selfAnswer');
+const { User } = require('../../models/user/userDetails');
 const { Question } = require('../../models/admin/question');
 
 router.get('/:id', async (req, res) => {
@@ -51,7 +51,7 @@ router.put('/:id', async (req, res) => {
     {
       answer: req.body.answer,
     },
-    { new: true }
+    { new: true },
   );
   if (!answer)
     return res.status(400).send('Answer with the given id does not exists');

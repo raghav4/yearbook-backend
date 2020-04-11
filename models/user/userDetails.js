@@ -31,6 +31,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     min: 10,
   },
+  Instagram: {
+    type: String,
+  },
   email: {
     type: String,
   },
@@ -47,6 +50,7 @@ function validateUser(user) {
     facebook: Joi.string().uri(),
     linkedin: Joi.string().uri(),
     phoneNumber: Joi.string().min(10),
+    Instagram: Joi.string(),
     email: Joi.string().email(),
     dp: Joi.string().uri(),
   });
