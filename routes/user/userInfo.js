@@ -1,5 +1,5 @@
+// eslint-disable-next-line import/newline-after-import
 const express = require('express');
-
 const router = express.Router();
 const _ = require('lodash');
 const cloudinary = require('cloudinary').v2;

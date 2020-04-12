@@ -1,6 +1,6 @@
 // Route to Write a message for a person
+// eslint-disable-next-line import/newline-after-import
 const express = require('express');
-
 const router = express.Router();
 const _ = require('lodash');
 const { WritingContent, validate } = require('../models/writeFor');
