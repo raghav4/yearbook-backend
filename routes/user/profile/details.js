@@ -11,19 +11,20 @@ router.get('/', async (req, res) => {
   res.send(user);
 });
 
+// add a user
 router.post('/', async (req, res) => {
   // Look at the validation!!
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   // how does the user already exists?
-  let user = await User.findOne({
-    phoneNumber: req.body.phoneNumber, // or do signup using mobile number?
-    // Same user with two mobiles? one mobiel for two user?
-  });
-  if (!user) return res.status(404).send('User already exists in the DB..');
+  // let user = await User.findOne({
+  //   phoneNumber: req.body.phoneNumber, // or do signup using mobile number?
+  //   // Same user with two mobiles? one mobiel for two user?
+  // });
+  // if (!user) return res.status(404).send('User already exists in the DB..');
 
-  user = new User({
+  const user = new User({
     name: req.body.name,
     dp: req.body.dp,
     department: req.body.department,
@@ -34,6 +35,7 @@ router.post('/', async (req, res) => {
     Instagram: req.body.Instagram,
     email: req.body.email,
   });
+  await user.save();
   return res.status(200).send(user);
 });
 
