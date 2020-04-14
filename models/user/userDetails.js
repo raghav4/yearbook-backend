@@ -56,9 +56,16 @@ const User = mongoose.model('User', userSchema);
 function validatePost(user) {
   const schema = Joi.object({
     name: Joi.string().required(),
-    department: Joi.string().length(3).required(),
-    section: Joi.string().length(1).required(),
-    phoneNumber: Joi.string().min(10).max(11).required(),
+    department: Joi.string()
+      .length(3)
+      .required(),
+    section: Joi.string()
+      .length(1)
+      .required(),
+    phoneNumber: Joi.string()
+      .min(10)
+      .max(11)
+      .required(),
   });
   return schema.validate(user);
 }

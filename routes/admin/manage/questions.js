@@ -44,7 +44,8 @@ router.post('/', async (req, res) => {
 
 /**
  * Route to Delete a Question
- * This route will return Status Code 200 after the successful Deletion of the question
+ * This route will return Status Code 200 after the successful Deletion of the
+ * question
  */
 router.delete('/:id', async (req, res) => {
   const question = await Question.findById(req.params.id);
