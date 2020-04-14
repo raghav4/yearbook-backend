@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { Answer, validate } = require('../../models/user/selfAnswer');
-const { User } = require('../../models/user/userDetails');
-const { Question } = require('../../models/admin/question');
+const { Answer, validate } = require('../../../models/user/selfAnswer');
+const { User } = require('../../../models/user/userDetails');
+const { Question } = require('../../../models/admin/question');
 
 router.get('/:id', async (req, res) => {
   // Get all the answers with the given user id,
@@ -53,8 +53,7 @@ router.put('/:id', async (req, res) => {
     },
     { new: true },
   );
-  if (!answer)
-    return res.status(400).send('Answer with the given id does not exists');
+  if (!answer) return res.status(400).send('Answer with the given id does not exists');
   return res.status(200).send(answer);
 });
 

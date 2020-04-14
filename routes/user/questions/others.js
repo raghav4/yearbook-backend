@@ -3,8 +3,8 @@
 const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
-const { WritingContent, validate } = require('../models/writeFor');
-const { User } = require('../models/user/userDetails');
+const { WritingContent, validate } = require('../../../models/writeFor');
+const { User } = require('../../../models/user/userDetails');
 
 // List all the content written for a user with the given id
 router.get('/:id', async (req, res) => {
