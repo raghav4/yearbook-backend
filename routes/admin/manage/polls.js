@@ -35,11 +35,12 @@ router.post('/', async (req, res) => {
   // TODO: Check if the questions already exists
 
   // Create Question
-  const pollQuestion = new Poll({
+  let pollQuestion = new Poll({
     question: req.body.question,
   });
   await pollQuestion.save();
-  return res.status(200).send('Successfully add the Question!');
+  pollQuestion = await pollQuestion.find();
+  return res.status(200).send(pollQuestion);
 });
 
 /**
@@ -47,11 +48,12 @@ router.post('/', async (req, res) => {
  * Returns Status Code - 200 after deleting a question successfully
  */
 router.delete('/:id', async (req, res) => {
-  const pollQuestion = await Poll.findById(req.params.id);
+  let pollQuestion = await Poll.findById(req.params.id);
   if (!pollQuestion) {
     return res.status(400).send('Question with the given id doesnt exist in the db');
   }
   await pollQuestion.delete();
-  return res.status(200).send('Successfully Deleted Question!');
+  pollQuestion = await Poll.find();
+  return res.status(200).send(pollQuestion);
 });
 module.exports = router;

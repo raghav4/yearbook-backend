@@ -35,11 +35,12 @@ router.post('/', async (req, res) => {
   // TODO: Check if the question already exists,
 
   // Adding a New Question
-  const question = new Question({
+  let question = new Question({
     question: req.body.question,
   });
   await question.save();
-  return res.status(200).send('Question Added Successfully!');
+  question = await Question.find();
+  return res.status(200).send(question);
 });
 
 /**
@@ -48,12 +49,13 @@ router.post('/', async (req, res) => {
  * question
  */
 router.delete('/:id', async (req, res) => {
-  const question = await Question.findById(req.params.id);
+  let question = await Question.findById(req.params.id);
   if (!question) {
     return res.status(400).send('Question with the given id doesnt exist in the db');
   }
   await question.delete();
-  return res.status(200).send('Question Deleted Successfully!');
+  question = await Question.find();
+  return res.status(200).send(question);
 });
 
 module.exports = router;
