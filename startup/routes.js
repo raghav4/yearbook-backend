@@ -14,8 +14,8 @@ const welcome = require('../routes/welcome');
 module.exports = (app) => {
   app.use(cors());
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(multer({ storage }).single('file'));
+  app.use(bodyParser.urlencoded({extended : true}));
+  app.use(multer({storage}).single('file'));
   app.use('/api/user', user);
   app.use('/api/user/write', writingContent);
   app.use('/api/admin/questions', userQuestions);

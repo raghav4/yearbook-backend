@@ -1,30 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const { Answer, validate } = require('../../../models/user/selfAnswer');
-const { User } = require('../../../models/user/userDetails');
-const { Question } = require('../../../models/admin/question');
+const {Answer, validate} = require('../../../models/user/selfAnswer');
+const {User} = require('../../../models/user/userDetails');
+const {Question} = require('../../../models/admin/question');
 
 router.get('/:id', async (req, res) => {
   // Get all the answers with the given user id,
-  const answers = await Answer.find({
-    userId: req.params.id,
-  }).populate('questionId userId');
+  const answers = await Answer
+                      .find({
+                        userId : req.params.id,
+                      })
+                      .populate('questionId userId');
   return res.status(200).send(answers);
 });
 
 // Post an answer
 // If answer already exits do not post
 router.post('/', async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  const {error} = validate(req.body);
+  if (error)
+    return res.status(400).send(error.details[0].message);
 
-  const { answer, userId, questionId } = req.body;
+  const {answer, userId, questionId} = req.body;
 
   const validateUserId = await User.findById(userId);
   const validateQuestionId = await Question.findById(questionId);
 
-  if (!validateUserId) return res.status(400).send('Invalid UserId');
-  if (!validateQuestionId) return res.status(400).send('Invalid QuestionId');
+  if (!validateUserId)
+    return res.status(400).send('Invalid UserId');
+  if (!validateQuestionId)
+    return res.status(400).send('Invalid QuestionId');
 
   // let userAnswer = await Answer.findById({
   //   questionId: req.params.questionId,
@@ -47,13 +52,14 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const answer = await Answer.findByIdAndUpdate(
-    req.params.id,
-    {
-      answer: req.body.answer,
-    },
-    { new: true },
+      req.params.id,
+      {
+        answer : req.body.answer,
+      },
+      {new : true},
   );
-  if (!answer) return res.status(400).send('Answer with the given id does not exists');
+  if (!answer)
+    return res.status(400).send('Answer with the given id does not exists');
   return res.status(200).send(answer);
 });
 
