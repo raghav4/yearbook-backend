@@ -1,18 +1,18 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
-const user = require('../routes/user/profile/details');
-const userQuestions = require('../routes/admin/createQuestion');
+const userQuestions = require('../routes/admin/manage/questions');
+const managePolls = require('../routes/admin/manage/polls');
 const addUser = require('../routes/admin/manage/users');
 const personalAnswers = require('../routes/user/questions/self');
 const writingContent = require('../routes/user/questions/others');
-const managePolls = require('../routes/admin/createPolls');
+const user = require('../routes/user/profile/details');
 const votings = require('../routes/user/polls');
 const storage = require('../routes/utils/multer');
 const welcome = require('../routes/welcome');
 
 // eslint-disable-next-line func-names
-module.exports = app => {
+module.exports = (app) => {
   app.use(cors());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
