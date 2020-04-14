@@ -12,11 +12,11 @@ const storage = require('../routes/utils/multer');
 const welcome = require('../routes/welcome');
 
 // eslint-disable-next-line func-names
-module.exports = (app) => {
+module.exports = app => {
   app.use(cors());
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({extended : true}));
-  app.use(multer({storage}).single('file'));
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(multer({ storage }).single('file'));
   app.use('/api/user', user);
   app.use('/api/user/write', writingContent);
   app.use('/api/admin/user', addUser);
