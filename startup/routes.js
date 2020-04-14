@@ -3,6 +3,7 @@ const cors = require('cors');
 const multer = require('multer');
 const user = require('../routes/user/profile/details');
 const userQuestions = require('../routes/admin/createQuestion');
+const addUser = require('../routes/admin/manage/users');
 const personalAnswers = require('../routes/user/questions/self');
 const writingContent = require('../routes/user/questions/others');
 const managePolls = require('../routes/admin/createPolls');
@@ -18,6 +19,7 @@ module.exports = (app) => {
   app.use(multer({ storage }).single('file'));
   app.use('/api/user', user);
   app.use('/api/user/write', writingContent);
+  app.use('/api/admin/user', addUser);
   app.use('/api/admin/questions', userQuestions);
   app.use('/api/admin/polls', managePolls);
   app.use('/api/user/vote', votings);

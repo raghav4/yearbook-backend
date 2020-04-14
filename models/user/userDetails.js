@@ -8,24 +8,34 @@ const userSchema = new mongoose.Schema({
   },
   dp: {
     type: String,
+    default: '',
+  },
+  bio: {
+    type: String,
+    default: '',
   },
   department: {
     type: String,
+    default: '',
     required: true,
   },
   section: {
     type: String,
+    default: '',
     required: true,
   },
   whatsappNo: {
     type: String,
+    default: '',
     min: 10,
   },
   facebook: {
     type: String,
+    default: '',
   },
   linkedin: {
     type: String,
+    default: '',
   },
   phoneNumber: {
     type: String,
@@ -33,19 +43,31 @@ const userSchema = new mongoose.Schema({
   },
   Instagram: {
     type: String,
+    default: '',
   },
   email: {
     type: String,
+    default: '',
   },
 });
 
 const User = mongoose.model('User', userSchema);
 
-function validateUser(user) {
+function validatePost(user) {
   const schema = Joi.object({
     name: Joi.string().required(),
-    department: Joi.string().required(),
-    section: Joi.string().required(),
+    department: Joi.string().length(3).required(),
+    section: Joi.string().length(1).required(),
+    phoneNumber: Joi.string().min(10).max(11).required(),
+  });
+  return schema.validate(user);
+}
+function validatePut(user) {
+  const schema = Joi.object({
+    name: Joi.string(),
+    bio: Joi.string(),
+    department: Joi.string().length(3),
+    section: Joi.string().length(1),
     whatsappNo: Joi.string().min(10),
     facebook: Joi.string().uri(),
     linkedin: Joi.string().uri(),
@@ -58,22 +80,6 @@ function validateUser(user) {
   return schema.validate(user);
 }
 
-function validateUserPut(user) {
-  const schema = Joi.object({
-    name: Joi.string(),
-    department: Joi.string(),
-    section: Joi.string(),
-    whatsappNo: Joi.string().min(10),
-    facebook: Joi.string().uri(),
-    linkedin: Joi.string().uri(),
-    phoneNumber: Joi.string().min(10),
-    email: Joi.string().email(),
-    dp: Joi.string().uri(),
-  });
-
-  return schema.validate(user);
-}
-
 exports.User = User;
-exports.validate = validateUser;
-exports.putValidate = validateUserPut;
+exports.validatePut = validatePut;
+exports.validatePost = validatePost;
