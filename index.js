@@ -8,8 +8,6 @@ require('./startup/cloudinary')();
 require('./startup/routes')(app);
 
 const PORT = process.env.PORT || 3000;
-const server = app.listen(PORT, () =>
-  winston.info(`Listening on PORT ${PORT}...`),
-);
+const server = app.listen(PORT, () => winston.info(`Listening on PORT ${PORT}...`));
 
 module.exports = server;

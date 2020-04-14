@@ -11,9 +11,7 @@ const Question = mongoose.model('Question', questionSchema);
 
 function validateQuestion(question) {
   const schema = Joi.object({
-    question: Joi.string()
-      .min(2)
-      .required(),
+    question: Joi.string().min(2).required(),
   });
 
   return schema.validate(question);

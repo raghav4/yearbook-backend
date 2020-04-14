@@ -3,11 +3,7 @@ const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
 const cloudinary = require('cloudinary').v2;
-const {
-  User,
-  validate,
-  putValidate,
-} = require('../../models/user/userDetails');
+const { User, validate, putValidate } = require('../../../models/user/userDetails');
 
 router.get('/', async (req, res) => {
   const user = await User.find({});
