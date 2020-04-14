@@ -9,6 +9,9 @@ const userSchema = new mongoose.Schema({
   dp: {
     type: String,
   },
+  bio: {
+    type: String,
+  },
   department: {
     type: String,
     required: true,
@@ -45,6 +48,7 @@ function validateUser(user) {
   const schema = Joi.object({
     name: Joi.string().required(),
     department: Joi.string().required(),
+    bio: Joi.string(),
     section: Joi.string().required(),
     whatsappNo: Joi.string().min(10),
     facebook: Joi.string().uri(),

@@ -33,6 +33,7 @@ router.post('/', async (req, res) => {
     facebook: req.body.facebook,
     linkedin: req.body.linkedin,
     Instagram: req.body.Instagram,
+    bio: req.body.bio,
     email: req.body.email,
   });
   await user.save();
@@ -58,6 +59,7 @@ router.put('/:id', async (req, res) => {
       whatsappNo: req.body.whatsappNo || user.whatsappNo,
       facebook: req.body.facebook || user.facebook,
       linkedin: req.body.linkedin || user.linkedin,
+      bio: req.body.bio || user.bio,
       email: req.body.email || user.email,
     },
     { new: true },
