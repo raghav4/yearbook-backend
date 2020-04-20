@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { User } = require('../../../models/user/userDetails');
+const { AllowedUsers } = require('../../../models/user/grantAccess');
 const { validateRegisteration } = require('../../../utils/admin/signup');
 
 /**
@@ -12,8 +13,10 @@ router.post('/', async (req, res) => {
   const { error } = validateRegisteration(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  // TODO #6: Do not sign up user if the user is signed up already
-  let user = await User.findOne({ phoneNumber: req.body.phoneNumber });
+  let user = await User.findOne({ email: req.body.email });
+  if (user) return res.status(400).send('Email ID is already registered');
+
+  user = await AllowedUsers.findOne({ phoneNumber: req.body.phoneNumber });
   if (!user) return res.status(400).send('Invalid Mobile Number');
 
   user = new User({
