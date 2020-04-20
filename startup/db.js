@@ -4,8 +4,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 module.exports = () => {
-  const dbURI =
-    'mongodb+srv://sample_user:sampleuser123@cluster0-daqug.mongodb.net/test?retryWrites=true&w=majority';
+  const dbURI = process.env.DB_URI;
   mongoose
     .connect(dbURI, {
       useNewUrlParser: true,

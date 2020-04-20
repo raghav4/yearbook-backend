@@ -1,10 +1,29 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-const Joi = require('@hapi/joi');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+  },
+  email: {
+    type: String,
+  },
+  phoneNumber: {
+    type: String,
+    min: 10,
+    max: 10,
+  },
+  password: {
+    type: String,
+  },
+  department: {
+    type: String,
+    default: '',
+  },
+  section: {
+    type: String,
+    default: '',
   },
   dp: {
     type: String,
@@ -14,20 +33,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
-  department: {
-    type: String,
-    default: '',
-    required: true,
-  },
-  section: {
-    type: String,
-    default: '',
-    required: true,
-  },
   whatsappNo: {
     type: String,
     default: '',
     min: 10,
+    max: 10,
   },
   facebook: {
     type: String,
@@ -37,49 +47,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
-  phoneNumber: {
-    type: String,
-    min: 10,
-  },
   Instagram: {
-    type: String,
-    default: '',
-  },
-  email: {
     type: String,
     default: '',
   },
 });
 
+// eslint-disable-next-line func-names
+userSchema.methods.generateAuthToken = function () {
+  // eslint-disable-next-line no-underscore-dangle
+  return jwt.sign({ _id: this._id }, process.env.jwtPrivateKey);
+};
 const User = mongoose.model('User', userSchema);
 
-function validatePost(user) {
-  const schema = Joi.object({
-    name: Joi.string().required(),
-    department: Joi.string().length(3).required(),
-    section: Joi.string().length(1).required(),
-    phoneNumber: Joi.string().min(10).max(11).required(),
-  });
-  return schema.validate(user);
-}
-function validatePut(user) {
-  const schema = Joi.object({
-    name: Joi.string(),
-    bio: Joi.string(),
-    department: Joi.string().length(3),
-    section: Joi.string().length(1),
-    whatsappNo: Joi.string().min(10),
-    facebook: Joi.string().uri(),
-    linkedin: Joi.string().uri(),
-    phoneNumber: Joi.string().min(10),
-    Instagram: Joi.string(),
-    email: Joi.string().email(),
-    dp: Joi.string().uri(),
-  });
-
-  return schema.validate(user);
-}
-
 exports.User = User;
-exports.validatePut = validatePut;
-exports.validatePost = validatePost;

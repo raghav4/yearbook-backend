@@ -1,7 +1,14 @@
+require('dotenv').config();
 const express = require('express');
+
 const app = express();
 const winston = require('winston');
 
+if (!process.env.jwtPrivateKey) {
+  // eslint-disable-next-line no-console
+  console.error('jwtPrivateKey is not defined');
+  process.exit(1);
+}
 require('./startup/logging')(app);
 require('./startup/db')();
 require('./startup/cloudinary')();
