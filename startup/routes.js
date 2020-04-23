@@ -4,6 +4,7 @@ const multer = require('multer');
 const userQuestions = require('../routes/admin/manage/questions');
 const managePolls = require('../routes/admin/manage/polls');
 const registerUser = require('../routes/admin/manage/users');
+const AddUserNumber = require('../routes/admin/addUserNumber');
 const personalAnswers = require('../routes/user/questions/self');
 const writingContent = require('../routes/user/questions/others');
 const user = require('../routes/user/profile/details');
@@ -24,6 +25,7 @@ module.exports = (app) => {
   app.use('/api/admin/user', registerUser);
   app.use('/api/admin/questions', userQuestions);
   app.use('/api/admin/polls', managePolls);
+  app.use('/api/admin/addnumber', AddUserNumber);
   app.use('/api/user', user);
   app.use('/api/user/write', writingContent);
   app.use('/api/user/answers', personalAnswers);

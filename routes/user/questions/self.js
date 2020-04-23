@@ -1,21 +1,24 @@
 const express = require('express');
-
-const router = express.Router();
 const { Answer, validate } = require('../../../models/user/selfAnswer');
 const { User } = require('../../../models/user/userDetails');
 const { Question } = require('../../../models/admin/question');
+const auth = require('../../../middlewares/auth');
 
-router.get('/:id', async (req, res) => {
-  // Get all the answers with the given user id,
+const router = express.Router();
+
+// Get all the answers with the given user id,
+
+router.get('/', auth, async (req, res) => {
   const answers = await Answer.find({
-    userId: req.params.id,
+    userId: req.user._id,
   }).populate('questionId userId');
   return res.status(200).send(answers);
 });
 
 // Post an answer
 // If answer already exits do not post
-router.post('/', async (req, res) => {
+
+router.post('/', auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -46,9 +49,9 @@ router.post('/', async (req, res) => {
 
 // Update the answer
 
-router.put('/:id', async (req, res) => {
+router.put('/', auth, async (req, res) => {
   const answer = await Answer.findByIdAndUpdate(
-    req.params.id,
+    req.user._id,
     {
       answer: req.body.answer,
     },

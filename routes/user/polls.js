@@ -2,12 +2,16 @@
 const express = require('express');
 const router = express.Router();
 const { PollStats, validate } = require('../../models/pollStats');
+const auth = require('../../middlewares/auth');
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let pollVote = await PollStats.find({ votedBy: req.body.votedBy, votedFor: req.body.votedFor });
+  let pollVote = await PollStats.find({
+    votedBy: req.body.votedBy,
+    votedFor: req.body.votedFor,
+  });
 
   if (pollVote.length) return res.send(pollVote[0]);
 

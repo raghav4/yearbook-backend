@@ -1,36 +1,51 @@
+/* eslint-disable no-underscore-dangle */
 const express = require('express');
-
-const router = express.Router();
+const bcrypt = require('bcryptjs');
 const auth = require('../../../middlewares/auth');
 const { User } = require('../../../models/user/userDetails');
-const { validateUserInfo } = require('../../../utils/user/userInfo');
+const { validateUserInfo } = require('../../../utils/user');
+const { LogInValidation } = require('../../../utils');
 
-// Get all the registered Users
+const router = express.Router();
 
-router.get('/', async (req, res) => {
-  const user = await User.find({});
-  if (!user.length) return res.status(404).send('DB is empty!');
-  return res.send(user);
+router.get('/', auth, async (req, res) => {
+  const users = await User.find({});
+  if (!users.length) return res.status(404).send('No Users found in the DB');
+  return res.send(users);
 });
 
 // LogIn User
 
-router.post('/auth', auth, async (req, res) => {
-  return res.header('x-auth-token', req.token).send('Login Successful');
+router.post('/auth', async (req, res) => {
+  const { error } = LogInValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const user = await User.findOne({
+    email: req.body.email,
+  });
+  if (!user) return res.status(400).send('No user exists with the given email account');
+
+  const validPassword = await bcrypt.compare(req.body.password, user.password);
+  if (!validPassword) return res.status(401).send('Invalid Password');
+
+  // eslint-disable-next-line no-underscore-dangle
+  const token = user.generateAuthToken();
+  return res.header('x-auth-token', token).send('Login Successful');
 });
 
 router.post('/upload', (req, res) => {
   res.send(`Done Uploading ${req.file}`);
 });
 
-router.put('/:id', async (req, res) => {
+// Updating a user
+
+router.put('/', auth, async (req, res) => {
   const { error } = validateUserInfo(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-
-  let user = await User.findById(req.params.id);
+  let user = await User.findById(req.user._id);
   if (!user) return res.status(404).send('User not found with the given id');
   user = await User.findByIdAndUpdate(
-    req.params.id,
+    req.user._id,
     {
       name: req.body.name || user.name,
       email: req.body.email || user.email,

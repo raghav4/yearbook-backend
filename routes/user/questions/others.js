@@ -1,22 +1,25 @@
+/* eslint-disable no-underscore-dangle */
 // Route to Write a message for a person
-// eslint-disable-next-line import/newline-after-import
-const express = require('express');
-const router = express.Router();
+
 const _ = require('lodash');
+const express = require('express');
 const { WritingContent, validate } = require('../../../models/writeFor');
 const { User } = require('../../../models/user/userDetails');
+const auth = require('../../../middlewares/auth');
+
+const router = express.Router();
 
 // List all the content written for a user with the given id
-router.get('/:id', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   const content = await WritingContent.find({
-    userId: req.params.id,
+    userId: req.user._id,
   }).populate('authorId userId', 'name department section -_id');
   if (!content) return res.send('Nothing found for the user');
   return res.send(content);
 });
 
 // Write for the user
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { authorId, userId, message } = req.body;
   if (_.isEqual(authorId, userId)) {
     return res.status(400).send('authorId cannot be equal to userId');

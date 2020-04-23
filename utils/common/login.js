@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 
-const validateCredentials = (user) => {
+const LogInValidation = (user) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
@@ -8,4 +8,4 @@ const validateCredentials = (user) => {
   return schema.validate(user);
 };
 
-exports.validateCredentials = validateCredentials;
+exports.LogInValidation = LogInValidation;
