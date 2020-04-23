@@ -1,7 +1,7 @@
 const express = require('express');
-const { Poll, validate } = require('../../../models/admin/polls');
-const auth = require('../../../middlewares/auth');
-const isAdmin = require('../../../middlewares/admin');
+const { Poll, validate } = require('../../models/admin/polls');
+const auth = require('../../middlewares/auth');
+const isAdmin = require('../../middlewares/admin');
 
 const router = express.Router();
 

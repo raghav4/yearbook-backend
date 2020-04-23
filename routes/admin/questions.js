@@ -1,7 +1,7 @@
 const experss = require('express');
-const { Question, validate } = require('../../../models/admin/question');
-const auth = require('../../../middlewares/auth');
-const isAdmin = require('../../../middlewares/admin');
+const { Question, validate } = require('../../models/admin/question');
+const auth = require('../../middlewares/auth');
+const isAdmin = require('../../middlewares/admin');
 
 const router = experss.Router();
 

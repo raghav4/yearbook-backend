@@ -1,5 +1,5 @@
 const express = require('express');
-const { AllowedUsers } = require('../../models/user/grantAccess');
+const { AllowedUsers } = require('../../models/common/grantAccess');
 const auth = require('../../middlewares/auth');
 const isAdmin = require('../../middlewares/admin');
 

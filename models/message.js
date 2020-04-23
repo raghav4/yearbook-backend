@@ -3,7 +3,7 @@ const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
 
 const writingSchema = new mongoose.Schema({
-  authorId: {
+  receiverId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
@@ -19,10 +19,10 @@ const writingSchema = new mongoose.Schema({
 });
 
 const WritingContent = mongoose.model('WrittingContent', writingSchema);
-// authorId != userId
+// receiverId != userId
 function validateContent(content) {
   const schema = Joi.object({
-    authorId: Joi.objectId().required(),
+    receiverId: Joi.objectId().required(),
     userId: Joi.objectId().required(),
     message: Joi.string(), // check if it has to be made required or not
   });

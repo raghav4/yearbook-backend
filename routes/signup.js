@@ -3,10 +3,10 @@ const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const otpGenerator = require('otp-generator');
 const sgMail = require('@sendgrid/mail');
-const { User } = require('../../../models/user/userDetails');
-const { AllowedUsers } = require('../../../models/user/grantAccess');
-const { OTPModel } = require('../../../models/admin/otpVerification');
-const { validateSignUp, validateOTP } = require('../../../utils');
+const { User } = require('../models/common/info');
+const { AllowedUsers } = require('../models/common/grantAccess');
+const { OTPModel } = require('../models/common/otpVerification');
+const { validateSignUp, validateOTP } = require('../utils');
 
 const router = express.Router();
 sgMail.setApiKey(process.env.SENDGRID_API);

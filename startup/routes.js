@@ -1,18 +1,15 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
-const userQuestions = require('../routes/admin/manage/questions');
-const managePolls = require('../routes/admin/manage/polls');
-const registerUser = require('../routes/admin/manage/users');
-const AddUserNumber = require('../routes/admin/addUserNumber');
-const personalAnswers = require('../routes/user/questions/self');
-const writingContent = require('../routes/user/questions/others');
-const user = require('../routes/user/profile/details');
-const votings = require('../routes/user/polls');
+const login = require('../routes/login');
+const signup = require('../routes/signup');
+const info = require('../routes/user/info');
+const answers = require('../routes/user/answers');
+const messages = require('../routes/user/messages');
+const grantAccess = require('../routes/admin/numberAccess');
 const storage = require('../utils/multer');
 const welcome = require('../routes/welcome');
 
-// eslint-disable-next-line func-names
 module.exports = (app) => {
   app.use(
     cors({
@@ -22,13 +19,11 @@ module.exports = (app) => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(multer({ storage }).single('file'));
-  app.use('/api/admin/user', registerUser);
-  app.use('/api/admin/questions', userQuestions);
-  app.use('/api/admin/polls', managePolls);
-  app.use('/api/admin/addnumber', AddUserNumber);
-  app.use('/api/user', user);
-  app.use('/api/user/write', writingContent);
-  app.use('/api/user/answers', personalAnswers);
-  app.use('/api/user/vote', votings);
+  app.use('/api/login', login);
+  app.use('/api/signup', signup);
+  app.use('/api/user/info', info);
+  app.use('/api/user/answers', answers);
+  app.use('/api/user/messages', messages);
+  app.use('/api/admin/grantaccess', grantAccess);
   app.use('/', welcome);
 };
