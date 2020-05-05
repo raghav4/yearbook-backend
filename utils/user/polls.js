@@ -1,12 +1,13 @@
 const Joi = require('@hapi/joi');
 
-const validateUserAnswer = (user) => {
+const validateUserPolls = (user) => {
   const schema = Joi.object({
-    answer: Joi.string(),
     questionId: Joi.objectId().required(),
     userId: Joi.objectId().required(),
+    votedForId: Joi.objectId().required(),
   });
+
   return schema.validate(user);
 };
 
-exports.validateUserAnswer = validateUserAnswer;
+exports.validateUserPolls = validateUserPolls;

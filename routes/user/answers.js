@@ -1,6 +1,6 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
-const { Answer, validate } = require('../../models/user/answer');
+const { Answer } = require('../../models/user');
 
 const router = express.Router();
 
@@ -21,8 +21,8 @@ router.get('/', auth, async (req, res) => {
  */
 
 router.post('/answer', auth, async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  // const { error } = validate(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
 
   const { questionId, userId, answer } = req.body;
 
@@ -44,12 +44,12 @@ router.post('/answer', auth, async (req, res) => {
  */
 
 router.put('/', auth, async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  // const { error } = validate(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
 
   const { questionId, answer } = req.body;
 
-  let addAnswer = await Answer.findOne({ questionId, userId: req.user._id });
+  const addAnswer = await Answer.findOne({ questionId, userId: req.user._id });
   if (!addAnswer) {
     return res
       .status(404)

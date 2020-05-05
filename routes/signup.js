@@ -3,9 +3,9 @@ const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const otpGenerator = require('otp-generator');
 const sgMail = require('@sendgrid/mail');
-const { User } = require('../models/common/info');
-const { AllowedUsers } = require('../models/common/grantAccess');
-const { OTPModel } = require('../models/common/otpVerification');
+const { User } = require('../models/user');
+const { AllowedUsers } = require('../models/grantAccess');
+const { OTPModel } = require('../models/otpVerification');
 const { validateSignUp, validateOTP } = require('../utils');
 
 const router = express.Router();

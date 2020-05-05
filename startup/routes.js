@@ -9,6 +9,7 @@ const messages = require('../routes/user/messages');
 const grantAccess = require('../routes/admin/numberAccess');
 const storage = require('../utils/multer');
 const welcome = require('../routes/welcome');
+const error = require('../middlewares/error');
 
 module.exports = (app) => {
   app.use(
@@ -26,4 +27,5 @@ module.exports = (app) => {
   app.use('/api/user/messages', messages);
   app.use('/api/admin/grantaccess', grantAccess);
   app.use('/', welcome);
+  app.use(error);
 };

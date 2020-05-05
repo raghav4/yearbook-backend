@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/newline-after-import
 const express = require('express');
 const router = express.Router();
-const { PollStats, validate } = require('../../models/pollStats');
+const { PollStats, validate } = require('../../models/admin/pollStats');
 const auth = require('../../middlewares/auth');
 
 router.post('/', auth, async (req, res) => {

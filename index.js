@@ -1,13 +1,12 @@
+/* eslint-disable no-console */
 require('dotenv').config();
 require('express-async-errors');
 const express = require('express');
 
 const app = express();
-const winston = require('winston');
 
 if (!process.env.jwtPrivateKey) {
-  // eslint-disable-next-line no-console
-  console.error('jwtPrivateKey is not defined');
+  console.log('jwtPrivateKey is not defined');
   process.exit(1);
 }
 require('./startup/logging')(app);
@@ -16,6 +15,6 @@ require('./startup/cloudinary')();
 require('./startup/routes')(app);
 
 const PORT = process.env.PORT || 3000;
-const server = app.listen(PORT, () => winston.info(`Listening on PORT ${PORT}...`));
+const server = app.listen(PORT, () => console.log(`Listening on PORT ${PORT}...`));
 
 module.exports = server;

@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const express = require('express');
-const { WritingContent, validate } = require('../../models/message');
-const { User } = require('../../models/common/info');
+const { Message } = require('../../models/user');
+const { User } = require('../../models/user');
 const auth = require('../../middlewares/auth');
 
 const router = express.Router();
@@ -10,7 +10,7 @@ const router = express.Router();
  * Route to get all the messages written for a user
  */
 router.get('/', auth, async (req, res) => {
-  const messages = await WritingContent.find({
+  const messages = await Message.find({
     userId: req.user._id,
   }).populate('receiverId userId', 'name department section -_id');
   if (!messages) return res.status(404).send('No messages found for the user');
@@ -28,13 +28,13 @@ router.post('/', auth, async (req, res) => {
   const validateAuthorId = await User.findById(receiverId);
   if (!validateAuthorId) return res.status(404).send('Invalid receiverId');
 
-  // const doneAlready = await WritingContent.findOne({ receiverId, userId });
-  // if (doneAlready) await WritingContent.findByIdAndDelete(doneAlready._id);
+  // const doneAlready = await Message.findOne({ receiverId, userId });
+  // if (doneAlready) await Message.findByIdAndDelete(doneAlready._id);
 
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  // const { error } = validate(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
 
-  const content = new WritingContent({
+  const content = new Message({
     receiverId,
     userId: req.user._id,
     message,
@@ -49,7 +49,7 @@ router.post('/', auth, async (req, res) => {
 
 router.delete('/', async (req, res) => {
   const { receiverId, userId } = req.body;
-  const message = await WritingContent.deleteOne({
+  const message = await Message.deleteOne({
     userId,
     receiverId,
   });

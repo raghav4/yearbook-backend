@@ -18,7 +18,7 @@ const writingSchema = new mongoose.Schema({
   },
 });
 
-const WritingContent = mongoose.model('WrittingContent', writingSchema);
+const Message = mongoose.model('WrittingContent', writingSchema);
 // receiverId != userId
 function validateContent(content) {
   const schema = Joi.object({
@@ -29,5 +29,4 @@ function validateContent(content) {
   return schema.validate(content);
 }
 
-exports.validate = validateContent;
-exports.WritingContent = WritingContent;
+exports.Message = Message;
