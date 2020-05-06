@@ -11,39 +11,33 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
   },
   info: {
-    type: [
-      {
-        bio: { type: String, default: '' },
-        profilePicture: { type: mongoose.SchemaTypes.Url },
-      },
-    ],
+    bio: { type: String, default: '' },
+    profilePicture: {
+      type: mongoose.SchemaTypes.Url,
+      default: 'https://i.imgur.com/rhLiM4Dm.png',
+    },
   },
   deptSection: {
-    type: [
-      {
-        department: { type: String, required: true },
-        section: { type: String, required: true },
-      },
-    ],
+    department: { type: String, required: true },
+    section: { type: String, required: true },
   },
   socialHandles: {
-    type: [
-      {
-        email: { type: String },
-        contactNo: { type: String },
-        whatsappNo: { type: String },
-        linkedin: { type: String },
-        instagram: { type: String },
-        facebook: { type: String },
-        snapchat: { type: String },
-      },
-    ],
+    email: { type: String, default: '' },
+    contactNo: { type: String, default: '' },
+    whatsappNo: { type: String, default: '' },
+    linkedin: { type: String, default: '' },
+    instagram: { type: String, default: '' },
+    facebook: { type: String, default: '' },
+    snapchat: { type: String, default: '' },
   },
 });
 
 // eslint-disable-next-line func-names
 userSchema.methods.generateAuthToken = function () {
-  return jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, process.env.jwtPrivateKey);
+  return jwt.sign(
+    { _id: this._id, isAdmin: this.isAdmin },
+    process.env.jwtPrivateKey,
+  );
 };
 const User = mongoose.model('User', userSchema);
 

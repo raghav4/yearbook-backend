@@ -6,7 +6,7 @@ const sgMail = require('@sendgrid/mail');
 const { User } = require('../models/user');
 const { AllowedUsers } = require('../models/grantAccess');
 const { OTPModel } = require('../models/otpVerification');
-const { validateSignUp, validateOTP } = require('../utils');
+const { validateSignUp, validateOTP } = require('../utils/common');
 
 const router = express.Router();
 sgMail.setApiKey(process.env.SENDGRID_API);
@@ -23,29 +23,48 @@ router.post('/', async (req, res) => {
   const { error } = validateSignUp(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let user = await AllowedUsers.findOne({ phoneNumber: req.body.phoneNumber });
-  if (!user) return res.status(400).send('Number not registered');
+  const user = new User({
+    credentials: {
+      name: req.body.name,
+      phoneNo: req.body.phoneNo,
+      email: req.body.email,
+      password: req.body.password,
+    },
+    deptSection: { department: req.body.department, section: req.body.section },
+  });
+  const salt = await bcrypt.genSalt(10);
+  user.credentials.password = await bcrypt.hash(
+    user.credentials.password,
+    salt,
+  );
 
-  user = await User.findOne({ email: req.body.email });
-  if (user) return res.status(400).send('Email ID is already registered');
+  await user.save();
 
-  let otp = await OTPModel.findOne({ userEmail: req.body.email });
-  if (!otp) {
-    otp = new OTPModel({
-      otp: generatedOTP(),
-      userEmail: req.body.email,
-    });
-    await otp.save();
-  }
+  return res.status(200).send(user);
 
-  const data = {
-    from: 'Yearbook<no-reply@yearbook.me',
-    to: `${req.body.email}`,
-    subject: 'Yearbook Email Verification - One Time Password',
-    html: `Dear User, <br> Thank you for signing up for <b>Yearbook</b>. Please use <b>${otp.otp}</b> to complete the Yearbook Verification. <br> Thank you!`,
-  };
+  // let user = await AllowedUsers.findOne({ phoneNumber: req.body.phoneNumber });
+  // if (!user) return res.status(400).send('Number not registered');
+
+  // user = await User.findOne({ email: req.body.email });
+  // if (user) return res.status(400).send('Email ID is already registered');
+
+  // let otp = await OTPModel.findOne({ userEmail: req.body.email });
+  // if (!otp) {
+  //   otp = new OTPModel({
+  //     otp: generatedOTP(),
+  //     userEmail: req.body.email,
+  //   });
+  //   await otp.save();
+  // }
+
+  // const data = {
+  //   from: 'Yearbook<no-reply@yearbook.me',
+  //   to: `${req.body.email}`,
+  //   subject: 'Yearbook Email Verification - One Time Password',
+  //   html: `Dear User, <br> Thank you for signing up for <b>Yearbook</b>. Please use <b>${otp.otp}</b> to complete the Yearbook Verification. <br> Thank you!`,
+  // };
   // await sgMail.send(data);
-  return res.status(200).send('Verify your Email now!');
+  // return res.status(200).send('Verify your Email now!');
 });
 
 router.post('/verify', async (req, res) => {

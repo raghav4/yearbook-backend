@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "yearbook-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend Application of the Yearbook Project written using Expressjs",
   "main": "index.js",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
@@ -41,6 +41,6 @@
     "node": "12.14.1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Raghav Sharma",
   "license": "ISC"
 }

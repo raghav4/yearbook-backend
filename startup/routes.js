@@ -20,8 +20,8 @@ module.exports = (app) => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(multer({ storage }).single('file'));
-  app.use('/api/login', login);
-  app.use('/api/signup', signup);
+  app.use('/api/user/login', login);
+  app.use('/api/user/signup', signup);
   app.use('/api/user/info', info);
   app.use('/api/user/answers', answers);
   app.use('/api/user/messages', messages);
