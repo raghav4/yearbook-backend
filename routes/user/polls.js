@@ -15,7 +15,8 @@ router.post('/', auth, async (req, res) => {
 
   if (pollVote.length) return res.send(pollVote[0]);
 
-  // Check if the votedFor person already has some votes, if yes then increment it!
+  // Check if the votedFor person already has some votes, if yes then increment
+  // it!
 
   pollVote = new PollStats({
     questionId: req.body.questionId,

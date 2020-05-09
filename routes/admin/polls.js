@@ -12,7 +12,8 @@ router.get('/', auth, async (req, res) => {
 
 router.get('/:id', auth, async (req, res) => {
   const question = await Poll.findById(req.params.id);
-  if (!question) return res.status(404).send('No Question found with the provided ID.');
+  if (!question)
+    return res.status(404).send('No Question found with the provided ID.');
   return res.status(200).send(question);
 });
 
@@ -32,7 +33,9 @@ router.post('/', [auth, isAdmin], async (req, res) => {
 router.delete('/:id', [auth, isAdmin], async (req, res) => {
   let pollQuestion = await Poll.findById(req.params.id);
   if (!pollQuestion) {
-    return res.status(400).send('Question with the given id doesnt exist in the db');
+    return res
+      .status(400)
+      .send('Question with the given id doesnt exist in the db');
   }
   await pollQuestion.delete();
   pollQuestion = await Poll.find();
