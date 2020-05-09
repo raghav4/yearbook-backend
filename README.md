@@ -1,6 +1,6 @@
 # Backend of Yearbook Project
 
-Backend Application of [Yearbook](https://github.com/raghav4/yearbook) Project
+> Backend Application of [Yearbook](https://github.com/raghav4/yearbook) Project <br> **API Documentation** - <https://documenter.getpostman.com/view/6857431/Szmb7zkd>
 
 ## Please ensure you have the following installed
 
@@ -15,5 +15,5 @@ Backend Application of [Yearbook](https://github.com/raghav4/yearbook) Project
 - Install all the dependencies by running `npm i`
 - Update the environment variables by creating a `.env` file similar to [`.env.example`](https://github.com/raghav4/yearbook-backend/blob/master/.env.example)
 - Run the server with `pm2` using the command `pm2 start index.js`.
-- Visit the server at [http://localhost:3000](http://localhost:3000)
+- Visit the server at [http://localhost:5000](http://localhost:5000)
 - Stop the server using `pm2 kill`.

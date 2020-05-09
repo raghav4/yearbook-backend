@@ -10,6 +10,7 @@ module.exports = () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
+      useFindAndModify: false,
     })
     .then(() => console.log('Connected to MongoDB..'))
     .catch(() => console.error('Failed to connect to MongoDB..'));

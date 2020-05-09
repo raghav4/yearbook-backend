@@ -1,5 +1,4 @@
-const { validateUserInfo } = require('./info');
-const { validateUserAnswer } = require('./answer');
-
-exports.validateUserInfo = validateUserInfo;
-exports.validateUserAnswer = validateUserAnswer;
+exports.validateUserInfo = require('./info');
+exports.validateUserAnswer = require('./answer');
+exports.validateQuestion = require('./question');
+exports.validateMessage = require('./message');

@@ -4,7 +4,6 @@ const validateUserAnswer = (user) => {
   const schema = Joi.object({
     answer: Joi.string(),
     questionId: Joi.objectId().required(),
-    userId: Joi.objectId().required(),
   });
   return schema.validate(user);
 };

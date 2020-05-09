@@ -5,7 +5,7 @@ const isAdmin = require('../../middlewares/admin');
 
 const router = express.Router();
 
-router.post('/', [auth, isAdmin], async (req, res) => {
+router.post('/', async (req, res) => {
   const user = new AllowedUsers({
     phoneNumber: req.body.phoneNumber,
   });
