@@ -1,5 +1,5 @@
 const experss = require('express');
-const { validateQuestion } = require('../../utils/user');
+const {validateQuestion} = require('../../utils/user');
 const adminController = require('../../controllers/admin.controller');
 const validator = require('../../middlewares/validator');
 const validateObjectId = require('../../middlewares/validateObjectId');
@@ -11,15 +11,17 @@ const router = experss.Router();
 router.get('/', auth, adminController.getUserQuestions);
 
 // Route to get a particular Question for the user
-router.get('/:id', [auth, validateObjectId], adminController.getSingleQuestion);
+router.get('/:id', [ auth, validateObjectId ],
+           adminController.getSingleQuestion);
 
 router.post(
-  '/',
-  [auth, validator(validateQuestion)],
-  adminController.addUserQuestion,
+    '/',
+    [ auth, validator(validateQuestion) ],
+    adminController.addUserQuestion,
 );
 
 // Route to delete the user Question
-router.delete('/:id', [auth, validateObjectId], adminController.deleteQuestion);
+router.delete('/:id', [ auth, validateObjectId ],
+              adminController.deleteQuestion);
 
 module.exports = router;
