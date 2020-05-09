@@ -1,5 +1,5 @@
 const express = require('express');
-const {Poll, validate} = require('../../models/admin/polls');
+const { Poll, validate } = require('../../models/admin/polls');
 const auth = require('../../middlewares/auth');
 const isAdmin = require('../../middlewares/admin');
 
@@ -17,25 +17,25 @@ router.get('/:id', auth, async (req, res) => {
   return res.status(200).send(question);
 });
 
-router.post('/', [ auth, isAdmin ], async (req, res) => {
-  const {error} = validate(req.body);
-  if (error)
-    return res.status(400).send(error.details[0].message);
+router.post('/', [auth, isAdmin], async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
   // TODO #11: Check if the questions already exists
 
   const pollQuestion = new Poll({
-    question : req.body.question,
+    question: req.body.question,
   });
   await pollQuestion.save();
   return res.status(200).send('Question Added Successfully');
 });
 
-router.delete('/:id', [ auth, isAdmin ], async (req, res) => {
+router.delete('/:id', [auth, isAdmin], async (req, res) => {
   let pollQuestion = await Poll.findById(req.params.id);
   if (!pollQuestion) {
-    return res.status(400).send(
-        'Question with the given id doesnt exist in the db');
+    return res
+      .status(400)
+      .send('Question with the given id doesnt exist in the db');
   }
   await pollQuestion.delete();
   pollQuestion = await Poll.find();

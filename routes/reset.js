@@ -1,6 +1,6 @@
 const express = require('express');
 const validator = require('../middlewares/validator');
-const {validateReset} = require('../utils/user/reset');
+const { validateReset } = require('../utils/user/reset');
 const userController = require('../controllers/user.controller');
 
 const router = express.Router();

@@ -16,14 +16,14 @@ const error = require('../middlewares/error');
 
 module.exports = (app) => {
   app.use(
-      cors({
-        exposedHeaders : [ 'Content-Length', 'x-auth-token' ],
-      }),
+    cors({
+      exposedHeaders: ['Content-Length', 'x-auth-token'],
+    }),
   );
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({extended : true}));
+  app.use(bodyParser.urlencoded({ extended: true }));
 
-  app.use(multer({storage}).single('file'));
+  app.use(multer({ storage }).single('file'));
   app.use('/api/user/login', login);
   app.use('/api/user/signup', signup);
   app.use('/api/user/info', info);

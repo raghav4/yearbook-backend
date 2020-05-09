@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
-  sendTo : {
-    type : mongoose.Schema.Types.ObjectId,
-    ref : 'User',
-    required : true,
+  sendTo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
-  sentBy : {
-    type : mongoose.Schema.Types.ObjectId,
-    ref : 'User',
-    required : true,
+  sentBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
-  message : {
-    type : String,
+  message: {
+    type: String,
   },
 });
 
