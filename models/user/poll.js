@@ -19,15 +19,4 @@ const userPollsSchema = new mongoose.Schema({
 
 const UserPoll = mongoose.model('UserPoll', userPollsSchema);
 
-function validateUserPolls(userPoll) {
-  const schema = Joi.object({
-    questionId: Joi.objectId().required(),
-    userId: Joi.objectId().required(),
-    votedForId: Joi.objectId().required(),
-  });
-
-  return schema.validate(userPoll);
-}
-
 exports.UserPoll = UserPoll;
-exports.validate = validateUserPolls;

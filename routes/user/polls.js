@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/newline-after-import
 const express = require('express');
 const router = express.Router();
-const { PollStats, validate } = require('../../models/pollStats');
+const { PollStats, validate } = require('../../models/admin/pollStats');
 const auth = require('../../middlewares/auth');
 
 router.post('/', auth, async (req, res) => {
@@ -15,7 +15,8 @@ router.post('/', auth, async (req, res) => {
 
   if (pollVote.length) return res.send(pollVote[0]);
 
-  // Check if the votedFor person already has some votes, if yes then increment it!
+  // Check if the votedFor person already has some votes, if yes then increment
+  // it!
 
   pollVote = new PollStats({
     questionId: req.body.questionId,

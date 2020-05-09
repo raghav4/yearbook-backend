@@ -1,26 +1,27 @@
 {
-  "name": "server",
+  "name": "yearbook-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend Application of the Yearbook Project written using Expressjs",
   "main": "index.js",
   "dependencies": {
-    "@hapi/joi": "^17.1.0",
-    "@sendgrid/mail": "^7.0.1",
+    "@hapi/joi": "^17.1.1",
+    "@sendgrid/mail": "^7.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "cloudinary": "^1.19.0",
+    "cloudinary": "^1.21.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
-    "googleapis": "^49.0.0",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
-    "mongoose": "^5.9.3",
-    "morgan": "^1.9.1",
+    "mongoose": "^5.9.11",
+    "mongoose-type-url": "^2.0.0",
+    "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "otp-generator": "^1.1.0",
+    "pm2": "^4.4.0",
     "winston": "^3.2.1",
     "winston-mongodb": "^5.0.1"
   },
@@ -28,8 +29,8 @@
     "debug": "^4.1.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1"
   },
   "scripts": {
@@ -40,6 +41,6 @@
     "node": "12.14.1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Raghav Sharma",
   "license": "ISC"
 }

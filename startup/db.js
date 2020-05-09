@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-
 require('dotenv').config();
 const mongoose = require('mongoose');
 
@@ -10,8 +9,9 @@ module.exports = () => {
     .connect(dbURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: false,
+      useCreateIndex: true,
+      useFindAndModify: false,
     })
-    .then(() => console.log(`Connected to MongoDB, URL = ${dbURI}...`))
-    .catch(() => console.error('Failed to connect to MongoDB...'));
+    .then(() => console.log('Connected to MongoDB..'))
+    .catch(() => console.error('Failed to connect to MongoDB..'));
 };
