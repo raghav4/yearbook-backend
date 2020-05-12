@@ -14,14 +14,7 @@ router.get('/', auth, userController.getMessages);
 
 router.get('/:id', [auth, validateObjectId], userController.getUserMessage);
 
-// Route to write a message for another user
-router.post(
-  '/',
-  [auth, validator(validateMessage)],
-  userController.writeMessage,
-);
-
-// Route to update the user message
+// Route to add/update the user message
 router.put(
   '/',
   [auth, validator(validateMessage)],

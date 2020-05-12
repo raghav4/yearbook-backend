@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const multer = require('multer');
+// const multer = require('multer');
 const login = require('../routes/login');
 const signup = require('../routes/signup');
 const info = require('../routes/user/info');
@@ -12,6 +12,7 @@ const grantAccess = require('../routes/admin/numberAccess');
 const userQuestions = require('../routes/admin/questions');
 const polls = require('../routes/admin/polls');
 const resetPassword = require('../routes/reset');
+const pic = require('../routes/pic');
 const error = require('../middlewares/error');
 
 module.exports = (app) => {
@@ -23,7 +24,7 @@ module.exports = (app) => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  app.use(multer({ storage }).single('file'));
+  // app.use(multer({ storage }).single('file'));
   app.use('/api/user/login', login);
   app.use('/api/user/signup', signup);
   app.use('/api/user/info', info);
@@ -33,6 +34,7 @@ module.exports = (app) => {
   app.use('/api/admin/grantaccess', grantAccess);
   app.use('/api/admin/questions', userQuestions);
   app.use('/api/admin/polls', polls);
+  app.use('/api/pic', pic);
   app.use('/', welcome);
   //  app.use(error);
 };

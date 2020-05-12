@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const { Answer } = require('../models/user');
 
 exports.allAnswered = async (req, res) => {
@@ -11,41 +10,15 @@ exports.allAnswered = async (req, res) => {
   return res.status(200).send(answers);
 };
 
-exports.addAnswer = async (req, res) => {
-  const { questionId, answer } = req.body;
-
-  let addAnswer = await Answer.findOne({ questionId, userId: req.user._id });
-  if (addAnswer) {
-    return res
-      .status(400)
-      .send('Answer exists already, try Updating it or delete it');
-  }
-
-  addAnswer = new Answer({
-    questionId,
-    userId: req.user._id,
-    answer,
-  });
-
-  await addAnswer.save();
-  return res.status(200).send('Successfully added answer');
-};
-
 exports.updateAnswer = async (req, res) => {
   const { questionId, answer } = req.body;
+  const userAnswer = await Answer.findOneAndUpdate(
+    { questionId, userId: req.user._id },
+    { answer },
+    { new: true, upsert: true },
+  );
 
-  const addAnswer = await Answer.findOne({ questionId, userId: req.user._id });
-  if (!addAnswer) {
-    return res
-      .status(404)
-      .send('No answer found with the given question id and user id.');
-  }
-
-  addAnswer.answer = answer;
-
-  await addAnswer.save();
-
-  return res.status(200).send('Updated answer');
+  return res.status(200).send(userAnswer);
 };
 
 exports.deleteAnswer = async (req, res) => {

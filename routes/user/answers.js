@@ -3,22 +3,19 @@ const auth = require('../../middlewares/auth');
 const userController = require('../../controllers/user.answer.controller');
 const validateObjectId = require('../../middlewares/validateObjectId');
 const validator = require('../../middlewares/validator');
-const { validateUserAnswer } = require('../../utils/user');
+const { validateUserAnswer } = require('../../utils/user/answer');
 
 const router = express.Router();
 
 // Route to get the answered self questions by the user
 router.get('/', auth, userController.allAnswered);
 
-// Adding an answer for a question (Self)
-router.post(
+// Route to add/update an exising answer of a user (Self)
+router.put(
   '/',
   [auth, validator(validateUserAnswer)],
-  userController.addAnswer,
+  userController.updateAnswer,
 );
-
-// Route to update an exising answer of a user (Self)
-router.put('/', [auth], userController.updateAnswer);
 
 // Route to delete self answer
 router.delete('/:id', [auth, validateObjectId], userController.deleteAnswer);
