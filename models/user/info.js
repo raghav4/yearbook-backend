@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     section: { type: String, required: true },
   },
   socialHandles: {
-    email: { type: String, default: '' },
+    contactEmail: { type: String, default: '' },
     contactNo: { type: String, default: '' },
     whatsappNo: { type: String, default: '' },
     linkedin: { type: String, default: '' },

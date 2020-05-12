@@ -46,6 +46,14 @@ exports.loginUser = async (req, res) => {
   return res.header('x-auth-token', token).send('Login Successful');
 };
 
+exports.getClassUsers = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const users = await User.find({
+    $and: [{ _id: { $ne: req.user._id } }, { deptSection: user.deptSection }],
+  });
+  return res.send(users);
+};
+
 exports.validateSignUpAccess = async (req, res) => {
   const { email, phoneNo } = req.body;
 
@@ -163,30 +171,35 @@ exports.allUsers = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+  console.log('req.body is ', req.body);
   let user = await User.findById(req.user._id);
   if (!user) return res.status(404).send('User not found');
+
+  const { info, socialHandles } = req.body;
 
   user = await User.findByIdAndUpdate(
     req.user._id,
     {
       info: {
-        bio: req.body.bio || user.info.bio,
-        profilePicture: req.body.profilePicture || user.info.profilePicture,
+        bio: info.bio || user.info.bio,
+        profilePicture: info.profilePicture || user.info.profilePicture,
       },
       socialHandles: {
-        contactEmail: req.body.email || user.socialHandles.contactEmail,
-        contactNo: req.body.contactNo || user.socialHandles.contactNo,
-        whatsappNo: req.body.whatsappNo || user.socialHandles.whatsappNo,
-        linkedin: req.body.linkedin || user.socialHandles.linkedin,
-        instagram: req.body.instagram || user.socialHandles.instagram,
-        facebook: req.body.facebook || user.socialHandles.facebook,
-        snapchat: req.body.snapchat || user.socialHandles.snapchat,
+        contactEmail:
+          socialHandles.contactEmail || user.socialHandles.contactEmail,
+        contactNo: socialHandles.contactNo || user.socialHandles.contactNo,
+        whatsappNo: socialHandles.whatsappNo || user.socialHandles.whatsappNo,
+        linkedin: socialHandles.linkedin || user.socialHandles.linkedin,
+        instagram: socialHandles.instagram || user.socialHandles.instagram,
+        facebook: socialHandles.facebook || user.socialHandles.facebook,
+        snapchat: socialHandles.snapchat || user.socialHandles.snapchat,
       },
     },
     {
       new: true,
     },
   );
+  console.log(user);
   user.credentials = _.omit(user.credentials, 'password');
   user = _.pick(user, [
     'credentials',
@@ -216,6 +229,7 @@ exports.getMessages = async (req, res) => {
 
   const result = messages.map((message) => ({
     ..._.pick(message, ['message']),
+    ..._.pick(message, ['_id']),
     sentBy: _.get(message, 'sentBy.credentials.name'),
   }));
 
@@ -245,15 +259,16 @@ exports.writeMessage = async (req, res) => {
 };
 
 exports.updateMessage = async (req, res) => {
-  let query = await Message.findOne({
+  const filter = {
     sendTo: req.body.sendTo,
     sentBy: req.user._id,
-  });
-  if (!query) return res.status(404).send('No Message found');
-
-  query.message = req.body.message;
-  await query.save();
-  return res.send(query);
+  };
+  const message = await Message.findOneAndUpdate(
+    filter,
+    { message: req.body.message },
+    { new: true, upsert: true },
+  );
+  return res.status(200).send(message);
 };
 
 exports.deleteMessage = async (req, res) => {

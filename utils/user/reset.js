@@ -25,7 +25,7 @@ const validateReset = (user) => {
   if (isEmail) return validateEmail({ email: user.input });
 
   // Check for number
-  if (!isEmail && isNumber(user.input)) {
+  if (isNumber(user.input)) {
     return validatePhoneNo({ phoneNo: user.input });
   }
 
