@@ -11,7 +11,6 @@ if (!process.env.jwtPrivateKey) {
 }
 require('./startup/logging')(app);
 require('./startup/db')();
-require('./startup/cloudinary')();
 require('./startup/routes')(app);
 
 const PORT = process.env.PORT || 5000;

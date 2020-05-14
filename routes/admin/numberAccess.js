@@ -1,7 +1,7 @@
 const express = require('express');
 const { AllowedUsers } = require('../../models/grantAccess');
 const auth = require('../../middlewares/auth');
-const isAdmin = require('../../middlewares/admin');
+const isAdmin = require('../../middlewares/adminAuth');
 
 const router = express.Router();
 

@@ -14,7 +14,7 @@ router.get('/', auth, userController.allAnswered);
 router.put(
   '/',
   [auth, validator(validateUserAnswer)],
-  userController.updateAnswer,
+  userController.addUpdateAnswer,
 );
 
 // Route to delete self answer

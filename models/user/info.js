@@ -34,12 +34,10 @@ const userSchema = new mongoose.Schema({
 });
 
 // eslint-disable-next-line func-names
-userSchema.methods.generateAuthToken = function () {
-  return jwt.sign(
-    { _id: this._id, isAdmin: this.isAdmin },
-    process.env.jwtPrivateKey,
-  );
+userSchema.methods.generateAuthToken = () => {
+  return jwt.sign({ _id: this._id }, process.env.jwtPrivateKey);
 };
+
 const User = mongoose.model('User', userSchema);
 
 exports.User = User;

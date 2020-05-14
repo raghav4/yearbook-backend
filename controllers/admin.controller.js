@@ -1,4 +1,42 @@
+const bcrypt = require('bcryptjs');
+const { Admin } = require('../models/admin');
 const { Question } = require('../models/admin/question');
+
+exports.logInAdmin = async (req, res) => {
+  const { username, password } = req.body;
+
+  const admin = await Admin.findOne({
+    username,
+  });
+  if (!admin) return res.status(400).send('Invalid username or password');
+
+  const validPassword = await bcrypt.compare(password, admin.password);
+  if (!validPassword) {
+    return res.status(401).send('Invalid username or Password');
+  }
+
+  const token = admin.generateAuthToken();
+  return res.header('x-auth-token', token).send('Login Successful');
+};
+
+exports.registerAdmin = async (req, res) => {
+  // Only super admin can register further admins,
+  if (!req.admin.isSuperAdmin) {
+    return res.status(401).send('Unauthroized request');
+  }
+
+  const { username, password } = req.body;
+  const admin = new Admin({ username, password });
+
+  try {
+    const salt = await bcrypt.genSalt(15);
+    admin.password = await bcrypt.hash(admin.password, salt);
+    await admin.save();
+  } catch (ex) {
+    console.log(ex.response);
+  }
+  return res.status(200).send(admin);
+};
 
 exports.getUserQuestions = async (req, res) => {
   const questions = await Question.find();
