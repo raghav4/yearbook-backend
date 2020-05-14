@@ -10,7 +10,7 @@ exports.allAnswered = async (req, res) => {
   return res.status(200).send(answers);
 };
 
-exports.updateAnswer = async (req, res) => {
+exports.addUpdateAnswer = async (req, res) => {
   const { questionId, answer } = req.body;
   const userAnswer = await Answer.findOneAndUpdate(
     { questionId, userId: req.user._id },
