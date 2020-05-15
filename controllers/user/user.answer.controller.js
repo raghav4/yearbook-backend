@@ -1,4 +1,4 @@
-const { Answer } = require('../models/user');
+const { Answer } = require('../../models/user');
 
 exports.allAnswered = async (req, res) => {
   const answers = await Answer.find({

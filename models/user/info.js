@@ -19,8 +19,22 @@ const userSchema = new mongoose.Schema({
     },
   },
   deptSection: {
-    department: { type: String, required: true },
-    section: { type: String, required: true },
+    department: {
+      type: String,
+      enum: {
+        values: ['CSE', 'IT', 'MAE', 'ECE', 'EEE'],
+        message: 'The allowed departments are CSE, IT, MAE, ECE, EEE.',
+      },
+      required: true,
+    },
+    section: {
+      type: String,
+      enum: {
+        values: ['A', 'B', 'C'],
+        message: 'Allowed Sections are A, B & C',
+      },
+      required: true,
+    },
   },
   socialHandles: {
     contactEmail: { type: String, default: '' },
@@ -34,10 +48,9 @@ const userSchema = new mongoose.Schema({
 });
 
 // eslint-disable-next-line func-names
-userSchema.methods.generateAuthToken = () => {
+userSchema.methods.generateAuthToken = function () {
   return jwt.sign({ _id: this._id }, process.env.jwtPrivateKey);
 };
-
 const User = mongoose.model('User', userSchema);
 
 exports.User = User;

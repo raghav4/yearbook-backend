@@ -1,5 +1,7 @@
+const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const { Admin } = require('../models/admin');
+const { AllowedUsers } = require('../models/grantAccess');
 const { Question } = require('../models/admin/question');
 
 exports.logInAdmin = async (req, res) => {
@@ -20,10 +22,7 @@ exports.logInAdmin = async (req, res) => {
 };
 
 exports.registerAdmin = async (req, res) => {
-  // Only super admin can register further admins,
-  if (!req.admin.isSuperAdmin) {
-    return res.status(401).send('Unauthroized request');
-  }
+  if (!req.admin.isSuperAdmin) return res.status(401).send('Access Denied!');
 
   const { username, password } = req.body;
   const admin = new Admin({ username, password });
@@ -32,16 +31,16 @@ exports.registerAdmin = async (req, res) => {
     const salt = await bcrypt.genSalt(15);
     admin.password = await bcrypt.hash(admin.password, salt);
     await admin.save();
-  } catch (ex) {
-    console.log(ex.response);
-  }
+  } catch (ex) {}
   return res.status(200).send(admin);
 };
 
 exports.getUserQuestions = async (req, res) => {
   const questions = await Question.find();
   if (!questions.length) return res.status(404).send('No Questions found');
-  res.status(200).send(questions);
+  return res
+    .status(200)
+    .send(_.map(questions, _.partialRight(_.pick, ['_id', 'question'])));
 };
 
 exports.getSingleQuestion = async (req, res) => {
@@ -64,9 +63,25 @@ exports.addUserQuestion = async (req, res) => {
   return res.status(200).send(question);
 };
 
+exports.grantAccess = async (req, res) => {
+  const { phoneNumber } = req.body;
+
+  let user = await AllowedUsers.findOne({ phoneNumber });
+
+  if (user) return res.status(400).send('Number already registered');
+
+  user = new AllowedUsers({
+    phoneNumber,
+  });
+
+  await user.save();
+
+  return res.status(200).send('Successfully added Number');
+};
 // exports.addPollQuestion = async (req, res) => {};
 
 exports.deleteQuestion = async (req, res) => {
+  // #TODO: #20 Do not delete/update question if anyone of the people has answered
   const question = await Question.findById(req.params.id);
   if (!question) {
     return res.status(400).send('No Question exists with the Given id');

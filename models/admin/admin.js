@@ -10,6 +10,10 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isAdmin: {
+    type: Boolean,
+    default: true,
+  },
   isSuperAdmin: {
     type: Boolean,
     default: false,
@@ -18,7 +22,7 @@ const adminSchema = new mongoose.Schema({
 
 adminSchema.methods.generateAuthToken = function () {
   return jwt.sign(
-    { _id: this._id, isSuperAdmin: this.isSuperAdmin },
+    { _id: this._id, isSuperAdmin: this.isSuperAdmin, isAdmin: this.isAdmin },
     process.env.jwtPrivateKey,
   );
 };

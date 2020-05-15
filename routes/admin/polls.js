@@ -1,23 +1,21 @@
 const express = require('express');
 const { Poll, validate } = require('../../models/admin/polls');
-const auth = require('../../middlewares/auth');
-const isAdmin = require('../../middlewares/adminAuth');
+const { adminAuth } = require('../../middlewares/admin');
 
 const router = express.Router();
 
-router.get('/', auth, async (req, res) => {
+router.get('/', adminAuth, async (req, res) => {
   const pollQuestions = await Poll.find();
   res.status(200).send(pollQuestions);
 });
 
-router.get('/:id', auth, async (req, res) => {
+router.get('/:id', adminAuth, async (req, res) => {
   const question = await Poll.findById(req.params.id);
-  if (!question)
-    return res.status(404).send('No Question found with the provided ID.');
+  if (!question) return res.status(404).send('No Question found.');
   return res.status(200).send(question);
 });
 
-router.post('/', [auth, isAdmin], async (req, res) => {
+router.post('/', [adminAuth], async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -30,12 +28,10 @@ router.post('/', [auth, isAdmin], async (req, res) => {
   return res.status(200).send('Question Added Successfully');
 });
 
-router.delete('/:id', [auth, isAdmin], async (req, res) => {
+router.delete('/:id', [adminAuth], async (req, res) => {
   let pollQuestion = await Poll.findById(req.params.id);
   if (!pollQuestion) {
-    return res
-      .status(400)
-      .send('Question with the given id doesnt exist in the db');
+    return res.status(400).send('Question with the given id doesnt exist in the db');
   }
   await pollQuestion.delete();
   pollQuestion = await Poll.find();

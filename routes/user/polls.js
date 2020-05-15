@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { PollStats, validate } = require('../../models/admin/pollStats');
-const auth = require('../../middlewares/auth');
+const { auth } = require('../../middlewares/user');
 
 router.post('/', auth, async (req, res) => {
   const { error } = validate(req.body);

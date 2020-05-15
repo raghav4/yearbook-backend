@@ -1,6 +1,6 @@
 {
   "name": "yearbook-backend",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Backend Application of the Yearbook Project written using Expressjs",
   "main": "index.js",
   "dependencies": {
@@ -25,13 +25,16 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "concurrently": "^5.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "npx nodemon index.js",
+    "add-admin": "cd routes/admin && node superAdmin.js"
   },
   "engines": {
     "node": "12.14.1"

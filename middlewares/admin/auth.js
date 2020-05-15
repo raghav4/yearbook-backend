@@ -7,6 +7,9 @@ module.exports = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.jwtPrivateKey);
+    if (decoded.isAdmin === undefined || !decoded.isAdmin) {
+      return res.status(403).send('Access Denied');
+    }
     req.admin = decoded;
   } catch (ex) {
     return res.status(400).send('Invalid Token');

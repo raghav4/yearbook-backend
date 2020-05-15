@@ -1,4 +1,11 @@
-exports.validateUserInfo = require('./info');
-exports.validateUserAnswer = require('./answer');
-exports.validateQuestion = require('./question');
-exports.validateMessage = require('./message');
+const { validateUserInfo } = require('./info');
+const { validateUserAnswer } = require('./answer');
+const { validateQuestion } = require('./question');
+const { validateMessage } = require('./message');
+
+module.exports = {
+  validateUserInfo,
+  validateUserAnswer,
+  validateQuestion,
+  validateMessage,
+};
