@@ -1,7 +1,7 @@
 const express = require('express');
 const { Poll, validate } = require('../../models/admin/polls');
 const auth = require('../../middlewares/auth');
-const isAdmin = require('../../middlewares/adminAuth');
+const isAdmin = require('../../middlewares/admin/auth');
 
 const router = express.Router();
 
@@ -12,8 +12,7 @@ router.get('/', auth, async (req, res) => {
 
 router.get('/:id', auth, async (req, res) => {
   const question = await Poll.findById(req.params.id);
-  if (!question)
-    return res.status(404).send('No Question found with the provided ID.');
+  if (!question) return res.status(404).send('No Question found.');
   return res.status(200).send(question);
 });
 

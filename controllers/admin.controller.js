@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const { Admin } = require('../models/admin');
+const { AllowedUsers } = require('../models/grantAccess');
 const { Question } = require('../models/admin/question');
 
 exports.logInAdmin = async (req, res) => {
@@ -20,10 +21,7 @@ exports.logInAdmin = async (req, res) => {
 };
 
 exports.registerAdmin = async (req, res) => {
-  // Only super admin can register further admins,
-  if (!req.admin.isSuperAdmin) {
-    return res.status(401).send('Unauthroized request');
-  }
+  if (!req.admin.isSuperAdmin) return res.status(401).send('Access Denied!');
 
   const { username, password } = req.body;
   const admin = new Admin({ username, password });
@@ -64,6 +62,21 @@ exports.addUserQuestion = async (req, res) => {
   return res.status(200).send(question);
 };
 
+exports.grantAccess = async (req, res) => {
+  const { phoneNumber } = req.body;
+
+  let user = await AllowedUsers.findOne({ phoneNumber });
+
+  if (user) return res.status(400).send('Number already registered');
+
+  user = new AllowedUsers({
+    phoneNumber,
+  });
+
+  await user.save();
+
+  return res.status(200).send('Successfully added Number');
+};
 // exports.addPollQuestion = async (req, res) => {};
 
 exports.deleteQuestion = async (req, res) => {

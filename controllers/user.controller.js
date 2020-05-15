@@ -243,7 +243,7 @@ exports.getUserMessage = async (req, res) => {
 
 exports.getMessages = async (req, res) => {
   const messages = await Message.find({
-    sendTo: '5eb57e6ae3e205880eee339e',
+    sendTo: req.user._id,
   }).populate('sendTo sentBy');
 
   const result = messages.map((message) => ({
