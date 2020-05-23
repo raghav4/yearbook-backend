@@ -15,10 +15,10 @@ const bcrypt = require('bcryptjs');
 const sgMail = require('@sendgrid/mail');
 const otpGenerator = require('otp-generator');
 const imgBBUploader = require('imgbb-uploader');
-const { User } = require('../models/user');
-const { AllowedUsers } = require('../models/grantAccess');
-const { Message } = require('../models/user');
-const { OTPModel } = require('../models/otpVerification');
+const { User } = require('../../models/user');
+const { AllowedUsers } = require('../../models/grantAccess');
+const { Message } = require('../../models/user');
+const { OTPModel } = require('../../models/otpVerification');
 
 sgMail.setApiKey(process.env.SENDGRID_API);
 
@@ -38,10 +38,7 @@ exports.loginUser = async (req, res) => {
   });
   if (!user) return res.status(400).send('Invalid Email or Password');
 
-  const validPassword = await bcrypt.compare(
-    password,
-    user.credentials.password,
-  );
+  const validPassword = await bcrypt.compare(password, user.credentials.password);
   if (!validPassword) return res.status(401).send('Invalid Email or Password');
 
   const token = user.generateAuthToken();
@@ -87,7 +84,9 @@ exports.validateSignUpAccess = async (req, res) => {
     from: 'Yearbook<no-reply@yearbook.me',
     to: `${email}`,
     subject: 'Yearbook Email Verification - One Time Password',
-    html: `Dear User, <br> Thank you for signing up for <b>Yearbook</b>. Please use <b>${otp.otp}</b> to complete the Yearbook Verification. <br> Thank you!`,
+    html: `Dear User, <br> Thank you for signing up for <b>Yearbook</b>.
+    Please use <b>${otp.otp}</b> to complete the Yearbook Verification.
+    <br> Thank you!`,
   });
 
   return res.status(200).send('Verify your Email now!');
@@ -122,21 +121,12 @@ exports.verifySignUp = async (req, res) => {
   });
 
   const salt = await bcrypt.genSalt(15);
-  user.credentials.password = await bcrypt.hash(
-    user.credentials.password,
-    salt,
-  );
+  user.credentials.password = await bcrypt.hash(user.credentials.password, salt);
   await user.save();
   await OTPModel.findOneAndRemove({ email });
 
   user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, [
-    'credentials',
-    'info',
-    'deptSection',
-    'socialHandles',
-    '_id',
-  ]);
+  user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
 
   return res.status(200).send(user);
 };
@@ -153,13 +143,7 @@ exports.resetPassword = async (req, res) => {
 exports.getUser = async (req, res) => {
   let user = await User.findById(req.user._id);
   user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, [
-    'credentials',
-    'info',
-    'deptSection',
-    'socialHandles',
-    '_id',
-  ]);
+  user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
   if (!user) return res.status(400).send('User not found');
 
   return res.status(200).send(user);
@@ -192,13 +176,7 @@ exports.updateUser = async (req, res) => {
     },
   );
   user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, [
-    'credentials',
-    'info',
-    'deptSection',
-    'socialHandles',
-    '_id',
-  ]);
+  user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
   return res.status(200).send(user);
 };
 
@@ -225,7 +203,7 @@ exports.updateUserProfilePicture = async (req, res) => {
       await user.save();
       return res.status(200).send(url);
     } catch (ex) {
-      return res.send(ex.message);
+      return res.status(500).send(ex.message);
     }
   });
 };

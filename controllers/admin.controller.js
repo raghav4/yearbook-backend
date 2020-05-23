@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const { Admin } = require('../models/admin');
 const { AllowedUsers } = require('../models/grantAccess');
@@ -30,16 +31,16 @@ exports.registerAdmin = async (req, res) => {
     const salt = await bcrypt.genSalt(15);
     admin.password = await bcrypt.hash(admin.password, salt);
     await admin.save();
-  } catch (ex) {
-    console.log(ex.response);
-  }
+  } catch (ex) {}
   return res.status(200).send(admin);
 };
 
 exports.getUserQuestions = async (req, res) => {
   const questions = await Question.find();
   if (!questions.length) return res.status(404).send('No Questions found');
-  res.status(200).send(questions);
+  return res
+    .status(200)
+    .send(_.map(questions, _.partialRight(_.pick, ['_id', 'question'])));
 };
 
 exports.getSingleQuestion = async (req, res) => {
@@ -80,6 +81,7 @@ exports.grantAccess = async (req, res) => {
 // exports.addPollQuestion = async (req, res) => {};
 
 exports.deleteQuestion = async (req, res) => {
+  // #TODO: #20 Do not delete/update question if anyone of the people has answered
   const question = await Question.findById(req.params.id);
   if (!question) {
     return res.status(400).send('No Question exists with the Given id');

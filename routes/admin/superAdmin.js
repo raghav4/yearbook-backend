@@ -26,9 +26,7 @@ mongoose.connect(
 );
 
 const createSuperAdmin = () => {
-  console.log(
-    'Please note that if you forget the password, you cannot reset it!\n',
-  );
+  console.log('Please note that if you forget the password, you cannot reset it!\n');
   rl.question('Please Enter the Super Admin Username : ', async (username) => {
     let admin = await Admin.findOne({
       username,

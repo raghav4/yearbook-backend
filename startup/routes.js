@@ -1,18 +1,10 @@
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
-const loginUser = require('../routes/login');
-const signup = require('../routes/signup');
-const info = require('../routes/user/info');
-const welcome = require('../routes/welcome');
-const answers = require('../routes/user/answers');
-const messages = require('../routes/user/messages');
-const loginAdmin = require('../routes/admin/login');
-const adminRegister = require('../routes/admin/admin');
-const userQuestions = require('../routes/admin/questions');
-const polls = require('../routes/admin/polls');
-const resetPassword = require('../routes/reset');
-const error = require('../middlewares/error');
+const { error } = require('../middlewares');
+const { info, answers, messages } = require('../routes/user');
+const { welcome, loginUser, signup, resetPassword } = require('../routes/public');
+const { loginAdmin, adminRegister, userQuestions, polls } = require('../routes/admin');
 
 module.exports = (app) => {
   app.use(
@@ -28,7 +20,7 @@ module.exports = (app) => {
   app.use('/api/user/info', info);
   app.use('/api/user/answers', answers);
   app.use('/api/user/messages', messages);
-  app.use('/api/user/reset', resetPassword);
+  // app.use('/api/user/reset', resetPassword);
   app.use('/api/admin/auth', loginAdmin);
   app.use('/api/admin/r', adminRegister);
   app.use('/api/admin/user', adminRegister);
