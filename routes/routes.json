@@ -1,0 +1,41 @@
+{
+  "main": {
+    "admin": {
+      "login": "/api/admin/auth"
+    },
+    "user": {
+      "answers": "/api/user/answers",
+      "messages": "/api/user/messages",
+      "onboarding": "/api/user"
+    }
+  },
+  "admin": {
+    "poll": {
+      "add": "/",
+      "all": "/",
+      "byId": "/:id",
+      "remove": "/:id"
+    }
+  },
+  "user": {
+    "login": "/login",
+    "signup": "/signup",
+    "verify": "/signup/verify",
+    "self": "/",
+    "all": "/all",
+    "profilePicture": "/pic",
+    "classStudents": "/class/all",
+    "updateSelf": "/",
+    "message": {
+      "getAllOfUser": "/",
+      "getById": "/:id",
+      "addOrUpdate": "/",
+      "deleteById": "/:id"
+    },
+    "answer": {
+      "getAllSelf": "/",
+      "addOrUpdate": "/",
+      "deleteById": "/:id"
+    }
+  }
+}

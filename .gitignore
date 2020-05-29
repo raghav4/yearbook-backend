@@ -1,5 +1,8 @@
 node_modules/
+logs/
 coverage/
 .DS_Store
 .env
 uncaughtExceptions.log
+package-lock.json
+tmp/

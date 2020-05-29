@@ -1,6 +1,4 @@
 const welcome = require('./welcome');
-const loginUser = require('./login');
-const signup = require('./signup');
-const resetPassword = require('./reset');
+const onboarding = require('./onboaring');
 
-module.exports = { welcome, loginUser, signup, resetPassword };
+module.exports = { welcome, onboarding };

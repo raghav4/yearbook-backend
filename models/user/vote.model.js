@@ -2,28 +2,21 @@ const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
 
-const PollStatsSchema = new mongoose.Schema({
+const userPollsSchema = new mongoose.Schema({
   questionId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-  votedBy: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-  votedFor: {
+  votedForId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
-  voteCountsByPerson: {
-    type: Number,
     required: true,
   },
 });
 
-const PollStats = mongoose.model('PollStats', PollStatsSchema);
+const Vote = mongoose.model('Vote', userPollsSchema);
 
-function validatePollStats(poll) {}
-
-exports.PollStats = PollStats;
-exports.validate = validatePollStats;
+module.exports = Vote;

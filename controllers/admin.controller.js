@@ -2,7 +2,7 @@ const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const { Admin } = require('../models/admin');
 const { AllowedUsers } = require('../models/grantAccess');
-const { Question } = require('../models/admin/question');
+const { Question } = require('../models/admin/question.model');
 
 exports.logInAdmin = async (req, res) => {
   const { username, password } = req.body;
@@ -13,9 +13,7 @@ exports.logInAdmin = async (req, res) => {
   if (!admin) return res.status(400).send('Invalid username or password');
 
   const validPassword = await bcrypt.compare(password, admin.password);
-  if (!validPassword) {
-    return res.status(401).send('Invalid username or Password');
-  }
+  if (!validPassword) return res.status(401).send('Invalid username or Password');
 
   const token = admin.generateAuthToken();
   return res.header('x-auth-token', token).send('Login Successful');
@@ -40,7 +38,7 @@ exports.getUserQuestions = async (req, res) => {
   if (!questions.length) return res.status(404).send('No Questions found');
   return res
     .status(200)
-    .send(_.map(questions, _.partialRight(_.pick, ['_id', 'question'])));
+    .send(_.map(questions, _.partialRight(_.pick, ['_id', 'title'])));
 };
 
 exports.getSingleQuestion = async (req, res) => {
@@ -51,11 +49,11 @@ exports.getSingleQuestion = async (req, res) => {
 };
 
 exports.addUserQuestion = async (req, res) => {
-  let question = await Question.findOne({ question: req.body.question });
+  let question = await Question.findOne({ title: req.body.question });
 
   if (question) return res.status(400).send('Question Already Exists');
   question = new Question({
-    question: req.body.question,
+    title: req.body.question,
   });
 
   await question.save();

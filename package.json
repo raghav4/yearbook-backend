@@ -8,7 +8,9 @@
     "@sendgrid/mail": "^7.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "config": "^3.3.1",
     "cors": "^2.8.5",
+    "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
@@ -16,30 +18,46 @@
     "imgbb-uploader": "^1.0.3",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.11",
     "mongoose-type-url": "^2.0.0",
     "morgan": "^1.10.0",
     "otp-generator": "^1.1.0",
     "pm2": "^4.4.0",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.4.2"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2"
+    "eslint-plugin-import": "^2.20.2",
+    "husky": "^4.2.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "npx nodemon index.js",
-    "add-admin": "cd routes/admin && node superAdmin.js"
+    "dev": "export NODE_ENV=development DEBUG=app:* && npx nodemon",
+    "add-admin": "cd routes/admin && node superAdmin.js",
+    "eslint": "eslint controllers/ middlewares/ models/ validation/ ",
+    "prettier": "npx prettier --write *.js */*.js *.json */*.json"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier"
+    }
   },
   "engines": {
     "node": "12.14.1"
   },
-  "keywords": [],
+  "keywords": [
+    "Yearbook",
+    "Nodejs",
+    "Backend",
+    "Farwell",
+    "College"
+  ],
   "author": "Raghav Sharma",
   "license": "ISC"
 }
