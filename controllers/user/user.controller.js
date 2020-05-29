@@ -12,6 +12,7 @@
 require('dotenv').config();
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
+const config = require('config');
 const sgMail = require('@sendgrid/mail');
 const otpGenerator = require('otp-generator');
 const imgBBUploader = require('imgbb-uploader');
@@ -20,7 +21,7 @@ const { AllowedUsers } = require('../../models/grantAccess');
 const { Message } = require('../../models/user');
 const { OTPModel } = require('../../models/otpVerification');
 
-sgMail.setApiKey(process.env.SENDGRID_API);
+sgMail.setApiKey(config.get('SGAPI'));
 
 const generatedOTP = () => {
   return otpGenerator.generate(4, {
@@ -196,8 +197,7 @@ exports.updateUserProfilePicture = async (req, res) => {
     }
     try {
       const { url } = await imgBBUploader(
-        process.env.IMGBB_KEY,
-        `${__dirname}/../tmp/${file.name}`,
+        config.get('IMGBBKEY')`${__dirname}/../tmp/${file.name}`,
       );
       user.info.profilePicture = url;
       await user.save();

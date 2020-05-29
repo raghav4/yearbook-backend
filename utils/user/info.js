@@ -1,8 +1,6 @@
 const Joi = require('@hapi/joi');
 
 const validateUserInfo = (user) => {
-  console.log(user);
-
   const schema = Joi.object().keys({
     info: Joi.object({
       bio: Joi.string().label('Bio'),

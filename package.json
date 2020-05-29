@@ -8,7 +8,9 @@
     "@sendgrid/mail": "^7.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "config": "^3.3.1",
     "cors": "^2.8.5",
+    "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
@@ -33,7 +35,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "npx nodemon index.js",
+    "dev": "export NODE_ENV=development DEBUG=app:* && npx nodemon",
     "add-admin": "cd routes/admin && node superAdmin.js"
   },
   "engines": {

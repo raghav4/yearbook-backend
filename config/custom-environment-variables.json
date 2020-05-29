@@ -1,0 +1,6 @@
+{
+  "jwtPrivateKey": "jwtPrivateKey",
+  "SGAPI": "SENDGRID_API",
+  "IMGBBKEY": "IMGBB_KEY",
+  "mongoURI": "DB_URI"
+}
