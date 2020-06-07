@@ -23,16 +23,7 @@ const PollStatsSchema = new mongoose.Schema({
 
 const PollStats = mongoose.model('PollStats', PollStatsSchema);
 
-function validatePollStats(poll) {
-  const schema = Joi.object({
-    questionId: Joi.objectId().required(),
-    votedBy: Joi.objectId().required(),
-    votedFor: Joi.objectId().required(),
-    voteCountsByPerson: Joi.number(),
-  });
-
-  return schema.validate(poll);
-}
+function validatePollStats(poll) {}
 
 exports.PollStats = PollStats;
 exports.validate = validatePollStats;

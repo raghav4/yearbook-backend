@@ -1,5 +1,5 @@
 const experss = require('express');
-const { validateQuestion } = require('../../utils/user');
+const { validateQuestion } = require('../../validation/user');
 const adminController = require('../../controllers/admin.controller');
 const { auth } = require('../../middlewares/user');
 const { validator, validateObjectId } = require('../../middlewares');

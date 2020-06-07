@@ -1,3 +1,4 @@
 const { Admin } = require('./admin');
+const { PollQuestion } = require('./pollQuestion');
 
-exports.Admin = Admin;
+module.exports = { Admin, PollQuestion };

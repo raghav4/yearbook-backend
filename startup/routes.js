@@ -2,8 +2,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const { error } = require('../middlewares');
-const { info, answers, messages } = require('../routes/user');
-const { welcome, loginUser, signup, resetPassword } = require('../routes/public');
+const { self, answers, messages } = require('../routes/user');
+const { welcome, onboarding } = require('../routes/public');
 const { loginAdmin, adminRegister, userQuestions, polls } = require('../routes/admin');
 
 module.exports = (app) => {
@@ -15,17 +15,15 @@ module.exports = (app) => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(fileUpload());
-  app.use('/api/user/login', loginUser);
-  app.use('/api/user/signup', signup);
-  app.use('/api/user/info', info);
+  app.use('/api/user/self', self);
   app.use('/api/user/answers', answers);
   app.use('/api/user/messages', messages);
-  // app.use('/api/user/reset', resetPassword);
+  app.use('/api/user/', onboarding);
   app.use('/api/admin/auth', loginAdmin);
   app.use('/api/admin/r', adminRegister);
   app.use('/api/admin/user', adminRegister);
   app.use('/api/admin/questions', userQuestions);
   app.use('/api/admin/polls', polls);
   app.use('/', welcome);
-  app.use(error);
+  // app.use(error);
 };

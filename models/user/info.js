@@ -1,7 +1,9 @@
 require('dotenv').config();
+const config = require('config');
 const mongoose = require('mongoose');
 require('mongoose-type-url');
 const jwt = require('jsonwebtoken');
+const { jwtExpiration } = require('../../constants.json');
 
 const userSchema = new mongoose.Schema({
   credentials: {
@@ -49,7 +51,18 @@ const userSchema = new mongoose.Schema({
 
 // eslint-disable-next-line func-names
 userSchema.methods.generateAuthToken = function () {
-  return jwt.sign({ _id: this._id }, process.env.jwtPrivateKey);
+  return jwt.sign(
+    {
+      _id: this._id,
+      isUser: true,
+      department: this.deptSection.department,
+      section: this.deptSection.section,
+    },
+    config.get('jwtPrivateKey'),
+    {
+      expiresIn: jwtExpiration,
+    },
+  );
 };
 const User = mongoose.model('User', userSchema);
 

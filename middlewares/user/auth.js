@@ -1,4 +1,5 @@
 require('dotenv').config();
+const config = require('config');
 const jwt = require('jsonwebtoken');
 
 // TODO #13: jwt token does not exists, i.e the token is valid but does not
@@ -8,7 +9,7 @@ module.exports = async (req, res, next) => {
   if (!token) return res.status(401).send('Access denied! No token Provided');
 
   try {
-    const decoded = jwt.verify(token, process.env.jwtPrivateKey);
+    const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
     req.user = decoded;
   } catch (ex) {
     return res.status(400).send('Invalid Token');

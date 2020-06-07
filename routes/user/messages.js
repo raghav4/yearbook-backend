@@ -1,22 +1,31 @@
 const express = require('express');
+const { user } = require('../routes.json');
 const { auth } = require('../../middlewares/user');
+const { validateMessage } = require('../../validation/user');
 const { validator, validateObjectId } = require('../../middlewares');
-const { validateMessage } = require('../../utils/user');
-const userController = require('../../controllers/user/user.controller');
+const { userMessageController } = require('../../controllers/user');
 
 const router = express.Router();
+const { message } = user;
 
-// Route to get all the messages for the user
-router.get('/', auth, userController.getMessages);
+router.get(message.getAllOfUser, auth, userMessageController.getMessages);
 
-// Route to get the message for the user with given id.
+router.get(
+  message.getById,
+  [auth, validateObjectId],
+  userMessageController.getMessageById,
+);
 
-router.get('/:id', [auth, validateObjectId], userController.getUserMessage);
+router.put(
+  message.addOrUpdate,
+  [auth, validator(validateMessage)],
+  userMessageController.upsertMessage,
+);
 
-// Route to add/update the user message
-router.put('/', [auth, validator(validateMessage)], userController.updateMessage);
-
-// Route to delete the message for another user
-router.delete('/:id', [auth, validateObjectId], userController.deleteMessage);
+router.delete(
+  message.deleteById,
+  [auth, validateObjectId],
+  userMessageController.deleteMessage,
+);
 
 module.exports = router;
