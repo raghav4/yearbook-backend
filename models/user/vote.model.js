@@ -2,22 +2,21 @@ const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
 
-const answerSchema = new mongoose.Schema({
+const userPollsSchema = new mongoose.Schema({
   questionId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Question',
     required: true,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
     required: true,
   },
-  answer: {
-    type: String,
+  votedForId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
   },
 });
 
-const Answer = mongoose.model('Answer', answerSchema);
+const Vote = mongoose.model('Vote', userPollsSchema);
 
-exports.Answer = Answer;
+module.exports = Vote;

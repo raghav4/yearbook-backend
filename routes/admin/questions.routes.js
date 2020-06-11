@@ -12,7 +12,11 @@ router.get('/', auth, adminController.getUserQuestions);
 // Route to get a particular Question for the user
 router.get('/:id', [auth, validateObjectId], adminController.getSingleQuestion);
 
-router.post('/', [auth, validator(validateQuestion)], adminController.addUserQuestion);
+router.post(
+  '/',
+  [auth, validator(validateQuestion)],
+  adminController.addUserQuestion,
+);
 
 // Route to delete the user Question
 router.delete('/:id', [auth, validateObjectId], adminController.deleteQuestion);

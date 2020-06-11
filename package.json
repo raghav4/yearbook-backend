@@ -32,18 +32,32 @@
     "concurrently": "^5.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2"
+    "eslint-plugin-import": "^2.20.2",
+    "husky": "^4.2.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "export NODE_ENV=development DEBUG=app:* && npx nodemon",
-    "add-admin": "cd routes/admin && node superAdmin.js"
+    "add-admin": "cd routes/admin && node superAdmin.js",
+    "eslint": "eslint controllers/ middlewares/ models/ validation/ ",
+    "prettier": "npx prettier --write *.js */*.js *.json */*.json"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier"
+    }
   },
   "engines": {
     "node": "12.14.1"
   },
-  "keywords": [],
+  "keywords": [
+    "Yearbook",
+    "Nodejs",
+    "Backend",
+    "Farwell",
+    "College"
+  ],
   "author": "Raghav Sharma",
   "license": "ISC"
 }

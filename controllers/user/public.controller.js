@@ -5,7 +5,7 @@ const sgMail = require('@sendgrid/mail');
 const otpGenerator = require('otp-generator');
 const { User } = require('../../models/user');
 const { AllowedUsers } = require('../../models/grantAccess');
-const { OTPModel } = require('../../models/otpVerification');
+const { OTP } = require('../../models/otpVerification');
 
 sgMail.setApiKey(config.get('SGAPI'));
 
@@ -46,12 +46,12 @@ exports.validateSignUpAccess = async (req, res) => {
 
   if (user) return res.status(400).send('Email ID is already registered');
 
-  let otp = await OTPModel.findOne({
+  let otp = await OTP.findOne({
     email,
     phoneNo,
   });
   if (!otp) {
-    otp = new OTPModel({
+    otp = new OTP({
       otp: generatedOTP(),
       email,
       phoneNo,
@@ -74,10 +74,10 @@ exports.validateSignUpAccess = async (req, res) => {
 exports.verifySignUp = async (req, res) => {
   const { name, email, phoneNo, password, department, section, otp } = req.body;
 
-  let user = await OTPModel.find().or([{ email }, { phoneNo }]);
+  let user = await OTP.find().or([{ email }, { phoneNo }]);
   if (!user.length) return res.status(404).send('Try again');
 
-  user = await OTPModel.findOne({ email, phoneNo });
+  user = await OTP.findOne({ email, phoneNo });
 
   if (!user) return res.status(400).send('Invalid Email or Phone Number');
 
@@ -102,10 +102,16 @@ exports.verifySignUp = async (req, res) => {
   const salt = await bcrypt.genSalt(15);
   user.credentials.password = await bcrypt.hash(user.credentials.password, salt);
   await user.save();
-  await OTPModel.findOneAndRemove({ email });
+  await OTP.findOneAndRemove({ email });
 
   user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
+  user = _.pick(user, [
+    'credentials',
+    'info',
+    'deptSection',
+    'socialHandles',
+    '_id',
+  ]);
 
   return res.status(200).send(user);
 };

@@ -11,20 +11,16 @@ const { poll } = admin;
 
 // TODO: #21 req.user shouldn't be there for admin?
 
-router.get(poll.all, adminUserController.getPollQuestions);
+router.get(poll.all, adminUserController.getAllPolls);
 
-router.get(poll.byId, adminUserController.getPollQuestionById);
+router.get(poll.byId, adminUserController.getPollById);
 
 router.post(
   poll.add,
   [adminAuth, superAuth, validator(validatePollQuestion)],
-  adminUserController.createPollQuestion,
+  adminUserController.createPoll,
 );
 
-router.delete(
-  poll.remove,
-  [adminAuth, superAuth],
-  adminUserController.deletePollQuestion,
-);
+router.delete(poll.remove, [adminAuth, superAuth], adminUserController.deletePoll);
 
 module.exports = router;

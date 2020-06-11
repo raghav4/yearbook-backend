@@ -1,4 +1,4 @@
 const { Admin } = require('./admin');
-const { PollQuestion } = require('./pollQuestion');
+const { Poll } = require('./poll.model');
 
-module.exports = { Admin, PollQuestion };
+module.exports = { Admin, Poll };

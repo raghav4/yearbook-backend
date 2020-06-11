@@ -2,9 +2,17 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const { error } = require('../middlewares');
-const { self, answers, messages } = require('../routes/user');
+const { main } = require('../routes/routes.json');
 const { welcome, onboarding } = require('../routes/public');
-const { loginAdmin, adminRegister, userQuestions, polls } = require('../routes/admin');
+const { self, answers, messages } = require('../routes/user');
+const {
+  loginAdmin,
+  adminRegister,
+  userQuestions,
+  polls,
+} = require('../routes/admin');
+
+const { user, admin } = main;
 
 module.exports = (app) => {
   app.use(
@@ -13,13 +21,17 @@ module.exports = (app) => {
     }),
   );
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(
+    bodyParser.urlencoded({
+      extended: true,
+    }),
+  );
   app.use(fileUpload());
   app.use('/api/user/self', self);
-  app.use('/api/user/answers', answers);
-  app.use('/api/user/messages', messages);
-  app.use('/api/user/', onboarding);
-  app.use('/api/admin/auth', loginAdmin);
+  app.use(user.answers, answers);
+  app.use(user.messages, messages);
+  app.use(user.onboarding, onboarding);
+  app.use(admin.login, loginAdmin);
   app.use('/api/admin/r', adminRegister);
   app.use('/api/admin/user', adminRegister);
   app.use('/api/admin/questions', userQuestions);

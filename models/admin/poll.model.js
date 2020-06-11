@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const PollQuestion = mongoose.model(
-  'PollQuestion',
+const Poll = mongoose.model(
+  'Poll',
   new mongoose.Schema({
-    question: {
+    title: {
       type: String,
       required: true,
     },
   }),
 );
 
-exports.PollQuestion = PollQuestion;
+exports.Poll = Poll;

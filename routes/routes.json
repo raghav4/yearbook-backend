@@ -1,4 +1,14 @@
 {
+  "main": {
+    "admin": {
+      "login": "/api/admin/auth"
+    },
+    "user": {
+      "answers": "/api/user/answers",
+      "messages": "/api/user/messages",
+      "onboarding": "/api/user"
+    }
+  },
   "admin": {
     "poll": {
       "add": "/",

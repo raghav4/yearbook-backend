@@ -7,7 +7,13 @@ const { User } = require('../../models/user');
 exports.getUser = async (req, res) => {
   let user = await User.findById(req.user._id);
   user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
+  user = _.pick(user, [
+    'credentials',
+    'info',
+    'deptSection',
+    'socialHandles',
+    '_id',
+  ]);
   if (!user) return res.status(400).send('User not found');
 
   return res.status(200).send(user);
@@ -42,7 +48,13 @@ exports.updateUser = async (req, res) => {
     },
   );
   user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
+  user = _.pick(user, [
+    'credentials',
+    'info',
+    'deptSection',
+    'socialHandles',
+    '_id',
+  ]);
   return res.status(200).send(user);
 };
 

@@ -1,5 +1,5 @@
-const self = require('./self');
-const answers = require('./answers');
-const messages = require('./messages');
+const self = require('./self.routes');
+const answers = require('./answers.routes');
+const messages = require('./messages.routes');
 
 module.exports = { self, answers, messages };
