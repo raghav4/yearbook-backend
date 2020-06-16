@@ -2,7 +2,7 @@ const express = require('express');
 const userController = require('../../controllers/user/users.controller');
 const { userSelfController } = require('../../controllers/user');
 const { validator } = require('../../middlewares');
-const { auth } = require('../../middlewares/user');
+const auth = require('../../middlewares/user/auth');
 const { user } = require('../routes.json');
 // const { validateUserInfo } = require('../../validation/user/info');
 

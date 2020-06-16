@@ -8,12 +8,12 @@ const { userAnswerController } = require('../../controllers/user');
 const router = express.Router();
 const { answer } = user;
 
-router.get(answer.getAllSelf, auth, userAnswerController.allAnswered);
+router.get(answer.getAllSelf, auth, userAnswerController.answers);
 
 router.put(
   answer.addOrUpdate,
   [auth, validator(validateUserAnswer)],
-  userAnswerController.addUpdateAnswer,
+  userAnswerController.upsertAnswer,
 );
 
 router.delete(

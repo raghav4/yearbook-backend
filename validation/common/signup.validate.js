@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 
-const validateSignUp = (user) => {
+module.exports = (user) => {
   const schema = Joi.object({
     name: Joi.string().min(4).max(30).label('Name').required(),
     phoneNo: Joi.string().length(10).label('Phone Number').required(),
@@ -15,5 +15,3 @@ const validateSignUp = (user) => {
   });
   return schema.validate(user);
 };
-
-exports.validateSignUp = validateSignUp;

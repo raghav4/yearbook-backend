@@ -1,8 +1,9 @@
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const { Admin } = require('../models/admin');
+const { Answer } = require('../models/user');
 const { AllowedUsers } = require('../models/grantAccess');
-const { Question } = require('../models/admin/question.model');
+const Question = require('../models/admin/question.model');
 
 exports.logInAdmin = async (req, res) => {
   const { username, password } = req.body;
@@ -81,9 +82,10 @@ exports.grantAccess = async (req, res) => {
 exports.deleteQuestion = async (req, res) => {
   // #TODO: #20 Do not delete/update question if anyone of the people has answered
   const question = await Question.findById(req.params.id);
-  if (!question) {
-    return res.status(400).send('No Question exists with the Given id');
-  }
+  if (!question) return res.status(400).send('Question not found');
+  // Delete all answers of respective questions
+  await Answer.deleteMany(req.params.id);
   await question.delete();
+
   return res.status(200).send('Successfully Deleted Question');
 };

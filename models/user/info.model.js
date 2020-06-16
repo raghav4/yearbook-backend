@@ -13,6 +13,13 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     // username: { type: String, required: true },
   },
+  gender: {
+    type: String,
+    enum: {
+      values: ['Male', 'Female', 'Prefer Not to Say'],
+      message: 'Gender can only be Male, Female, Prefer Not to Say',
+    },
+  },
   info: {
     bio: { type: String, default: '' },
     profilePicture: {
@@ -54,9 +61,9 @@ userSchema.methods.generateAuthToken = function () {
   return jwt.sign(
     {
       _id: this._id,
-      isUser: true,
       department: this.deptSection.department,
       section: this.deptSection.section,
+      isAdmin: false,
     },
     config.get('jwtPrivateKey'),
     {
@@ -64,6 +71,7 @@ userSchema.methods.generateAuthToken = function () {
     },
   );
 };
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

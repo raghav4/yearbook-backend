@@ -1,6 +1,6 @@
 const { Answer } = require('../../models/user');
 
-exports.allAnswered = async (req, res) => {
+exports.answers = async (req, res) => {
   const answers = await Answer.find({
     userId: req.user._id,
   })
@@ -10,7 +10,7 @@ exports.allAnswered = async (req, res) => {
   return res.status(200).send(answers);
 };
 
-exports.addUpdateAnswer = async (req, res) => {
+exports.upsertAnswer = async (req, res) => {
   const { questionId, answer } = req.body;
   const userAnswer = await Answer.findOneAndUpdate(
     { questionId, userId: req.user._id },

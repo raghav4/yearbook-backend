@@ -16,19 +16,13 @@ const adminSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  isSuperAdmin: {
-    type: Boolean,
-    default: false,
-  },
 });
 
 adminSchema.methods.generateAuthToken = function () {
   return jwt.sign(
-    { _id: this._id, isSuperAdmin: this.isSuperAdmin, isAdmin: this.isAdmin },
+    { _id: this._id, isAdmin: this.isAdmin },
     config.get('jwtPrivateKey'),
   );
 };
 
-const Admin = mongoose.model('Admin', adminSchema);
-
-exports.Admin = Admin;
+module.exports = mongoose.model('Admin', adminSchema);
