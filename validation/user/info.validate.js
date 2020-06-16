@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 
-const validateUserInfo = (user) => {
+module.exports = (user) => {
   const schema = Joi.object().keys({
     info: Joi.object({
       bio: Joi.string().label('Bio'),
@@ -18,5 +18,3 @@ const validateUserInfo = (user) => {
 
   return schema.validate(user);
 };
-
-exports.validateUserInfo = validateUserInfo;

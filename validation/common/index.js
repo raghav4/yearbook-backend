@@ -1,4 +1,7 @@
-const { LogInValidation } = require('./login.validate');
-const { validateSignUp, validateOTP } = require('./signup.validate');
+const validateLogin = require('./login.validate');
+const validateSignUp = require('./signup.validate');
 
-module.exports = { LogInValidation, validateSignUp, validateOTP };
+module.exports = {
+  validateLogin,
+  validateSignUp,
+};

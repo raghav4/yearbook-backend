@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Poll = mongoose.model(
+module.exports = mongoose.model(
   'Poll',
   new mongoose.Schema({
     title: {
@@ -9,5 +9,3 @@ const Poll = mongoose.model(
     },
   }),
 );
-
-exports.Poll = Poll;
