@@ -1,7 +1,8 @@
 require('dotenv').config();
-const config = require('config');
 const _ = require('lodash');
+const config = require('config');
 const imgBBUploader = require('imgbb-uploader');
+const debug = require('debug')('app:self_controller');
 const { User } = require('../../models/user');
 
 exports.getUser = async (req, res) => {
@@ -59,6 +60,9 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.updateUserProfilePicture = async (req, res) => {
+  debug(
+    `function: UpdateUserProfilePicture(), Purpose: to update the profile picture, files: ${req.files}`,
+  );
   const user = await User.findById(req.user._id);
 
   if (!user) return res.status(404).send('No user found!');
@@ -67,14 +71,16 @@ exports.updateUserProfilePicture = async (req, res) => {
     return res.status(400).send('Please send a valid file');
   }
   const { file } = req.files;
-
-  file.mv(`${__dirname}/../tmp/${file.name}`, async (err) => {
+  // TODO: Fix Relative Path
+  file.mv(`${__dirname}/../../tmp/${file.name}`, async (err) => {
     if (err) {
+      debug('Error encountered : ', err.message);
       return res.status(500).send(err);
     }
     try {
       const { url } = await imgBBUploader(
-        config.get('IMGBBKEY')`${__dirname}/../tmp/${file.name}`,
+        config.get('IMGBBKEY'),
+        `${__dirname}/../../tmp/${file.name}`,
       );
       user.info.profilePicture = url;
       await user.save();
