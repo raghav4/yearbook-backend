@@ -1,7 +1,9 @@
 const _ = require('lodash');
-const { Message } = require('../../models/user');
+const debug = require('debug')('app:message.controller.js');
+const { Message } = require('../../models');
 
 exports.getMessages = async (req, res) => {
+  debug('Function : getMessages()');
   const messages = await Message.find({
     sendTo: req.user._id,
   }).populate('sendTo sentBy');
@@ -17,6 +19,7 @@ exports.getMessages = async (req, res) => {
 };
 
 exports.getMessageById = async (req, res) => {
+  debug('Function : getMessageById()');
   const message = await Message.findOne({
     sendTo: req.params.id,
     sentBy: req.user._id,
@@ -28,6 +31,7 @@ exports.getMessageById = async (req, res) => {
 };
 
 exports.upsertMessage = async (req, res) => {
+  debug('Function : upsertMessage(), Purpose : Route to upsert a Message');
   const filter = {
     sendTo: req.body.sendTo,
     sentBy: req.user._id,
@@ -41,10 +45,12 @@ exports.upsertMessage = async (req, res) => {
 };
 
 exports.deleteMessage = async (req, res) => {
+  debug('Function : deleteMessage(), Purpose : Route to delete a Message');
   const message = await Message.findOneAndDelete({
     sentBy: req.user._id,
     sendTo: req.params.id,
   });
+
   if (!message) return res.status(404).send('No message for the user in DB!');
   return res.status(200).send('Message Deleted!');
 };

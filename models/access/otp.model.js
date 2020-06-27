@@ -9,11 +9,10 @@ const otpSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  phoneNo: {
-    type: String,
-    required: true,
+  isVerified: {
+    type: Boolean,
+    default: false,
   },
-  isReset: { type: Boolean, default: false },
   expiresAt: {
     type: Date,
     default: Date.now,
@@ -21,5 +20,6 @@ const otpSchema = new mongoose.Schema({
   },
 });
 
-const OTP = mongoose.model('OTP', otpSchema);
-exports.OTP = OTP;
+// TODO: Cron Job to delete the expiresAt automatically?
+
+module.exports = mongoose.model('OTP', otpSchema);

@@ -1,4 +1,4 @@
-const self = require('./self.routes');
+const self = require('./user.routes');
 const answers = require('./answers.routes');
 const messages = require('./messages.routes');
 
