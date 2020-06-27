@@ -3,23 +3,23 @@ const { user } = require('../routes.json');
 const { auth } = require('../../middlewares/user');
 const { validateUserAnswer } = require('../../validation/user');
 const { validator, validateObjectId } = require('../../middlewares');
-const { userAnswerController } = require('../../controllers/user');
+const { answerController } = require('../../controllers');
 
 const router = express.Router();
 const { answer } = user;
 
-router.get(answer.getAllSelf, auth, userAnswerController.answers);
+router.get(answer.getAllSelf, auth, answerController.answers);
 
 router.put(
   answer.addOrUpdate,
   [auth, validator(validateUserAnswer)],
-  userAnswerController.upsertAnswer,
+  answerController.upsertAnswer,
 );
 
 router.delete(
   answer.deleteById,
   [auth, validateObjectId],
-  userAnswerController.deleteAnswer,
+  answerController.deleteAnswer,
 );
 
 module.exports = router;

@@ -3,29 +3,30 @@ const { user } = require('../routes.json');
 const { auth } = require('../../middlewares/user');
 const { validateMessage } = require('../../validation/user');
 const { validator, validateObjectId } = require('../../middlewares');
-const { userMessageController } = require('../../controllers/user');
+// const { userMessageController } = require('../../controllers/user');
+const { messageController } = require('../../controllers');
 
 const router = express.Router();
 const { message } = user;
 
-router.get(message.getAllOfUser, auth, userMessageController.getMessages);
+router.get(message.getAllOfUser, auth, messageController.getMessages);
 
 router.get(
   message.getById,
   [auth, validateObjectId],
-  userMessageController.getMessageById,
+  messageController.getMessageById,
 );
 
 router.put(
   message.addOrUpdate,
   [auth, validator(validateMessage)],
-  userMessageController.upsertMessage,
+  messageController.upsertMessage,
 );
 
 router.delete(
   message.deleteById,
   [auth, validateObjectId],
-  userMessageController.deleteMessage,
+  messageController.deleteMessage,
 );
 
 module.exports = router;

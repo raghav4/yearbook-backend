@@ -1,8 +1,9 @@
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
+const debug = require('debug')('app:admin.controller.js');
 const { Admin } = require('../models/admin');
 const { Answer } = require('../models/user');
-const { AllowedUsers } = require('../models/grantAccess');
+const { UserAccess } = require('../models');
 const Question = require('../models/admin/question.model');
 
 exports.logInAdmin = async (req, res) => {
@@ -62,21 +63,21 @@ exports.addUserQuestion = async (req, res) => {
   return res.status(200).send(question);
 };
 
-exports.grantAccess = async (req, res) => {
-  const { phoneNumber } = req.body;
+// * Commenting this will crash the site.
 
-  let user = await AllowedUsers.findOne({ phoneNumber });
+// exports.grantAccess = async (req, res) => {
+//   const user = await UserAccess.findOne({ email: req.body.email });
+//   if (user) return res.status(400).send('Request already granted');
 
-  if (user) return res.status(400).send('Number already registered');
+//   const newUserAccess = new UserAccess({
+//     email: req.body.email,
+//     name: req.body.name || '',
+//   });
 
-  user = new AllowedUsers({
-    phoneNumber,
-  });
+//   await newUserAccess.save();
+//   return res.status(201).send('Successfully granted registeration rights!');
+// };
 
-  await user.save();
-
-  return res.status(200).send('Successfully added Number');
-};
 // exports.addPollQuestion = async (req, res) => {};
 
 exports.deleteQuestion = async (req, res) => {

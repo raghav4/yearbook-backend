@@ -17,15 +17,22 @@
       "remove": "/:id"
     }
   },
+  "onboarding": {
+    "signup": "/signup",
+    "login": "/login",
+    "validateAccess": "/signup/validate",
+    "verifySignUpOTP": "/signup/verify",
+    "forgetPassword": "/passwordrecovery"
+  },
   "user": {
     "login": "/login",
     "signup": "/signup",
-    "verify": "/signup/verify",
     "self": "/",
     "all": "/all",
     "profilePicture": "/pic",
     "classStudents": "/class/all",
     "updateSelf": "/",
+    "resetPassword": "/reset",
     "message": {
       "getAllOfUser": "/",
       "getById": "/:id",
