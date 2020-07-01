@@ -5,5 +5,5 @@ const messages = require('./messages.routes');
 module.exports = {
   self,
   answers,
-  messages
+  messages,
 };

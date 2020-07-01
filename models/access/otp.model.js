@@ -1,22 +1,22 @@
 const mongoose = require('mongoose');
 
 const otpSchema = new mongoose.Schema({
-  otp : {
-    type : String,
-    required : true,
+  otp: {
+    type: String,
+    required: true,
   },
-  email : {
-    type : String,
-    required : true,
+  email: {
+    type: String,
+    required: true,
   },
-  isVerified : {
-    type : Boolean,
-    default : false,
+  isVerified: {
+    type: Boolean,
+    default: false,
   },
-  expiresAt : {
-    type : Date,
-    default : Date.now,
-    index : {expires : '5m'},
+  expiresAt: {
+    type: Date,
+    default: Date.now,
+    index: { expires: '5m' },
   },
 });
 

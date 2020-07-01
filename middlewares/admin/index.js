@@ -3,5 +3,5 @@ const superAuth = require('./superAuth');
 
 module.exports = {
   adminAuth,
-  superAuth
+  superAuth,
 };

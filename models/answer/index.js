@@ -1,3 +1,3 @@
 const Answer = require('./user');
 
-module.exports = {Answer};
+module.exports = { Answer };

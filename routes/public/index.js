@@ -3,5 +3,5 @@ const onboarding = require('./onboaring.routes');
 
 module.exports = {
   welcome,
-  onboarding
+  onboarding,
 };
