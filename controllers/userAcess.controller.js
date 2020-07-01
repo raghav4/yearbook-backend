@@ -1,6 +1,5 @@
 const csvtojsonV2 = require('csvtojson/v2');
 const { UserAccess } = require('../models/access');
-const { User } = require('../models/user');
 
 exports.grantAccess = async (req, res) => {
   const user = await UserAccess.findOne({ email: req.body.email });
@@ -16,8 +15,6 @@ exports.grantAccess = async (req, res) => {
 };
 
 exports.batchAccess = async (req, res) => {
-  //
-
   const usersJSON = await csvtojsonV2().fromFile('csvFILEPATH');
 
   await UserAccess.insertMany(usersJSON);

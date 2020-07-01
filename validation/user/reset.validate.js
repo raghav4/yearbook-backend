@@ -13,7 +13,7 @@ const validatePhoneNo = (email) => {
   });
   return schema.validate(email);
 };
-
+// eslint-disable-next-line consistent-return
 const validateReset = (user) => {
   let isEmail = true;
   const checkEmail = user.input.indexOf('@');

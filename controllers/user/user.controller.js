@@ -63,6 +63,7 @@ exports.updateUser = async (req, res) => {
   return res.status(200).send(user);
 };
 
+// eslint-disable-next-line consistent-return
 exports.updateUserProfilePicture = async (req, res) => {
   debug(
     `function: UpdateUserProfilePicture(), Purpose: to update the profile picture, files: ${req.files}`,

@@ -23,7 +23,4 @@ const PollStatsSchema = new mongoose.Schema({
 
 const PollStats = mongoose.model('PollStats', PollStatsSchema);
 
-function validatePollStats(poll) {}
-
 exports.PollStats = PollStats;
-exports.validate = validatePollStats;

@@ -130,6 +130,7 @@ exports.registerUser = async (req, res) => {
   return res.status(200).send(user);
 };
 
+// eslint-disable-next-line consistent-return
 exports.forgetPassword = async (req, res) => {
   const user = await User.findOne({ 'credentials.email': req.body.email });
   if (!user) {

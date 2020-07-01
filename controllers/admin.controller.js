@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const debug = require('debug')('app:admin.controller.js');
 const { Admin } = require('../models/admin');
 const { Answer } = require('../models/user');
-const { UserAccess } = require('../models');
 const Question = require('../models/admin/question.model');
 
 exports.logInAdmin = async (req, res) => {
@@ -31,7 +30,9 @@ exports.registerAdmin = async (req, res) => {
     const salt = await bcrypt.genSalt(15);
     admin.password = await bcrypt.hash(admin.password, salt);
     await admin.save();
-  } catch (ex) {}
+  } catch (ex) {
+    debug(ex);
+  }
   return res.status(200).send(admin);
 };
 
@@ -81,7 +82,8 @@ exports.addUserQuestion = async (req, res) => {
 // exports.addPollQuestion = async (req, res) => {};
 
 exports.deleteQuestion = async (req, res) => {
-  // #TODO: #20 Do not delete/update question if anyone of the people has answered
+  // #TODO: #20 Do not delete/update question if anyone of the people has
+  // answered
   const question = await Question.findById(req.params.id);
   if (!question) return res.status(400).send('Question not found');
   // Delete all answers of respective questions
