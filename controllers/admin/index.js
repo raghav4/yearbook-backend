@@ -1,3 +1,3 @@
 const adminUserController = require('./polls.controller');
 
-module.exports = { adminUserController };
+module.exports = {adminUserController};

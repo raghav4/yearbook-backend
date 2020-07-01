@@ -1,3 +1,3 @@
 const answerController = require('./user');
 
-module.exports = { answerController };
+module.exports = {answerController};
