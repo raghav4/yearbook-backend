@@ -6,5 +6,6 @@ module.exports = (user) => {
     answer: Joi.string().label('Answer'),
     questionId: Joi.objectId().label('Question ID').required(),
   });
+
   return schema.validate(user);
 };
