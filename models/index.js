@@ -3,5 +3,8 @@ const Message = require('./message');
 const { UserAccess, OTP } = require('./access');
 
 module.exports = {
-  AllowedUsers, Message, UserAccess, OTP,
+  AllowedUsers,
+  Message,
+  UserAccess,
+  OTP,
 };
