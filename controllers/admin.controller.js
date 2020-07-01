@@ -81,7 +81,12 @@ exports.addUserQuestion = async (req, res) => {
 // exports.addPollQuestion = async (req, res) => {};
 
 exports.deleteQuestion = async (req, res) => {
+<<<<<<< HEAD
   // #TODO: #20 Do not delete/update question if anyone of the people has answered
+=======
+  // #TODO: #20 Do not delete/update question if anyone of the people has
+  // answered
+>>>>>>> 460b6d5480395bfe9a92852d454c73afd525b65e
   const question = await Question.findById(req.params.id);
   if (!question) return res.status(400).send('Question not found');
   // Delete all answers of respective questions
