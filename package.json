@@ -43,12 +43,12 @@
     "start": "node index.js",
     "dev": "export NODE_ENV=development DEBUG=app:* && npx nodemon",
     "add-admin": "cd routes/admin && node superAdmin.js",
-    "eslint": "eslint controllers/ middlewares/ models/ validation/ ",
+    "eslint": "eslint controllers/ middlewares/ models/ validation/ --fix ",
     "prettier": "npx prettier --write *.js */*.js *.json */*.json"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run prettier"
+      "pre-commit": "npm run prettier && npm run eslint"
     }
   },
   "engines": {

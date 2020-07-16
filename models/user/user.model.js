@@ -1,8 +1,8 @@
 require('dotenv').config();
-const config = require('config');
-const mongoose = require('mongoose');
 require('mongoose-type-url');
 require('mongoose-type-email');
+const config = require('config');
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const { jwtExpiration } = require('../../constants.json');
 
@@ -12,10 +12,6 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    // phoneNo: {
-    //   type: String,
-    //   required: true,
-    // },
     email: {
       type: mongoose.SchemaTypes.Email,
       required: true,
@@ -25,13 +21,6 @@ const userSchema = new mongoose.Schema({
       required: true,
     },
     // username: { type: String, required: true },
-  },
-  gender: {
-    type: String,
-    enum: {
-      values: ['Male', 'Female', 'Prefer Not to Say'],
-      message: 'Gender can only be Male, Female, Prefer Not to Say',
-    },
   },
   info: {
     bio: {

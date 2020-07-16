@@ -1,15 +1,20 @@
 {
   "main": {
     "admin": {
-      "login": "/api/admin/auth"
+      "onboarding": "/api/admin/"
     },
     "user": {
       "answers": "/api/user/answers",
       "messages": "/api/user/messages",
+      "info": "/api/user/info",
       "onboarding": "/api/user"
     }
   },
   "admin": {
+    "onboarding": {
+      "login": "/login",
+      "signup": "/signup"
+    },
     "poll": {
       "add": "/",
       "all": "/",

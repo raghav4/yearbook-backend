@@ -1,9 +1,9 @@
 const express = require('express');
-const { user } = require('../routes.json');
-const { auth } = require('../../middlewares/user');
-const { validateUserAnswer } = require('../../validation/user');
-const { validator, validateObjectId } = require('../../middlewares');
-const { answerController } = require('../../controllers');
+const { user } = require('../../routes.json');
+const { auth } = require('../../../middlewares/user');
+const { answerController } = require('../../../controllers');
+const { validateUserAnswer } = require('../../../validation/user');
+const { validator, validateObjectId } = require('../../../middlewares');
 
 const router = express.Router();
 const { answer } = user;

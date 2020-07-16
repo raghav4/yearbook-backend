@@ -11,8 +11,8 @@ module.exports = (user) => {
       whatsappNo: Joi.string().length(10).label('Whatsapp Number'),
       snapchat: Joi.string().label('Snapchat Username'),
       instagram: Joi.string().label('Instagram Username'),
-      facebook: Joi.string().uri().label('Facebook Profile URL'),
-      linkedin: Joi.string().uri().label('Linkedin Profile URL'),
+      facebook: Joi.string().label('Facebook Profile URL'),
+      linkedin: Joi.string().label('Linkedin Profile URL'),
     }),
   });
 

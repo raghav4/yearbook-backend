@@ -1,11 +1,11 @@
 const polls = require('./polls.routes');
-const loginAdmin = require('./login.routes');
-const adminRegister = require('./admin.routes');
+const adminOnBoarding = require('./onBoarding');
+// const loginAdmin = require('./onBoarding/onboarding.routes');
+// const adminRegister = require('./onBoarding/admin.routes');
 const userQuestions = require('./questions.routes');
 
 module.exports = {
-  loginAdmin,
-  adminRegister,
+  adminOnBoarding,
   userQuestions,
   polls,
 };

@@ -1,6 +1,6 @@
 const express = require('express');
-const { auth } = require('../../middlewares/user');
-const { PollStats } = require('../../models/admin/pollStats');
+const { auth } = require('../../../middlewares/user');
+const { PollStats } = require('../../../models/admin/pollStats');
 
 const router = express.Router();
 

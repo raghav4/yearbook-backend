@@ -2,8 +2,8 @@ const express = require('express');
 const { onboarding } = require('../routes.json');
 const { validator } = require('../../middlewares');
 const { onboardingController } = require('../../controllers');
-const { validateLogin, validateSignUp } = require('../../validation/common');
 const { validateAccess, validateOTP } = require('../../validation/signup');
+const { validateLogin, validateSignUp } = require('../../validation/common');
 
 const router = express.Router();
 

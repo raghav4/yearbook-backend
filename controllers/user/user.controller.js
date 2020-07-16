@@ -1,9 +1,10 @@
+/* eslint-disable operator-linebreak */
 require('dotenv').config();
 const _ = require('lodash');
 const config = require('config');
 const bcrypt = require('bcryptjs');
 const imgBBUploader = require('imgbb-uploader');
-const debug = require('debug')('app:self.controller.js');
+const debug = require('debug')('app:user.controller.js');
 const { User } = require('../../models/user');
 
 exports.getUser = async (req, res) => {
@@ -17,6 +18,7 @@ exports.getUser = async (req, res) => {
     'socialHandles',
     '_id',
   ]);
+
   if (!user) return res.status(400).send('User not found');
 
   return res.status(200).send(user);
@@ -32,35 +34,35 @@ exports.getClassUsers = async (req, res) => {
   return res.send(users);
 };
 
-exports.updateUser = async (req, res) => {
+exports.updateUserDetails = async (req, res) => {
   debug('Function : udpateUser(), Purpose : Route to update the user details');
-  let user = await User.findById(req.user._id);
-  if (!user) return res.status(404).send('User not found');
+  const user = await User.findById(req.user._id);
 
-  const { info, socialHandles } = req.body;
+  if (!user) return res.status(404).send('Invalid User ID...');
+  const { socialHandles } = req.body;
 
-  user = await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      info: {
-        bio: info.bio,
-        profilePicture: user.info.profilePicture,
-      },
-      socialHandles,
-    },
-    {
-      new: true,
-    },
-  );
-  user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, [
-    'credentials',
-    'info',
-    'deptSection',
-    'socialHandles',
-    '_id',
-  ]);
-  return res.status(200).send(user);
+  if (req.body.info) {
+    user.info.bio = req.body.info.bio;
+  }
+  user.socialHandles.instagram =
+    socialHandles.instagram || user.socialHandles.instagram;
+  user.socialHandles.facebook =
+    socialHandles.facebook || user.socialHandles.facebook;
+  user.socialHandles.linkedin =
+    socialHandles.linkedin || user.socialHandles.linkedin;
+  user.socialHandles.snapchat =
+    socialHandles.snapchat || user.socialHandles.snapchat;
+  user.contactEmail = socialHandles.contactEmail || user.socialHandles.contactEmail;
+  user.contactNo = socialHandles.contactNo || user.socialHandles.contactNo;
+  user.whatsappNo = socialHandles.whatsappNo || user.socialHandles.whatsappNo;
+
+  await user.save();
+  user.credentials = _.omit(user.credentials, ['password']);
+  return res
+    .status(200)
+    .send(
+      _.pick(user, ['credentials', 'deptSection', 'socialHandles', 'info', 'bio']),
+    );
 };
 
 // eslint-disable-next-line consistent-return

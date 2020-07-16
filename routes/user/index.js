@@ -1,6 +1,6 @@
-const self = require('./user.routes');
-const answers = require('./answers.routes');
-const messages = require('./messages.routes');
+const self = require('./self/self.routes');
+const answers = require('./answers');
+const messages = require('./messages');
 
 module.exports = {
   self,
