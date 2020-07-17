@@ -3,9 +3,9 @@ Joi.objectId = require('joi-objectid')(Joi);
 
 module.exports = (user) => {
   const schema = Joi.object({
-    userId: Joi.objectId().label('Voted By ID').required(),
-    questionId: Joi.objectId().label('Question ID').required(),
-    votedForId: Joi.objectId().label('ID of Voted Person').required(),
+    userId : Joi.objectId().label('Voted By ID').required(),
+    questionId : Joi.objectId().label('Question ID').required(),
+    votedForId : Joi.objectId().label('ID of Voted Person').required(),
   });
 
   return schema.validate(user);

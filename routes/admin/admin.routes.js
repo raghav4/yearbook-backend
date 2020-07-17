@@ -1,11 +1,12 @@
 const express = require('express');
-const { adminAuth, superAuth } = require('../../middlewares/admin');
+const {adminAuth, superAuth} = require('../../middlewares/admin');
 const adminController = require('../../../controllers/admin.controller');
 const userAcessController = require('../../controllers/grantUserAccess');
 
 const router = express.Router();
 
-router.post('/register', [adminAuth, superAuth], adminController.registerAdmin);
+router.post('/register', [ adminAuth, superAuth ],
+            adminController.registerAdmin);
 
 router.post('/grant', adminAuth, userAcessController.grantAccess);
 
