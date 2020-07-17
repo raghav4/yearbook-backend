@@ -1,31 +1,31 @@
 const express = require('express');
-const {user} = require('../routes.json');
-const {auth} = require('../../middlewares/user');
-const {slamBookController} = require('../../controllers');
-const {validateUserAnswer} = require('../../validation/user');
-const {validator, validateObjectId} = require('../../middlewares');
+const { user } = require('../routes.json');
+const { auth } = require('../../middlewares/user');
+const { slamBookController } = require('../../controllers');
+const { validateUserAnswer } = require('../../validation/user');
+const { validator, validateObjectId } = require('../../middlewares');
 
 const router = express.Router();
-const {answer} = user;
+const { answer } = user;
 
 router.get(answer.getAllSelf, auth, slamBookController.answers);
 
 router.put(
-    answer.addOrUpdate,
-    [ auth, validator(validateUserAnswer) ],
-    slamBookController.upsertAnswer,
+  answer.addOrUpdate,
+  [auth, validator(validateUserAnswer)],
+  slamBookController.upsertAnswer,
 );
 
 router.delete(
-    answer.deleteById,
-    [ auth, validateObjectId ],
-    slamBookController.deleteAnswer,
+  answer.deleteById,
+  [auth, validateObjectId],
+  slamBookController.deleteAnswer,
 );
 
 router.get('/', slamBookController.getAllSlamBookQuestions);
 
 // Route to get a particular Question for the user
-router.get('/:id', [ validateObjectId ], slamBookController.getQuestionById);
+router.get('/:id', [validateObjectId], slamBookController.getQuestionById);
 
 // router.post(
 //   '/',
@@ -34,7 +34,6 @@ router.get('/:id', [ validateObjectId ], slamBookController.getQuestionById);
 // );
 
 // Route to delete the user Question
-router.delete('/:id', [ validateObjectId ],
-              slamBookController.deleteSlamBookQuestion);
+router.delete('/:id', [validateObjectId], slamBookController.deleteSlamBookQuestion);
 
 module.exports = router;

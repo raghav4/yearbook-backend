@@ -2,7 +2,7 @@ const Joi = require('@hapi/joi');
 
 module.exports = (pollQuestion) => {
   const schema = Joi.object({
-    question : Joi.string().min(5).label('Poll Question').required(),
+    question: Joi.string().min(5).label('Poll Question').required(),
   });
   return schema.validate(pollQuestion);
 };

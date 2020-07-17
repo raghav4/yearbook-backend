@@ -10,18 +10,20 @@ module.exports = (app) => {
     app.use(morgan('tiny'));
   }
   const accessLogStream = rfs.createStream('access.log', {
-    interval : '1d',
-    path : path.join(__dirname, '../logs/api_hits'),
+    interval: '1d',
+    path: path.join(__dirname, '../logs/api_hits'),
   });
-  app.use(morgan('combined', {stream : accessLogStream}));
+  app.use(morgan('combined', { stream: accessLogStream }));
 
   winston.exceptions.handle(
-      new winston.transports.Console({colorize : true, prettyPrint : true}),
-      new winston.transports.DailyRotateFile({
-        name : 'file',
-        datePattern : '.yyyy-MM-ddTHH',
-        filename : './logs/custom_%DATE%.log',
-      }),
+    new winston.transports.Console({ colorize: true, prettyPrint: true }),
+    new winston.transports.DailyRotateFile({
+      name: 'file',
+      datePattern: '.yyyy-MM-ddTHH',
+      filename: './logs/custom_%DATE%.log',
+    }),
   );
-  process.on('unhandledRejection', (ex) => { throw ex; });
+  process.on('unhandledRejection', (ex) => {
+    throw ex;
+  });
 };
