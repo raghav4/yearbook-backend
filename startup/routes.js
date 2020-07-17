@@ -6,7 +6,8 @@ const { main } = require('../routes/routes.json');
 const { welcome, userOnBoarding } = require('../routes/onboarding');
 const { self, answers } = require('../routes/user');
 const { message, slamBook } = require('../routes');
-// const { slamBookQuestions, polls, adminOnBoarding } = require('../routes/admin');
+// const { slamBookQuestions, polls, adminOnBoarding } =
+// require('../routes/admin');
 
 const { user, admin } = main;
 
