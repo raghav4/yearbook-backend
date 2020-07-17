@@ -1,3 +1,1 @@
-const adminUserController = require('./polls.controller');
-
-module.exports = { adminUserController };
+module.exports = require('./onboarding.controller');

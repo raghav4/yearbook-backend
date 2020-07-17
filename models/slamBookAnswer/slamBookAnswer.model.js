@@ -1,21 +1,20 @@
 const mongoose = require('mongoose');
 
 module.exports = mongoose.model(
-  'Message',
+  'SlamBookAnswer',
   new mongoose.Schema({
-    sendTo: {
+    questionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Question',
+      required: true,
+    },
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    sentBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
-    message: {
+    answer: {
       type: String,
-      required: true,
     },
   }),
 );

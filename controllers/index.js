@@ -1,11 +1,14 @@
+const pollController = require('./polls');
 const messageController = require('./messages');
-const onboardingController = require('./onboarding');
-const userSelfController = require('./user');
-const { answerController } = require('./answers');
+const adminOnBoardingController = require('./admin');
+const { userController, userOnBoardingController } = require('./user');
+const slamBookController = require('./slamBook');
 
 module.exports = {
+  pollController,
   messageController,
-  onboardingController,
-  userSelfController,
-  answerController,
+  userController,
+  userOnBoardingController,
+  adminOnBoardingController,
+  slamBookController,
 };

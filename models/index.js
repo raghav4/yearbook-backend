@@ -1,10 +1,9 @@
-const AllowedUsers = require('./grantAccess');
+const { Poll } = require('./poll');
 const Message = require('./message');
-const { UserAccess, OTP } = require('./access');
+const OTP = require('./otpVerification');
 
 module.exports = {
-  AllowedUsers,
   Message,
-  UserAccess,
+  Poll,
   OTP,
 };

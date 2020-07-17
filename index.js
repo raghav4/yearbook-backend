@@ -9,7 +9,7 @@ if (!config.get('jwtPrivateKey')) {
   debug('jwtPrivateKey is not defined');
   process.exit(1);
 }
-require('./startup/logging')(app);
+// require('./startup/logging')(app);
 require('./startup/db')();
 require('./startup/routes')(app);
 

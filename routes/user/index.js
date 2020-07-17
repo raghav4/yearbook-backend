@@ -1,9 +1,9 @@
-const self = require('./self/self.routes');
-const answers = require('./answers');
-const messages = require('./messages');
+const self = require('../self');
+// const answers = require('../slamBook');
+// const messages = require('../message');
 
 module.exports = {
   self,
-  answers,
-  messages,
+  // answers,
+  // messages,
 };
