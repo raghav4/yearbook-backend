@@ -1,3 +1,3 @@
 const Answer = require('./slamBookAnswer.model');
 
-module.exports = {Answer};
+module.exports = { Answer };
