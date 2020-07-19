@@ -1,32 +1,26 @@
 const express = require('express');
+const { admin } = require('../routes.json');
+const { validator } = require('../../middlewares');
 const { auth } = require('../../middlewares/user');
-const { PollStats } = require('../../models/poll/stats.model');
+const { adminAuth, superAuth } = require('../../middlewares/admin');
+const { validatePoll } = require('../../validation');
+const { pollController } = require('../../controllers');
 
 const router = express.Router();
+const { poll } = admin;
 
-router.post('/', auth, async (req, res) => {
-  // const { error } = validate(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
+// TODO: #21 req.user shouldn't be there for admin?
 
-  let pollVote = await PollStats.find({
-    votedBy: req.body.votedBy,
-    votedFor: req.body.votedFor,
-  });
+router.get(poll.all, pollController.getAllPolls);
 
-  if (pollVote.length) return res.send(pollVote[0]);
+router.get(poll.byId, pollController.getPollById);
 
-  // Check if the votedFor person already has some votes, if yes then increment
-  // it!
+router.post(
+  poll.add,
+  [adminAuth, superAuth, validator(validatePoll)],
+  pollController.createPoll,
+);
 
-  pollVote = new PollStats({
-    questionId: req.body.questionId,
-    votedBy: req.body.votedBy,
-    votedFor: req.body.votedFor,
-    voteCountsByPerson: 1,
-  });
-
-  await pollVote.save();
-  return res.send(pollVote);
-});
+router.delete(poll.remove, [adminAuth, superAuth], pollController.deletePoll);
 
 module.exports = router;

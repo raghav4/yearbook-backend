@@ -15,6 +15,7 @@ module.exports = mongoose.model(
     },
     answer: {
       type: String,
+      required: true,
     },
   }),
 );

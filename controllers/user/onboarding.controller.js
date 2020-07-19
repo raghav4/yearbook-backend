@@ -6,7 +6,7 @@ const config = require('config');
 const bcrypt = require('bcryptjs');
 const sgMail = require('@sendgrid/mail');
 const otpGenerator = require('otp-generator');
-const { User } = require('../../models/user');
+const { User } = require('../../models');
 const { UserAccess, OTP } = require('../../models');
 
 sgMail.setApiKey(config.get('SGAPI'));

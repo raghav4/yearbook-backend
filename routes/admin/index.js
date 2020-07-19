@@ -1,1 +1,1 @@
-module.exports = require('./onboarding.routes');
+module.exports = require('./admin.routes');

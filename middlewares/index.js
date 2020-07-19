@@ -1,6 +1,6 @@
-const error = require('./error');
-const validator = require('./validator');
-const validateObjectId = require('./validateObjectId');
+const error = require('./error.middleware');
+const validator = require('./validator.middleware');
+const validateObjectId = require('./validateObjectId.middleware');
 
 module.exports = {
   error,

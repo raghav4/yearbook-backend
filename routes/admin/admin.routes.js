@@ -1,12 +1,15 @@
 const express = require('express');
-const { adminAuth, superAuth } = require('../../middlewares/admin');
-const adminController = require('../../../controllers/admin.controller');
-const userAcessController = require('../../controllers/grantUserAccess');
+const { adminAuth } = require('../../middlewares/admin');
+const { userAccessController } = require('../../controllers');
+const { adminOnBoardingController } = require('../../controllers');
 
 const router = express.Router();
 
-router.post('/register', [adminAuth, superAuth], adminController.registerAdmin);
+router.post('/', adminOnBoardingController.logInAdmin);
 
-router.post('/grant', adminAuth, userAcessController.grantAccess);
+// * No need of registering an admin, it will be done on the machine only.
+// router.post('/', adminOnBoardingController.registerAdmin);
+
+router.post('/grant', adminAuth, userAccessController.grantAccess);
 
 module.exports = router;

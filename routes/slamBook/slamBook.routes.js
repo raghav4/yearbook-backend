@@ -2,7 +2,7 @@ const express = require('express');
 const { user } = require('../routes.json');
 const { auth } = require('../../middlewares/user');
 const { slamBookController } = require('../../controllers');
-const { validateUserAnswer } = require('../../validation/user');
+const { validateSlamBookAnswer } = require('../../validation');
 const { validator, validateObjectId } = require('../../middlewares');
 
 const router = express.Router();
@@ -12,7 +12,7 @@ router.get(answer.getAllSelf, auth, slamBookController.answers);
 
 router.put(
   answer.addOrUpdate,
-  [auth, validator(validateUserAnswer)],
+  [auth, validator(validateSlamBookAnswer)],
   slamBookController.upsertAnswer,
 );
 

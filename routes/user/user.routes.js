@@ -3,7 +3,7 @@ const { user } = require('../routes.json');
 const { validator } = require('../../middlewares');
 const auth = require('../../middlewares/user/auth');
 const { userController } = require('../../controllers');
-const { validateUserInfo } = require('../../validation/user');
+const { validateUserDetails } = require('../../validation');
 
 const router = express.Router();
 
@@ -17,7 +17,7 @@ router.post(user.profilePicture, auth, userController.updateUserProfilePicture);
 
 router.put(
   user.updateSelf,
-  [auth, validator(validateUserInfo)],
+  [auth, validator(validateUserDetails)],
   userController.updateUserDetails,
 );
 

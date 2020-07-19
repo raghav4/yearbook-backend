@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const debug = require('debug')('app:controller/admin/onboarding');
-const { Admin } = require('../../models/admin');
+const { Admin } = require('../../models');
 
 exports.logInAdmin = async (req, res) => {
   debug('Function : logInAdmin(), Purpose : Route to login in an Admin');

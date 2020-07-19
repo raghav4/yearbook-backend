@@ -1,4 +1,4 @@
-const { Poll } = require('../../models/admin');
+const { Poll } = require('../../models');
 
 exports.getAllPolls = async (req, res) => {
   const questions = await Poll.find({});

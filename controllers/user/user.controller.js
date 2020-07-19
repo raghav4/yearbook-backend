@@ -9,19 +9,16 @@ const { User } = require('../../models/user');
 
 exports.getUser = async (req, res) => {
   debug('Function : getUser(), Purpose : Route to get all user information');
-  let user = await User.findById(req.user._id);
-  user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, [
-    'credentials',
-    'info',
-    'deptSection',
-    'socialHandles',
-    '_id',
-  ]);
-
+  const user = await User.findById(req.user._id);
   if (!user) return res.status(400).send('User not found');
 
-  return res.status(200).send(user);
+  user.credentials = _.omit(user.credentials, 'password');
+
+  return res
+    .status(200)
+    .send(
+      _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']),
+    );
 };
 
 exports.getClassUsers = async (req, res) => {

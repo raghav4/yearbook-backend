@@ -8,13 +8,14 @@ exports.getMessages = async (req, res) => {
     sendTo: req.user._id,
   }).populate('sendTo sentBy');
 
+  if (!messages) return res.status(404).send('No messages found for the user');
+
   const result = messages.map((message) => ({
     ..._.pick(message, ['message']),
     ..._.pick(message, ['_id']),
     sentBy: _.get(message, 'sentBy.credentials.name'),
   }));
 
-  if (!messages) return res.status(404).send('No messages found for the user');
   return res.status(200).send(result);
 };
 

@@ -5,5 +5,6 @@ module.exports = (user) => {
     email: Joi.string().email().label('Email').required(),
     password: Joi.string().label('Password').required(),
   });
+
   return schema.validate(user);
 };

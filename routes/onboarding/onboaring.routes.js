@@ -2,20 +2,20 @@ const express = require('express');
 const { onboarding } = require('../routes.json');
 const { validator } = require('../../middlewares');
 const { userOnBoardingController } = require('../../controllers');
-const { validateAccess, validateOTP } = require('../../validation/signup');
-const { validateLogin, validateSignUp } = require('../../validation/common');
+const { validateOTP, validateLogIn, validateSignUp } = require('../../validation');
 
 const router = express.Router();
 
 router.post(
   onboarding.login,
-  validator(validateLogin),
+  validator(validateLogIn),
   userOnBoardingController.loginUser,
 );
 
 router.post(
   onboarding.validateAccess,
-  validator(validateAccess),
+  // TODO : fix this
+  // validator(validateAccess),
   userOnBoardingController.validateSignUpAccess,
 );
 

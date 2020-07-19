@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
 module.exports = mongoose.model(
-  'Question',
+  'slamBookQuestion',
   new mongoose.Schema({
     title: {
       type: String,
       required: true,
+      unique: true,
     },
   }),
 );

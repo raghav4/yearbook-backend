@@ -1,1 +1,1 @@
-module.exports = require('./polls.validate');
+module.exports = require('./poll.validate');
