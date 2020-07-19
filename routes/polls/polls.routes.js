@@ -1,7 +1,7 @@
 const express = require('express');
 const { admin } = require('../routes.json');
 const { validator } = require('../../middlewares');
-const { auth } = require('../../middlewares/user');
+// const { auth } = require('../../middlewares/user');
 const { adminAuth, superAuth } = require('../../middlewares/admin');
 const { validatePoll } = require('../../validation');
 const { pollController } = require('../../controllers');
