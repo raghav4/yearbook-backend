@@ -1,19 +1,15 @@
-const bodyParser = require('body-parser');
 const cors = require('cors');
-// const multer = require('multer');
-const login = require('../routes/login');
-const signup = require('../routes/signup');
-const info = require('../routes/user/info');
-const storage = require('../utils/multer');
-const welcome = require('../routes/welcome');
-const answers = require('../routes/user/answers');
-const messages = require('../routes/user/messages');
-const grantAccess = require('../routes/admin/numberAccess');
-const userQuestions = require('../routes/admin/questions');
-const polls = require('../routes/admin/polls');
-const resetPassword = require('../routes/reset');
-const pic = require('../routes/pic');
-const error = require('../middlewares/error');
+const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const { error } = require('../middlewares');
+// const { main } = require('../routes/routes.json');
+// const { welcome, userOnBoarding } = require('../routes/onboarding');
+// const { self, answers } = require('../routes/user');
+// const { message, slamBook } = require('../routes');
+// const { slamBookQuestions, polls, adminOnBoarding } =
+// require('../routes/admin');
+
+// const { user, admin } = main;
 
 module.exports = (app) => {
   app.use(
@@ -22,19 +18,21 @@ module.exports = (app) => {
     }),
   );
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
-
-  // app.use(multer({ storage }).single('file'));
-  app.use('/api/user/login', login);
-  app.use('/api/user/signup', signup);
-  app.use('/api/user/info', info);
-  app.use('/api/user/answers', answers);
-  app.use('/api/user/messages', messages);
-  app.use('/api/user/reset', resetPassword);
-  app.use('/api/admin/grantaccess', grantAccess);
-  app.use('/api/admin/questions', userQuestions);
-  app.use('/api/admin/polls', polls);
-  app.use('/api/pic', pic);
-  app.use('/', welcome);
-  //  app.use(error);
+  app.use(
+    bodyParser.urlencoded({
+      extended: true,
+    }),
+  );
+  app.use(fileUpload());
+  // app.use(user.info, self);
+  // app.use(user.answers, slamBook);
+  // app.use(user.messages, message);
+  // app.use(admin.onboarding, userOnBoarding);
+  // app.use('/api/admin/r', adminRegister);
+  // app.use('/api/admin', adminOnBoarding);
+  // app.use('/api/admin/user', adminRegister);
+  // app.use('/api/admin/questions', slamBookQuestions);
+  // app.use('/api/admin/polls', polls);
+  // app.use('/', welcome);
+  app.use(error);
 };

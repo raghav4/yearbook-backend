@@ -1,9 +1,12 @@
-const { User } = require('./info');
-const { Answer } = require('./answer');
-const { UserPoll } = require('./poll');
-const { Message } = require('./message');
+module.exports = require('./user.model');
+// const User = require('./user.model');
+// const Vote = require('../vote/vote.model');
+// const Answer = require('../slamBookAnswer/slamBookAnswer.model');
+// const Message = require('../message/message.model');
 
-exports.User = User;
-exports.Answer = Answer;
-exports.UserPoll = UserPoll;
-exports.Message = Message;
+// module.exports = {
+//   User,
+//   Vote,
+//   Answer,
+//   Message,
+// };

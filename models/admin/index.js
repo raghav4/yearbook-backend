@@ -1,3 +1,1 @@
-const { Admin } = require('./admin');
-
-exports.Admin = Admin;
+module.exports = require('./admin.model');

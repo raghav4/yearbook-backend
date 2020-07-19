@@ -1,17 +1,17 @@
-#!/usr/bin/env node
-/* eslint-disable no-console */
-require('dotenv').config();
+const debug = require('debug')('app:db');
+const config = require('config');
 const mongoose = require('mongoose');
 
 module.exports = () => {
-  const dbURI = process.env.DB_URI;
-  mongoose
-    .connect(dbURI, {
+  try {
+    mongoose.connect(config.get('mongoURI'), {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
       useFindAndModify: false,
-    })
-    .then(() => console.log('Connected to MongoDB..'))
-    .catch(() => console.error('Failed to connect to MongoDB..'));
+    });
+    debug('Connected to MongoDB..');
+  } catch (ex) {
+    debug(ex);
+  }
 };

@@ -1,6 +1,6 @@
 {
   "name": "yearbook-backend",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Backend Application of the Yearbook Project written using Expressjs",
   "main": "index.js",
   "dependencies": {
@@ -8,35 +8,56 @@
     "@sendgrid/mail": "^7.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "cloudinary": "^1.21.0",
+    "config": "^3.3.1",
     "cors": "^2.8.5",
+    "csvtojson": "^2.0.10",
+    "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "imgbb-uploader": "^1.0.3",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.11",
+    "mongoose-type-email": "^1.0.12",
     "mongoose-type-url": "^2.0.0",
     "morgan": "^1.10.0",
-    "multer": "^1.4.2",
     "otp-generator": "^1.1.0",
-    "pm2": "^4.4.0",
-    "winston": "^3.2.1"
+    "rotating-file-stream": "^2.1.1",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.5.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2"
+    "eslint-plugin-import": "^2.20.2",
+    "husky": "^4.2.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "export NODE_ENV=development DEBUG=app:* && npx nodemon",
+    "add-admin": "cd routes/admin && node superAdmin.js",
+    "eslint": "eslint controllers/ middlewares/ models/ validation/ --fix ",
+    "prettier": "npx prettier --write *.js */*.js *.json */*.json"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier && npm run eslint"
+    }
   },
   "engines": {
     "node": "12.14.1"
   },
-  "keywords": [],
+  "keywords": [
+    "Yearbook",
+    "Nodejs",
+    "Backend",
+    "Farwell",
+    "College"
+  ],
   "author": "Raghav Sharma",
   "license": "ISC"
 }
