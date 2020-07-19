@@ -1,7 +1,7 @@
 const express = require('express');
-const { adminAuth } = require('../../middlewares/admin');
-const { userAccessController } = require('../../controllers');
-const { adminOnBoardingController } = require('../../controllers');
+const {adminAuth} = require('../../middlewares/admin');
+const {userAccessController} = require('../../controllers');
+const {adminOnBoardingController} = require('../../controllers');
 
 const router = express.Router();
 

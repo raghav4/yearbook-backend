@@ -4,7 +4,7 @@ const validateMessage = require('./message');
 const validateUserDetails = require('./user');
 const validateSlamBookAnswer = require('./slamBookAnswer');
 const validateSlamBookQuestion = require('./slamBookQuestion');
-const { validateOTP, validateLogIn, validateSignUp } = require('./onBoarding');
+const {validateOTP, validateLogIn, validateSignUp} = require('./onBoarding');
 
 module.exports = {
   validateOTP,
