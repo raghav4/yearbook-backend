@@ -14,7 +14,8 @@ const router = express.Router();
 
 // router.get(poll.byId, pollController.getPollById);
 
-// router.post(poll.add, [auth, validator(validatePoll)], pollController.createPoll);
+// router.post(poll.add, [auth, validator(validatePoll)],
+// pollController.createPoll);
 
 // router.delete(poll.remove, [auth], pollController.deletePoll);
 
