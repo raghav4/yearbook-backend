@@ -1,24 +1,21 @@
+/**
+ * Routes to handle the Profile Related details of the user
+ */
+
 const express = require('express');
 const { user } = require('../routes.json');
-const { validator } = require('../../middlewares');
-const auth = require('../../middlewares/user/auth');
 const { userController } = require('../../controllers');
+const { validator, auth } = require('../../middlewares');
 const { validateUserDetails } = require('../../validation');
 
 const router = express.Router();
 
-router.get(user.self, auth, userController.getUser);
-
-router.get(user.classStudents, auth, userController.getClassUsers);
-
-router.get(user.all, auth, userController.getAllUsers);
-
-router.post(user.profilePicture, auth, userController.updateUserProfilePicture);
+router.post(user.profilePicture, auth, userController.updateProfilePicture);
 
 router.put(
   user.updateSelf,
   [auth, validator(validateUserDetails)],
-  userController.updateUserDetails,
+  userController.updateDetails,
 );
 
 router.post(user.resetPassword, auth, userController.resetPassword);

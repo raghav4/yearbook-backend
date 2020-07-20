@@ -1,14 +1,18 @@
 const express = require('express');
 const { user } = require('../routes.json');
-const { auth } = require('../../middlewares/user');
 const { slamBookController } = require('../../controllers');
 const { validateSlamBookAnswer } = require('../../validation');
-const { validator, validateObjectId } = require('../../middlewares');
+const {
+  auth,
+  validator,
+  validateObjectId,
+  adminAuth,
+} = require('../../middlewares');
 
 const router = express.Router();
 const { answer } = user;
 
-router.get(answer.getAllSelf, auth, slamBookController.answers);
+router.get(answer.getAllSelf, auth, slamBookController.allAnswers);
 
 router.put(
   answer.addOrUpdate,
@@ -24,16 +28,20 @@ router.delete(
 
 router.get('/', slamBookController.getAllSlamBookQuestions);
 
-// Route to get a particular Question for the user
-router.get('/:id', [validateObjectId], slamBookController.getQuestionById);
+// !! SlamBooks Question Routes to be handled only by the admin
 
-// router.post(
-//   '/',
-//   [validator(validateQuestion)],
-//   slamBookController.addSlamBookQuestion,
-// );
+// ? Conditionally handle the middleware
+
+// Route to get a particular Question for the user
+router.get('/:id', [auth, validateObjectId], slamBookController.getQuestionById);
+
+router.post('/', [auth, adminAuth], slamBookController.addSlamBookQuestion);
 
 // Route to delete the user Question
-router.delete('/:id', [validateObjectId], slamBookController.deleteSlamBookQuestion);
+router.delete(
+  '/:id',
+  [auth, adminAuth, validateObjectId],
+  slamBookController.deleteSlamBookQuestion,
+);
 
 module.exports = router;

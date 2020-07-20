@@ -1,38 +1,36 @@
 {
   "main": {
-    "admin": {
-      "onboarding": "/api/admin/"
-    },
+    "onboarding": "/api/onboarding",
     "user": {
-      "answers": "/api/user/answers",
       "messages": "/api/user/messages",
-      "info": "/api/user/info",
-      "onboarding": "/api/user"
-    }
-  },
-  "admin": {
-    "onboarding": {
-      "login": "/login",
-      "signup": "/signup"
+      "self": "/api/user/self",
+      "all": "/api/user/all"
     },
-    "poll": {
-      "add": "/",
-      "all": "/",
-      "byId": "/:id",
-      "remove": "/:id"
-    }
+    "slamBook": "/api/slambook",
+    "polls": "/api/poll"
+  },
+  "poll": {
+    "add": "/",
+    "all": "/",
+    "byId": "/:id",
+    "remove": "/:id"
   },
   "onboarding": {
-    "signup": "/signup",
-    "login": "/login",
+    "admin": {
+      "signup": "/admin/signup",
+      "login": "/admin/login",
+      "grantAccess": "/admin/grant"
+    },
+    "user": {
+      "signup": "/user/signup",
+      "login": "/user/login"
+    },
     "validateAccess": "/signup/validate",
     "verifySignUpOTP": "/signup/verify",
     "forgetPassword": "/passwordrecovery"
   },
   "user": {
-    "login": "/login",
-    "signup": "/signup",
-    "self": "/",
+    "loggedInUser": "/",
     "all": "/all",
     "profilePicture": "/pic",
     "classStudents": "/class/all",

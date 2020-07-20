@@ -6,12 +6,14 @@ const config = require('config');
 const bcrypt = require('bcryptjs');
 const sgMail = require('@sendgrid/mail');
 const otpGenerator = require('otp-generator');
+const debug = require('debug')('app:onboardingController');
 const { User } = require('../../models');
 const { UserAccess, OTP } = require('../../models');
 
 sgMail.setApiKey(config.get('SGAPI'));
 
 const generatedOTP = () => {
+  debug('Generated OTP!');
   return otpGenerator.generate(4, {
     upperCase: false,
     specialChars: false,
@@ -20,6 +22,7 @@ const generatedOTP = () => {
 };
 
 exports.loginUser = async (req, res) => {
+  debug('Function : loginUser, Purpose : Route to log in a user');
   const { email, password } = req.body;
 
   const user = await User.findOne({
@@ -35,6 +38,9 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.validateSignUpAccess = async (req, res) => {
+  debug(
+    'Function : validateSignUpAccess(), Purpose : Route to validate the User SignUp Access!',
+  );
   const userExits = await User.findOne({ 'credentials.email': req.body.email });
   if (userExits) return res.status(400).send('Email already registered');
 
@@ -72,6 +78,9 @@ exports.validateSignUpAccess = async (req, res) => {
 };
 
 exports.verifySignUpOTP = async (req, res) => {
+  debug(
+    'Function: verifySignUpOTP, Purpose : Route to verify the Email Verification OTP',
+  );
   const userEmail = await OTP.findOne({ email: req.body.email });
   if (!userEmail) return res.status(400).send('Session Expired, Try again!');
 
@@ -89,6 +98,7 @@ exports.verifySignUpOTP = async (req, res) => {
 };
 
 exports.registerUser = async (req, res) => {
+  debug('Function: registerUser(), Purpose : Route to register a user');
   const checkRegistered = await User.findOne({
     'credentials.email': req.body.email,
   });
@@ -132,6 +142,9 @@ exports.registerUser = async (req, res) => {
 
 // eslint-disable-next-line consistent-return
 exports.forgetPassword = async (req, res) => {
+  debug(
+    'function: forgetPassword(), Purpose: Route to reset the password of users credentials',
+  );
   const user = await User.findOne({ 'credentials.email': req.body.email });
   if (!user) {
     return res.status(400).send('We cannot find an account with that email address');

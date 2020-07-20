@@ -7,7 +7,7 @@ const imgBBUploader = require('imgbb-uploader');
 const debug = require('debug')('app:user.controller.js');
 const { User } = require('../../models/user');
 
-exports.getUser = async (req, res) => {
+exports.loggedInUser = async (req, res) => {
   debug('Function : getUser(), Purpose : Route to get all user information');
   const user = await User.findById(req.user._id);
   if (!user) return res.status(400).send('User not found');
@@ -31,7 +31,7 @@ exports.getClassUsers = async (req, res) => {
   return res.send(users);
 };
 
-exports.updateUserDetails = async (req, res) => {
+exports.updateDetails = async (req, res) => {
   debug('Function : udpateUser(), Purpose : Route to update the user details');
   const user = await User.findById(req.user._id);
 
@@ -63,7 +63,7 @@ exports.updateUserDetails = async (req, res) => {
 };
 
 // eslint-disable-next-line consistent-return
-exports.updateUserProfilePicture = async (req, res) => {
+exports.updateProfilePicture = async (req, res) => {
   debug(
     `function: UpdateUserProfilePicture(), Purpose: to update the profile picture, files: ${req.files}`,
   );

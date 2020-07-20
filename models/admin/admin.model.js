@@ -1,7 +1,9 @@
 /* eslint-disable func-names */
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const config = require('config');
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+const debug = require('debug')('app:adminModel');
 
 const adminSchema = new mongoose.Schema({
   username: {
@@ -12,17 +14,11 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isAdmin: {
-    type: Boolean,
-    default: true,
-  },
 });
 
 adminSchema.methods.generateAuthToken = function () {
-  return jwt.sign(
-    { _id: this._id, isAdmin: this.isAdmin },
-    config.get('jwtPrivateKey'),
-  );
+  debug('Generating admin authentication token..');
+  return jwt.sign({ _id: this._id, authType: 'admin' }, config.get('jwtPrivateKey'));
 };
 
 module.exports = mongoose.model('Admin', adminSchema);
