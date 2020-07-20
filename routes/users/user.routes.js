@@ -2,9 +2,9 @@
  * Routes to Get all the User Related Details
  */
 const express = require('express');
-const { user } = require('../routes.json');
-const { auth } = require('../../middlewares');
-const { userController } = require('../../controllers');
+const {user} = require('../routes.json');
+const {auth} = require('../../middlewares');
+const {userController} = require('../../controllers');
 
 const router = express.Router();
 
