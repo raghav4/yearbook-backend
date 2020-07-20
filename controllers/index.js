@@ -1,9 +1,10 @@
 const pollController = require('./polls');
+const userController = require('./user');
 const messageController = require('./messages');
 const slamBookController = require('./slamBook');
+const onBoardingController = require('./onboarding');
 const adminOnBoardingController = require('./admin');
 const userAccessController = require('./grantUserAccess');
-const { userController, userOnBoardingController } = require('./user');
 
 module.exports = {
   userController,
@@ -11,6 +12,6 @@ module.exports = {
   messageController,
   slamBookController,
   userAccessController,
-  userOnBoardingController,
+  onBoardingController,
   adminOnBoardingController,
 };

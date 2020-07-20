@@ -1,7 +1,1 @@
-const welcome = require('./welcome');
-const userOnBoarding = require('./onboaring.routes');
-
-module.exports = {
-  welcome,
-  userOnBoarding,
-};
+module.exports = require('./onboarding.routes');

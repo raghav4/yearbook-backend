@@ -39,7 +39,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "export NODE_ENV=development DEBUG=app:* && npx nodemon",
-    "add-admin": "cd routes/admin && node superAdmin.js",
+    "add-admin": "cd routes/admin && node registerAdmin.js",
     "eslint": "eslint controllers/ middlewares/ models/ validation/ --fix ",
     "prettier": "npx prettier --write *.js */*.js *.json */*.json"
   },

@@ -3,7 +3,7 @@ require('dotenv').config({ path: '../../.env' });
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const readline = require('readline');
-const { Admin } = require('../../models/admin');
+const { Admin } = require('../../models');
 
 const rl = readline.createInterface({
   input: process.stdin,
