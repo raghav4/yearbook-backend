@@ -1,9 +1,8 @@
 const express = require('express');
 const { user } = require('../routes.json');
-const { auth } = require('../../middlewares/user');
+const { validateMessage } = require('../../validation');
 const { messageController } = require('../../controllers');
-const { validateMessage } = require('../../validation/user');
-const { validator, validateObjectId } = require('../../middlewares');
+const { validator, validateObjectId, auth } = require('../../middlewares');
 
 const router = express.Router();
 const { message } = user;
