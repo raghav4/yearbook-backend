@@ -1,8 +1,8 @@
 const express = require('express');
-const {admin} = require('../routes.json');
-const {validatePoll} = require('../../validation');
-const {pollController} = require('../../controllers');
-const {validator, auth} = require('../../middlewares');
+const { admin } = require('../routes.json');
+const { validatePoll } = require('../../validation');
+const { pollController } = require('../../controllers');
+const { validator, auth } = require('../../middlewares');
 
 const router = express.Router();
 // const { poll } = admin;
