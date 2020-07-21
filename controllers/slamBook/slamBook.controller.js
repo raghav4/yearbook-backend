@@ -64,8 +64,8 @@ exports.deleteSlamBookQuestion = async (req, res) => {
   return res.status(200).send('Successfully Deleted Question');
 };
 
-exports.allAnswers = async (req, res) => {
-  debug('function: allAnswers(), Purpose: Route to get all slambook answers');
+exports.userAnswers = async (req, res) => {
+  debug('function: userAnswers(), Purpose: Route to get all slambook answers');
   const answers = await SlamBookAnswer.find({
     userId: req.user._id,
   })
@@ -88,7 +88,7 @@ exports.upsertAnswer = async (req, res) => {
   return res.status(200).send(userAnswer);
 };
 
-exports.deleteAnswer = async (req, res) => {
+exports.deleteAnswerById = async (req, res) => {
   debug('function: deleteAnswer(), Purpose: Route to delete an answer');
   const answer = await SlamBookAnswer.findOneAndDelete(req.params.id);
   if (!answer) return res.status(404).send('Answer not found');

@@ -41,4 +41,6 @@ router.post(
   onBoardingController.registerUser,
 );
 
+router.post('/forgot', onBoardingController.forgotPassword);
+
 module.exports = router;

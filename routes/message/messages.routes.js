@@ -7,7 +7,13 @@ const { validator, validateObjectId, auth } = require('../../middlewares');
 const router = express.Router();
 const { message } = user;
 
-router.get(message.getAllOfUser, auth, messageController.getMessages);
+router.get(message.feed, auth, messageController.allMessagesFeed);
+
+router.get(
+  message.forLoggedInUser,
+  auth,
+  messageController.getAllMessagesForLoggedInUser,
+);
 
 router.get(
   message.getById,
@@ -16,7 +22,7 @@ router.get(
 );
 
 router.put(
-  message.addOrUpdate,
+  message.upsertMessage,
   [auth, validator(validateMessage)],
   messageController.upsertMessage,
 );

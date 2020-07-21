@@ -1,19 +1,25 @@
 {
   "main": {
     "onboarding": "/api/onboarding",
-    "user": {
-      "messages": "/api/user/messages",
-      "self": "/api/user/self",
-      "all": "/api/user/all"
-    },
+    "messages": "/api/user/messages",
     "slamBook": "/api/slambook",
-    "polls": "/api/poll"
+    "polls": "/api/polls",
+    "user": "/api/user"
   },
   "poll": {
-    "add": "/",
-    "all": "/",
-    "byId": "/:id",
-    "remove": "/:id"
+    "createPollTitle": "/new",
+    "getAllPolls": "/all",
+    "getPollById": "/:id",
+    "deletePollById": "/:id"
+  },
+  "slamBook": {
+    "getUserAnswers": "/answers/self",
+    "deleteAnswerById": "/answer/delete/:id",
+    "upsertAnswer": "/answer/upsert",
+    "createQuestion": "/question/new",
+    "allQuestions": "/questions/all",
+    "getQuestionById": "/question/:id",
+    "deleteQuestionById": "/question/delete/:id"
   },
   "onboarding": {
     "admin": {
@@ -30,17 +36,18 @@
     "forgetPassword": "/passwordrecovery"
   },
   "user": {
-    "loggedInUser": "/",
+    "loggedInUser": "/me",
     "all": "/all",
-    "profilePicture": "/pic",
-    "classStudents": "/class/all",
+    "updateProfilePicture": "/update/profile_picture",
+    "getClassStudents": "/class/all",
     "updateSelf": "/",
     "resetPassword": "/reset",
     "message": {
-      "getAllOfUser": "/",
+      "forLoggedInUser": "/self",
       "getById": "/:id",
-      "addOrUpdate": "/",
-      "deleteById": "/:id"
+      "upsertMessage": "/",
+      "deleteById": "/:id",
+      "feed": "/all"
     },
     "answer": {
       "getAllSelf": "/",

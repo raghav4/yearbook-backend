@@ -1,3 +1,1 @@
-const Answer = require('./slamBookAnswer.model');
-
-module.exports = { Answer };
+module.exports = require('./slamBookAnswer.model');

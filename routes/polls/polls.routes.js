@@ -1,22 +1,31 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
-const { admin } = require('../routes.json');
+const { poll } = require('../routes.json');
 const { validatePoll } = require('../../validation');
 const { pollController } = require('../../controllers');
-const { validator, auth } = require('../../middlewares');
+const {
+  auth,
+  adminAuth,
+  validator,
+  validateObjectId,
+} = require('../../middlewares');
 
 const router = express.Router();
-// const { poll } = admin;
 
-// // TODO: #21 req.user shouldn't be there for admin?
+router.get(poll.getAllPolls, pollController.getAllPolls);
 
-// router.get(poll.all, pollController.getAllPolls);
+router.get(poll.getPollById, [auth, validateObjectId], pollController.getPollById);
 
-// router.get(poll.byId, pollController.getPollById);
+router.post(
+  poll.createPollTitle,
+  [auth, adminAuth, validator(validatePoll)],
+  pollController.createPoll,
+);
 
-// router.post(poll.add, [auth, validator(validatePoll)],
-// pollController.createPoll);
-
-// router.delete(poll.remove, [auth], pollController.deletePoll);
+router.delete(
+  poll.deletePollById,
+  [auth, adminAuth, validateObjectId],
+  pollController.deletePoll,
+);
 
 module.exports = router;

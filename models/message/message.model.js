@@ -17,5 +17,16 @@ module.exports = mongoose.model(
       type: String,
       required: true,
     },
+    friendShipRating: {
+      type: Number,
+      min: 1,
+      max: 5,
+      default: 5,
+      // required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   }),
 );

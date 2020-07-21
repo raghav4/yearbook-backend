@@ -18,9 +18,10 @@ exports.getPollById = async (req, res) => {
 exports.createPoll = async (req, res) => {
   debug('function: createPoll(), Purpose: Route to create a Poll Question');
 
-  const question = new Poll({ title: req.body.question });
-  await question.save();
-  return res.status(201).send(question);
+  const poll = new Poll({ title: req.body.title });
+  await poll.save();
+
+  return res.status(201).send(poll);
 };
 
 exports.deletePoll = async (req, res) => {

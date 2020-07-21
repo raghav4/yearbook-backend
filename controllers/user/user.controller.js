@@ -5,7 +5,11 @@ const config = require('config');
 const bcrypt = require('bcryptjs');
 const imgBBUploader = require('imgbb-uploader');
 const debug = require('debug')('app:user.controller.js');
-const { User } = require('../../models/user');
+const { User } = require('../../models');
+
+// const deepPick = (paths, obj) => {
+//   _.fromPairs(paths.map((p) => [_.last(p.split('.')), _.get(obj, p)]));
+// };
 
 exports.loggedInUser = async (req, res) => {
   debug('Function : getUser(), Purpose : Route to get all user information');
@@ -117,8 +121,11 @@ exports.resetPassword = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   debug('Function : getAllUsers(), Purpose : Route to get all the registered Users');
-  const users = await User.find({ _id: { $ne: req.user._id } });
+  const users = await User.find({ _id: { $ne: req.user._id } }).select(
+    '_id info credentials.name deptSection',
+  );
 
   if (!users.length) return res.status(404).send('No User is there in the DB');
+
   return res.status(200).send(users);
 };

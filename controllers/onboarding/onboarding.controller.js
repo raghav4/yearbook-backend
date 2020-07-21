@@ -4,6 +4,7 @@ require('dotenv').config();
 const _ = require('lodash');
 const config = require('config');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const sgMail = require('@sendgrid/mail');
 const otpGenerator = require('otp-generator');
 const debug = require('debug')('app:onboardingController');
@@ -141,21 +142,103 @@ exports.registerUser = async (req, res) => {
 };
 
 // eslint-disable-next-line consistent-return
-exports.forgetPassword = async (req, res) => {
+exports.forgotPassword = async (req, res) => {
   debug(
-    'function: forgetPassword(), Purpose: Route to reset the password of users credentials',
+    'function: forgotPassword(), Purpose: Route to reset the password of users credentials',
   );
   const user = await User.findOne({ 'credentials.email': req.body.email });
-  if (!user) {
-    return res.status(400).send('We cannot find an account with that email address');
+  if (!user) return res.status(400).send('Email not registered with us.');
+
+  try {
+    const token = jwt.sign({ _id: user._id }, config.get('jwtPrivateKey'), {
+      expiresIn: '15m',
+    });
+
+    await sgMail.send({
+      from: 'Yearbook<no-reply@yearbook.me',
+      to: `${user.credentials.email}`,
+      subject: 'Password Reset Link',
+      html: `<html xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+      <meta name="viewport" content="width=device-width" />
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Actionable emails e.g. reset password</title>
+      <link href="styles.css" media="all" rel="stylesheet" type="text/css" />
+      </head>
+
+      <body itemscope itemtype="http://schema.org/EmailMessage">
+
+      <table class="body-wrap">
+        <tr>
+          <td></td>
+          <td class="container" width="600">
+            <div class="content">
+              <table class="main" width="100%" cellpadding="0" cellspacing="0" itemprop="action" itemscope itemtype="http://schema.org/ConfirmAction">
+                <tr>
+                  <td class="content-wrap">
+                    <meta itemprop="name" content="Confirm Email"/>
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td class="content-block">
+                          Dear User, You can reset the password by clicking on the link below.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="content-block">
+                          If you did not request to reset your password, you can ignore this email. Your account is safe.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="content-block">
+                          Please do not share this link with anyone else as that would let others to reset your account, this link is valid only for <b>15 minutes</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="content-block" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+                          <a href="http://localhost:5000/forgot_password/${token}" class="btn-primary" itemprop="url">Reset Password</a>
+                        </td>
+                      </tr>
+                      <tr>
+                      <tr>
+                        <td class="content-block">
+                          Copy and Paste this link in your browswer if the above button doesn't work, http://localhost:5000/forgot_password/${token}
+                        </td>
+                      </tr>
+                        <td class="content-block">
+                          &mdash; Yearbook Team
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table></div>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+
+      </body>
+      </html>`,
+    });
+
+    return res.status(200).send('Email with reset password link, is on its way');
+  } catch (ex) {
+    debug(ex);
   }
-  // TODO: Verify Email
-  // OR SEND A TEMPORARY PASSWORD TO THE USER's email?
-
-  const temporaryPassword = ' ok';
-
-  const salt = await bcrypt.genSalt(15);
-  user.credentials.password = await bcrypt.hash(temporaryPassword, salt);
-
-  // return res.status()
 };
+
+exports.verifyPasswordTokenLink = async (req, res) => {
+  try {
+    const decoded = jwt.verify(req.params.token, config.get('jwtPrivateKey'));
+    const user = await User.findById(decoded._id);
+    if (!user) return res.status(404).send('User does not exist');
+    return res.status(200).send('Valid token');
+  } catch (ex) {
+    debug(ex);
+    return res
+      .status(400)
+      .send('Either the link is invalid or expired, Please try again later');
+  }
+};
+
+// exports.registerNewPassword = async (req, res) => {};

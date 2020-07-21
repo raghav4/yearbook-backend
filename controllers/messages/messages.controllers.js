@@ -2,7 +2,7 @@ const _ = require('lodash');
 const debug = require('debug')('app:message.controller.js');
 const { Message } = require('../../models');
 
-exports.getMessages = async (req, res) => {
+exports.getAllMessagesForLoggedInUser = async (req, res) => {
   debug('Function : getMessages()');
   const messages = await Message.find({
     sendTo: req.user._id,
@@ -29,6 +29,15 @@ exports.getMessageById = async (req, res) => {
   if (!message) return res.status(404).send('No message found');
 
   return res.status(200).send(message);
+};
+
+exports.allMessagesFeed = async (req, res) => {
+  debug('Function: allMessagesFeed(), Purpose: Route to get all the messages');
+  const messages = await Message.find({})
+    .populate('sendTo sentBy', 'credentials.name -_id')
+    .select('_id message friendShipRating createdAt')
+    .sort('-createdAt');
+  return res.status(200).send(messages);
 };
 
 exports.upsertMessage = async (req, res) => {

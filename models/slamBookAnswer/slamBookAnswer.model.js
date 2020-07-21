@@ -5,7 +5,7 @@ module.exports = mongoose.model(
   new mongoose.Schema({
     questionId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Question',
+      ref: 'slamBookQuestion',
       required: true,
     },
     userId: {

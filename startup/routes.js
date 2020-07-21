@@ -8,7 +8,7 @@ const message = require('../routes/message');
 const welcome = require('../routes/welcome');
 const slamBook = require('../routes/slamBook');
 const onboarding = require('../routes/onboarding');
-const { self, users } = require('../routes/users');
+const users = require('../routes/users');
 const { main } = require('../routes/routes.json');
 
 const { user, admin } = main;
@@ -27,11 +27,10 @@ module.exports = (app) => {
   );
   app.use(fileUpload());
   app.use(main.onboarding, onboarding);
-  app.use(user.self, self);
-  app.use(user.all, users);
-  app.use(user.messages, message);
-  // app.use(main.polls, polls);
+  app.use(main.user, users);
+  app.use(main.messages, message);
+  app.use(main.polls, polls);
   app.use(main.slamBook, slamBook);
   app.use('/', welcome);
-  app.use(error);
+  // app.use(error);
 };
