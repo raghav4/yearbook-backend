@@ -1,4 +1,4 @@
-const debug = require('debug')('app:db');
+/* eslint-disable no-console */
 const config = require('config');
 const mongoose = require('mongoose');
 
@@ -10,8 +10,8 @@ module.exports = () => {
       useCreateIndex: true,
       useFindAndModify: false,
     });
-    debug('Connected to MongoDB..');
+    console.log('Connected to MongoDB..');
   } catch (ex) {
-    debug(ex);
+    console.log(ex);
   }
 };
