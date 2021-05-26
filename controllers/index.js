@@ -57,10 +57,12 @@ class Controller {
     return res.status(200).send(user);
   }
 
+  // TODO: #40 Fix user metadata
+
   static async updateUserDetails(req, res) {
     let user = await User.findById(req.user._id);
     if (!user) {
-      return res.status(404).send('User not found');
+      return res.status(400).send('Invalid User Id');
     }
     const { info, socialHandles } = req.body;
 
@@ -89,9 +91,10 @@ class Controller {
   static async getAllUsersOfAClass(req, res) {
     const user = await User.findById(req.user._id);
     const users = await User.find({
-      $and: [{ _id: { $ne: req.user._id } }, { deptSection: user.deptSection }],
+      $and: [
+        { _id: { $ne: req.user._id } }, { department: user.department, section: user.section }],
     });
-    return res.status(200).send(users);
+    return res.status(200).send(users.map((datum) => _.pick(datum, ['name', 'userId', 'profilePicture', '_id', 'bio'])));
   }
 
   /**
@@ -100,7 +103,7 @@ class Controller {
    */
   static async getAllUsers(req, res) {
     const users = await User.find({ _id: { $ne: req.user._id } });
-    return res.status(200).send(users);
+    return res.status(200).send(users.map((datum) => _.pick(datum, ['name', 'userId', 'profilePicture', '_id', 'bio'])));
   }
 
   /**
