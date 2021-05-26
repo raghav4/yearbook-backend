@@ -3,13 +3,13 @@ const config = require('config');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const imgBBUploader = require('imgbb-uploader');
-const { User, Answer, Message, Question, Poll } = require('../models');
+const {User, Answer, Message, Question, Poll} = require('../models');
 
 class Controller {
   static async userLogIn(req, res) {
-    const { userId, password } = req.body;
+    const {userId, password} = req.body;
 
-    const user = await User.findOne({ userId });
+    const user = await User.findOne({userId});
     if (!user) {
       return res.status(400).send('Invalid userId or Password');
     }
@@ -25,8 +25,8 @@ class Controller {
 
   static async userSignUp(req, res) {
     // eslint-disable-next-line object-curly-newline
-    const { userId, name, password, department, section } = req.body;
-    const data = await User.findOne({ userId });
+    const {userId, name, password, department, section} = req.body;
+    const data = await User.findOne({userId});
     if (data) {
       return res.status(400).send('User Already Exists!');
     }
@@ -42,13 +42,15 @@ class Controller {
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
-    return res.status(201).send(_.pick(user, ['userId', 'name', 'department', 'section']));
+    return res.status(201).send(
+        _.pick(user, [ 'userId', 'name', 'department', 'section' ]));
   }
 
   static async getUserById(req, res) {
     let user = await User.findById(req.user._id);
     user.credentials = _.omit(user.credentials, 'password');
-    user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
+    user = _.pick(
+        user, [ 'credentials', 'info', 'deptSection', 'socialHandles', '_id' ]);
     if (!user) {
       return res.status(404).send('User not found!');
     }
@@ -60,23 +62,24 @@ class Controller {
     if (!user) {
       return res.status(404).send('User not found');
     }
-    const { info, socialHandles } = req.body;
+    const {info, socialHandles} = req.body;
 
     user = await User.findByIdAndUpdate(
-      req.user._id,
-      {
-        info: {
-          bio: info.bio,
-          profilePicture: user.info.profilePicture,
+        req.user._id,
+        {
+          info : {
+            bio : info.bio,
+            profilePicture : user.info.profilePicture,
+          },
+          socialHandles,
         },
-        socialHandles,
-      },
-      {
-        new: true,
-      },
+        {
+          new : true,
+        },
     );
     user.credentials = _.omit(user.credentials, 'password');
-    user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
+    user = _.pick(
+        user, [ 'credentials', 'info', 'deptSection', 'socialHandles', '_id' ]);
     return res.status(200).send(user);
   }
 
@@ -87,9 +90,9 @@ class Controller {
   static async getAllUsersOfAClass(req, res) {
     const user = await User.findById(req.user._id);
     const users = await User.find({
-      $and: [
-        { _id: { $ne: req.user._id } },
-        { deptSection: user.deptSection },
+      $and : [
+        {_id : {$ne : req.user._id}},
+        {deptSection : user.deptSection},
       ],
     });
     return res.status(200).send(users);
@@ -100,7 +103,7 @@ class Controller {
    * This function doesn't return 404 in case of no users exist.
    */
   static async getAllUsers(req, res) {
-    const users = await User.find({ _id: { $ne: req.user._id } });
+    const users = await User.find({_id : {$ne : req.user._id}});
     return res.status(200).send(users);
   }
 
@@ -108,20 +111,21 @@ class Controller {
    * Function to create a Message
    */
   static async createMessage(req, res) {
-    const { receiverId, content } = req.body;
+    const {receiverId, content} = req.body;
     if (_.isEqual(receiverId, req.user._id)) {
       return res.status(400).send('User trying to write a message to self!');
     }
 
     const receiver = await User.findById(receiverId);
-    if (!receiver) return res.status(404).send('Invalid receiverId!');
+    if (!receiver)
+      return res.status(404).send('Invalid receiverId!');
 
     // const doneAlready = await Message.findOne({ receiverId, senderId });
     // if (doneAlready) await Message.findByIdAndDelete(doneAlready._id);
 
     let message = new Message({
       receiverId,
-      senderId: req.user._id,
+      senderId : req.user._id,
       content,
     });
     await message.save();
@@ -131,14 +135,14 @@ class Controller {
 
   static async updateMessage(req, res) {
     const filter = {
-      receiverId: req.body.receiverId,
-      senderId: req.user._id,
+      receiverId : req.body.receiverId,
+      senderId : req.user._id,
     };
 
     const message = await Message.findOneAndUpdate(
-      filter,
-      { message: req.body.message },
-      { new: true, upsert: true },
+        filter,
+        {message : req.body.message},
+        {new : true, upsert : true},
     );
 
     return res.status(200).send(message);
@@ -149,9 +153,9 @@ class Controller {
    */
   static async deleteMessage(req, res) {
     const message = await Message.findOneAndUpdate({
-      receiverId: req.params.id,
-      senderId: req.user._id,
-      isDeleted: true,
+      receiverId : req.params.id,
+      senderId : req.user._id,
+      isDeleted : true,
     });
     if (!message) {
       return res.status(404).send('Message does not exist!');
@@ -163,22 +167,25 @@ class Controller {
    * Function to get all messages of a user by receiverId.
    */
   static async getAllReceivedMessages(req, res) {
-    const messages = await Message.find({
-      receiverId: req.user._id,
-      isDeleted: false,
-    }).populate('senderId receiverId');
+    const messages = await Message
+                         .find({
+                           receiverId : req.user._id,
+                           isDeleted : false,
+                         })
+                         .populate('senderId receiverId');
 
     if (!messages) {
       // Status 200 instead of 404 here.
       return res.status(200).send('No messages found for the user!');
     }
 
-    const result = messages.map((message) => ({
-      ..._.pick(message, ['_id']),
-      ..._.pick(message, ['content']),
-      senderId: _.get(message, 'senderId.credentials.name'),
-      receiverId: _.get(message, 'receiverId.credentials.name'),
-    }));
+    const result = messages.map(
+        (message) => ({
+          ..._.pick(message, [ '_id' ]),
+          ..._.pick(message, [ 'content' ]),
+          senderId : _.get(message, 'senderId.credentials.name'),
+          receiverId : _.get(message, 'receiverId.credentials.name'),
+        }));
 
     return res.status(200).send(result);
   }
@@ -188,9 +195,9 @@ class Controller {
    */
   static async getMessageByReceiverId(req, res) {
     const message = await Message.findOne({
-      receiverId: req.params.id,
-      senderId: req.user._id,
-      isDeleted: false,
+      receiverId : req.params.id,
+      senderId : req.user._id,
+      isDeleted : false,
     });
 
     if (!message) {
@@ -204,27 +211,27 @@ class Controller {
    * !! No 404 for no answers.
    */
   static async getAllAnswersOfAUser(req, res) {
-    const answers = await Answer.find({
-      userId: req.user._id,
-    })
-      .select('-userId -__v')
-      .populate('titleId');
+    const answers = await Answer
+                        .find({
+                          userId : req.user._id,
+                        })
+                        .select('-userId -__v')
+                        .populate('titleId');
     return res.status(200).send(answers);
   }
 
   /**
-   * Function to add a new answer or update existing one. 
+   * Function to add a new answer or update existing one.
    */
   static async upsertAnswer(req, res) {
-    const { titleId, content } = req.body;
+    const {titleId, content} = req.body;
     const answer = await Answer.findOneAndUpdate(
-      { titleId, userId: req.user._id },
-      { content },
-      { new: true, upsert: true },
+        {titleId, userId : req.user._id},
+        {content},
+        {new : true, upsert : true},
     );
     return res.status(200).send(answer);
   }
-
 
   /**
    * Function to delete a slambook answer.
@@ -248,18 +255,17 @@ class Controller {
     return res.status(200).send(question);
   }
 
-
   /**
    * Function to get all slambook questions
    */
   static async getAllSlambookQuestions(req, res) {
     const questions = await Question.find({});
     if (!questions && !questions.length) {
-      return res.status(404).send('Looks like there are no questions for the user to answer!');
+      return res.status(404).send(
+          'Looks like there are no questions for the user to answer!');
     }
-    return res
-      .status(200)
-      .send(_.map(questions, _.partialRight(_.pick, ['_id', 'title'])));
+    return res.status(200).send(
+        _.map(questions, _.partialRight(_.pick, [ '_id', 'title' ])));
   }
 
   /**
@@ -267,14 +273,14 @@ class Controller {
    */
   static async createSlambookQuestion(req, res) {
     let question = await Question.findOne({
-      title: new RegExp(`^${req.body.title}$`, 'i'),
+      title : new RegExp(`^${req.body.title}$`, 'i'),
     });
-  
+
     if (question) {
       return res.status(400).send('Question already exist!');
     }
     question = new Question({
-      title: req.body.title.trim(),
+      title : req.body.title.trim(),
     });
     await question.save();
     return res.status(200).send(question);
@@ -318,7 +324,7 @@ class Controller {
    */
   static async createPoll(req, res) {
     const poll = new Poll({
-      title: req.body.title,
+      title : req.body.title,
     });
 
     await poll.save();

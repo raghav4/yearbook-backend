@@ -31,7 +31,8 @@ const router = express.Router();
 // router.delete('/:id', [adminAuth], async (req, res) => {
 //   let pollQuestion = await Poll.findById(req.params.id);
 //   if (!pollQuestion) {
-//     return res.status(400).send('Question with the given id doesnt exist in the db');
+//     return res.status(400).send('Question with the given id doesnt exist in
+//     the db');
 //   }
 //   await pollQuestion.delete();
 //   pollQuestion = await Poll.find();

@@ -6,7 +6,8 @@ const mongoose = require('mongoose');
 class Middleware {
   static async userAuth(req, res, next) {
     const token = req.header('x-auth-token');
-    if (!token) return res.status(401).send('Access denied! No token Provided');
+    if (!token)
+      return res.status(401).send('Access denied! No token Provided');
 
     try {
       const decoded = jwt.verify(token, process.env.jwtPrivateKey);
@@ -49,7 +50,7 @@ class Middleware {
 
   static async validator(validator) {
     return (req, res, next) => {
-      const { error } = validator(req.body);
+      const {error} = validator(req.body);
       if (error) {
         return res.status(400).send(error.details[0].message);
       }

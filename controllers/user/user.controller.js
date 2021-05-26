@@ -16,18 +16,18 @@ const config = require('config');
 const sgMail = require('@sendgrid/mail');
 const otpGenerator = require('otp-generator');
 const imgBBUploader = require('imgbb-uploader');
-const { User } = require('../../models/user');
-const { AllowedUsers } = require('../../models/grantAccess');
-const { Message } = require('../../models/user');
-const { OTPModel } = require('../../models/otpVerification');
+const {User} = require('../../models/user');
+const {AllowedUsers} = require('../../models/grantAccess');
+const {Message} = require('../../models/user');
+const {OTPModel} = require('../../models/otpVerification');
 
 sgMail.setApiKey(config.get('SGAPI'));
 
 const generatedOTP = () => {
   return otpGenerator.generate(4, {
-    upperCase: false,
-    specialChars: false,
-    alphabets: false,
+    upperCase : false,
+    specialChars : false,
+    alphabets : false,
   });
 };
 
@@ -39,8 +39,9 @@ const generatedOTP = () => {
 //   });
 //   if (!user) return res.status(400).send('Invalid Email or Password');
 
-//   const validPassword = await bcrypt.compare(password, user.credentials.password);
-//   if (!validPassword) return res.status(401).send('Invalid Email or Password');
+//   const validPassword = await bcrypt.compare(password,
+//   user.credentials.password); if (!validPassword) return
+//   res.status(401).send('Invalid Email or Password');
 
 //   const token = user.generateAuthToken();
 //   return res.header('x-auth-token', token).send('Login Successful');
@@ -49,7 +50,8 @@ const generatedOTP = () => {
 // exports.getClassUsers = async (req, res) => {
 //   const user = await User.findById(req.user._id);
 //   const users = await User.find({
-//     $and: [{ _id: { $ne: req.user._id } }, { deptSection: user.deptSection }],
+//     $and: [{ _id: { $ne: req.user._id } }, { deptSection: user.deptSection
+//     }],
 //   });
 //   return res.send(users);
 // };
@@ -94,7 +96,8 @@ const generatedOTP = () => {
 // };
 
 // exports.verifySignUp = async (req, res) => {
-//   const { name, email, phoneNo, password, department, section, otp } = req.body;
+//   const { name, email, phoneNo, password, department, section, otp } =
+//   req.body;
 
 //   let user = await OTPModel.find().or([{ email }, { phoneNo }]);
 //   if (!user.length) return res.status(404).send('Try again');
@@ -122,12 +125,12 @@ const generatedOTP = () => {
 //   });
 
 //   const salt = await bcrypt.genSalt(15);
-//   user.credentials.password = await bcrypt.hash(user.credentials.password, salt);
-//   await user.save();
-//   await OTPModel.findOneAndRemove({ email });
+//   user.credentials.password = await bcrypt.hash(user.credentials.password,
+//   salt); await user.save(); await OTPModel.findOneAndRemove({ email });
 
 //   user.credentials = _.omit(user.credentials, 'password');
-//   user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
+//   user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles',
+//   '_id']);
 
 //   return res.status(200).send(user);
 // };
@@ -135,18 +138,19 @@ const generatedOTP = () => {
 // TODO: later
 exports.resetPassword = async (req, res) => {
   const user = await User.find().or([
-    { 'credentials.email': req.body.input },
-    { 'credentials.phoneNo': req.body.input },
+    {'credentials.email' : req.body.input},
+    {'credentials.phoneNo' : req.body.input},
   ]);
-  if (!user) return res.send('Try again later');
+  if (!user)
+    return res.send('Try again later');
   return res.send(user);
 };
 
 // exports.getUser = async (req, res) => {
 //   let user = await User.findById(req.user._id);
 //   user.credentials = _.omit(user.credentials, 'password');
-//   user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
-//   if (!user) return res.status(400).send('User not found');
+//   user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles',
+//   '_id']); if (!user) return res.status(400).send('User not found');
 
 //   return res.status(200).send(user);
 // };
@@ -154,8 +158,8 @@ exports.resetPassword = async (req, res) => {
 // exports.allUsers = async (req, res) => {
 //   const users = await User.find({ _id: { $ne: req.user._id } });
 
-//   if (!users.length) return res.status(404).send('No User is there in the DB');
-//   return res.status(200).send(users);
+//   if (!users.length) return res.status(404).send('No User is there in the
+//   DB'); return res.status(200).send(users);
 // };
 
 // exports.updateUser = async (req, res) => {
@@ -178,27 +182,28 @@ exports.resetPassword = async (req, res) => {
 //     },
 //   );
 //   user.credentials = _.omit(user.credentials, 'password');
-//   user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
-//   return res.status(200).send(user);
+//   user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles',
+//   '_id']); return res.status(200).send(user);
 // };
 
 exports.updateUserProfilePicture = async (req, res) => {
   const user = await User.findById(req.user._id);
 
-  if (!user) return res.status(404).send('No user found!');
+  if (!user)
+    return res.status(404).send('No user found!');
 
   if (req.files === null) {
     return res.status(400).send('Please send a valid file');
   }
-  const { file } = req.files;
+  const {file} = req.files;
 
   file.mv(`${__dirname}/../tmp/${file.name}`, async (err) => {
     if (err) {
       return res.status(500).send(err);
     }
     try {
-      const { url } = await imgBBUploader(
-        config.get('IMGBBKEY')`${__dirname}/../tmp/${file.name}`,
+      const {url} = await imgBBUploader(
+          config.get('IMGBBKEY') `${__dirname}/../tmp/${file.name}`,
       );
       user.info.profilePicture = url;
       await user.save();
@@ -232,8 +237,8 @@ exports.updateUserProfilePicture = async (req, res) => {
 //     sentBy: _.get(message, 'sentBy.credentials.name'),
 //   }));
 
-//   if (!messages) return res.status(404).send('No messages found for the user');
-//   return res.status(200).send(result);
+//   if (!messages) return res.status(404).send('No messages found for the
+//   user'); return res.status(200).send(result);
 // };
 
 // exports.writeMessage = async (req, res) => {
@@ -242,7 +247,8 @@ exports.updateUserProfilePicture = async (req, res) => {
 //     return res.status(400).send('sendTo cannot be equal to sender ID');
 //   }
 //   const validateReceiver = await User.findById(sendTo);
-//   if (!validateReceiver) return res.status(404).send('Invalid Receiver ID..');
+//   if (!validateReceiver) return res.status(404).send('Invalid Receiver
+//   ID..');
 
 //   // const doneAlready = await Message.findOne({ sendTo, sentBy });
 //   // if (doneAlready) await Message.findByIdAndDelete(doneAlready._id);
@@ -275,6 +281,6 @@ exports.updateUserProfilePicture = async (req, res) => {
 //     sentBy: req.user._id,
 //     sendTo: req.params.id,
 //   });
-//   if (!message) return res.status(404).send('No message for the user in DB!');
-//   return res.status(200).send('Message Deleted!');
+//   if (!message) return res.status(404).send('No message for the user in
+//   DB!'); return res.status(200).send('Message Deleted!');
 // };

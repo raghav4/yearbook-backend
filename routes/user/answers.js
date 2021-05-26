@@ -17,6 +17,7 @@ const router = express.Router();
 // );
 
 // Route to delete self answer
-// router.delete('/:id', [auth, validateObjectId], userAnswerController.deleteAnswer);
+// router.delete('/:id', [auth, validateObjectId],
+// userAnswerController.deleteAnswer);
 
 module.exports = router;
