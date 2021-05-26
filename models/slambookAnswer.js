@@ -13,7 +13,7 @@ const Answer = mongoose.model(
       ref: 'User',
       required: true,
     },
-    answer: {
+    content: {
       type: String,
       required: true,
     },
