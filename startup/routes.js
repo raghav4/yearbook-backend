@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 // const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
-const { error } = require('../middlewares');
+const {error} = require('../middlewares');
 const routes = require('../routes');
 // const { info, answers, messages } = require('../routes/user');
 // const { welcome, loginUser, signup, resetPassword } =
@@ -11,12 +11,12 @@ const routes = require('../routes');
 
 module.exports = (app) => {
   app.use(
-    cors({
-      exposedHeaders: ['Content-Length', 'x-auth-token'],
-    }),
+      cors({
+        exposedHeaders : [ 'Content-Length', 'x-auth-token' ],
+      }),
   );
   app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.urlencoded({extended : true}));
   app.use(fileUpload());
   app.use('/api', routes);
   // app.use('/api/user/login', loginUser);
