@@ -3,6 +3,7 @@ const config = require('config');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const imgBBUploader = require('imgbb-uploader');
+// eslint-disable-next-line object-curly-newline
 const { User, Answer, Message, Question, Poll, Admin } = require('../models');
 
 class Controller {
@@ -82,6 +83,33 @@ class Controller {
     user.credentials = _.omit(user.credentials, 'password');
     user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
     return res.status(200).send(user);
+  }
+
+  // eslint-disable-next-line consistent-return
+  static async updateProfilePicture(req, res) {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).send('Invalid userId');
+    }
+    if (req.files === null) {
+      return res.status(400).send('Please attach a valid file');
+    }
+    const { file } = req.files;
+    file.mv(`${__dirname}/../tmp/${file.name}`, async (err) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      try {
+        const { url } = await imgBBUploader(
+          config.get('IMGBBKEY'), `${__dirname}/../tmp/${file.name}`,
+        );
+        user.profilePicture = url;
+        await user.save();
+        return res.status(200).send(url);
+      } catch (ex) {
+        return res.status(500).send(ex.message);
+      }
+    });
   }
 
   /**

@@ -15,6 +15,9 @@ router.post('/user/signup', [adminAuth, validator(Validation.signup)], Controlle
 // Route to get the logged in user
 // router.get('/user', Controller)
 
+// Route to update the user's profile picture
+router.patch('/user/update-profile-picture', [userAuth], Controller.updateProfilePicture);
+
 // Route to get all the others users of the logged in user class.
 router.get('/users/class', userAuth, Controller.getAllUsersOfAClass);
 
