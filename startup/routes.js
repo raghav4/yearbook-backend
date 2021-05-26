@@ -1,7 +1,9 @@
+const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
-// const { error } = require('../middlewares');
+const { error } = require('../middlewares');
+const routes = require('../routes');
 // const { info, answers, messages } = require('../routes/user');
 // const { welcome, loginUser, signup, resetPassword } = require('../routes/public');
 // const { loginAdmin, adminRegister, userQuestions, polls } = require('../routes/admin');
@@ -12,9 +14,10 @@ module.exports = (app) => {
       exposedHeaders: ['Content-Length', 'x-auth-token'],
     }),
   );
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(fileUpload());
+  app.use('/api', routes);
   // app.use('/api/user/login', loginUser);
   // app.use('/api/user/signup', signup);
   // app.use('/api/user/info', info);
@@ -28,4 +31,5 @@ module.exports = (app) => {
   // app.use('/api/admin/polls', polls);
   // app.use('/', welcome);
   // app.use(error);
+  app.use(error);
 };
