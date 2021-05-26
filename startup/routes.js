@@ -32,5 +32,4 @@ module.exports = (app) => {
   // app.use('/api/admin/polls', polls);
   // app.use('/', welcome);
   // app.use(error);
-  app.use(error);
 };
