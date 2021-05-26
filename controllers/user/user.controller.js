@@ -54,84 +54,85 @@ const generatedOTP = () => {
 //   return res.send(users);
 // };
 
-exports.validateSignUpAccess = async (req, res) => {
-  const { email, phoneNo } = req.body;
+// exports.validateSignUpAccess = async (req, res) => {
+//   const { email, phoneNo } = req.body;
 
-  const allowedPhoneNo = await AllowedUsers.findOne({
-    phoneNumber: phoneNo,
-  });
-  if (!allowedPhoneNo) return res.status(400).send('Number not registered');
+//   const allowedPhoneNo = await AllowedUsers.findOne({
+//     phoneNumber: phoneNo,
+//   });
+//   if (!allowedPhoneNo) return res.status(400).send('Number not registered');
 
-  const user = await User.findOne({
-    'credentials.email': email,
-  });
+//   const user = await User.findOne({
+//     'credentials.email': email,
+//   });
 
-  if (user) return res.status(400).send('Email ID is already registered');
+//   if (user) return res.status(400).send('Email ID is already registered');
 
-  let otp = await OTPModel.findOne({
-    email,
-    phoneNo,
-  });
-  if (!otp) {
-    otp = new OTPModel({
-      otp: generatedOTP(),
-      email,
-      phoneNo,
-    });
-    await otp.save();
-  }
+//   let otp = await OTPModel.findOne({
+//     email,
+//     phoneNo,
+//   });
+//   if (!otp) {
+//     otp = new OTPModel({
+//       otp: generatedOTP(),
+//       email,
+//       phoneNo,
+//     });
+//     await otp.save();
+//   }
 
-  await sgMail.send({
-    from: 'Yearbook<no-reply@yearbook.me',
-    to: `${email}`,
-    subject: 'Yearbook Email Verification - One Time Password',
-    html: `Dear User, <br> Thank you for signing up for <b>Yearbook</b>.
-    Please use <b>${otp.otp}</b> to complete the Yearbook Verification.
-    <br> Thank you!`,
-  });
+//   await sgMail.send({
+//     from: 'Yearbook<no-reply@yearbook.me',
+//     to: `${email}`,
+//     subject: 'Yearbook Email Verification - One Time Password',
+//     html: `Dear User, <br> Thank you for signing up for <b>Yearbook</b>.
+//     Please use <b>${otp.otp}</b> to complete the Yearbook Verification.
+//     <br> Thank you!`,
+//   });
 
-  return res.status(200).send('Verify your Email now!');
-};
+//   return res.status(200).send('Verify your Email now!');
+// };
 
-exports.verifySignUp = async (req, res) => {
-  const { name, email, phoneNo, password, department, section, otp } = req.body;
+// exports.verifySignUp = async (req, res) => {
+//   const { name, email, phoneNo, password, department, section, otp } = req.body;
 
-  let user = await OTPModel.find().or([{ email }, { phoneNo }]);
-  if (!user.length) return res.status(404).send('Try again');
+//   let user = await OTPModel.find().or([{ email }, { phoneNo }]);
+//   if (!user.length) return res.status(404).send('Try again');
 
-  user = await OTPModel.findOne({ email, phoneNo });
+//   user = await OTPModel.findOne({ email, phoneNo });
 
-  if (!user) return res.status(400).send('Invalid Email or Phone Number');
+//   if (!user) return res.status(400).send('Invalid Email or Phone Number');
 
-  if (!_.isEqual(otp, user.otp)) {
-    return res.status(401).send('Invalid OTP Entered');
-  }
+//   if (!_.isEqual(otp, user.otp)) {
+//     return res.status(401).send('Invalid OTP Entered');
+//   }
 
-  user = new User({
-    credentials: {
-      name,
-      phoneNo,
-      email,
-      password,
-      // username: `${name.split(' ').join('')}`,
-    },
-    deptSection: {
-      department,
-      section,
-    },
-  });
+//   user = new User({
+//     credentials: {
+//       name,
+//       phoneNo,
+//       email,
+//       password,
+//       // username: `${name.split(' ').join('')}`,
+//     },
+//     deptSection: {
+//       department,
+//       section,
+//     },
+//   });
 
-  const salt = await bcrypt.genSalt(15);
-  user.credentials.password = await bcrypt.hash(user.credentials.password, salt);
-  await user.save();
-  await OTPModel.findOneAndRemove({ email });
+//   const salt = await bcrypt.genSalt(15);
+//   user.credentials.password = await bcrypt.hash(user.credentials.password, salt);
+//   await user.save();
+//   await OTPModel.findOneAndRemove({ email });
 
-  user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
+//   user.credentials = _.omit(user.credentials, 'password');
+//   user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
 
-  return res.status(200).send(user);
-};
+//   return res.status(200).send(user);
+// };
 
+// TODO: later
 exports.resetPassword = async (req, res) => {
   const user = await User.find().or([
     { 'credentials.email': req.body.input },
@@ -256,24 +257,24 @@ exports.updateUserProfilePicture = async (req, res) => {
 //   return res.send(content);
 // };
 
-exports.updateMessage = async (req, res) => {
-  const filter = {
-    sendTo: req.body.sendTo,
-    sentBy: req.user._id,
-  };
-  const message = await Message.findOneAndUpdate(
-    filter,
-    { message: req.body.message },
-    { new: true, upsert: true },
-  );
-  return res.status(200).send(message);
-};
+// exports.updateMessage = async (req, res) => {
+//   const filter = {
+//     sendTo: req.body.sendTo,
+//     sentBy: req.user._id,
+//   };
+//   const message = await Message.findOneAndUpdate(
+//     filter,
+//     { message: req.body.message },
+//     { new: true, upsert: true },
+//   );
+//   return res.status(200).send(message);
+// };
 
-exports.deleteMessage = async (req, res) => {
-  const message = await Message.findOneAndDelete({
-    sentBy: req.user._id,
-    sendTo: req.params.id,
-  });
-  if (!message) return res.status(404).send('No message for the user in DB!');
-  return res.status(200).send('Message Deleted!');
-};
+// exports.deleteMessage = async (req, res) => {
+//   const message = await Message.findOneAndDelete({
+//     sentBy: req.user._id,
+//     sendTo: req.params.id,
+//   });
+//   if (!message) return res.status(404).send('No message for the user in DB!');
+//   return res.status(200).send('Message Deleted!');
+// };
