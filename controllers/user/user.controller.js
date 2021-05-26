@@ -227,6 +227,7 @@ exports.getMessages = async (req, res) => {
   const result = messages.map((message) => ({
     ..._.pick(message, ['message']),
     ..._.pick(message, ['_id']),
+    sendTo: _.get(message, 'sendTo.credentials.name'),
     sentBy: _.get(message, 'sentBy.credentials.name'),
   }));
 
