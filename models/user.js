@@ -30,6 +30,7 @@ const Schema = new mongoose.Schema({
       values: ['CSE', 'IT', 'MAE', 'ECE', 'EEE'],
       message: 'The allowed departments are CSE, IT, MAE, ECE, EEE.',
     },
+    uppercase: true,
     required: true,
   },
   section: {
@@ -38,6 +39,7 @@ const Schema = new mongoose.Schema({
       values: ['A', 'B', 'C'],
       message: 'Allowed Sections are A, B & C',
     },
+    uppercase: true,
     required: true,
   },
   socialHandles: {
@@ -48,12 +50,13 @@ const Schema = new mongoose.Schema({
     facebook: { type: String, default: '' },
     snapchat: { type: String, default: '' },
   },
+}, {
+  collection: 'User',
 });
 
 // eslint-disable-next-line func-names
 Schema.methods.generateAuthToken = function () {
   return jwt.sign({ _id: this._id }, process.env.jwtPrivateKey);
 };
-const User = mongoose.model('User', Schema);
 
-exports.User = User;
+module.exports = mongoose.model('User', Schema);
