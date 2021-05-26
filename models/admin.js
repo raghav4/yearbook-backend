@@ -11,7 +11,8 @@ const Schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isAdmin: { // TODO: #35 Remove This Property
+  isAdmin: {
+    // TODO: #35 Remove This Property
     type: Boolean,
     default: true,
   },
@@ -24,7 +25,11 @@ const Schema = new mongoose.Schema({
 // eslint-disable-next-line func-names
 Schema.methods.generateAuthToken = function () {
   return jwt.sign(
-    { _id: this._id, isSuperAdmin: this.isSuperAdmin, isAdmin: this.isAdmin },
+    {
+      _id: this._id,
+      isSuperAdmin: this.isSuperAdmin,
+      isAdmin: this.isAdmin,
+    },
     config.get('jwtPrivateKey'),
   );
 };

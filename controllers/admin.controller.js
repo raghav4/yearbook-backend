@@ -81,7 +81,8 @@ exports.grantAccess = async (req, res) => {
 // exports.addPollQuestion = async (req, res) => {};
 
 exports.deleteQuestion = async (req, res) => {
-  // #TODO: #20 Do not delete/update question if anyone of the people has answered
+  // #TODO: #20 Do not delete/update question if anyone of the people has
+  // answered
   const question = await Question.findById(req.params.id);
   if (!question) {
     return res.status(400).send('No Question exists with the Given id');
