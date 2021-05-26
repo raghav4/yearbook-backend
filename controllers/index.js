@@ -285,7 +285,7 @@ class Controller {
    */
   static async getAllSlambookQuestions(req, res) {
     const questions = await Question.find({});
-    if (!questions && !questions.length) {
+    if (!questions) {
       return res
         .status(404)
         .send('Looks like there are no questions for the user to answer!');
