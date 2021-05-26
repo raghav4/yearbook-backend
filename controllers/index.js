@@ -48,14 +48,21 @@ class Controller {
       .send(_.pick(user, ['userId', 'name', 'department', 'section']));
   }
 
-  static async getUserById(req, res) {
-    let user = await User.findById(req.user._id);
-    user.credentials = _.omit(user.credentials, 'password');
-    user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
+  static async getLoggedInUser(req, res) {
+    const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).send('User not found!');
     }
-    return res.status(200).send(user);
+    delete user.password;
+    return res.status(200).send(_.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio']));
+  }
+
+  static async getUserByUserId(req, res) {
+    const user = await User.findOne({ userId: req.params.id });
+    if (!user) {
+      return res.status(404).send('Invalid User Id');
+    }
+    return res.status(200).send(_.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio']));
   }
 
   // TODO: #40 Fix user metadata

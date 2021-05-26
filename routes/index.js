@@ -12,8 +12,11 @@ router.post('/user/login', validator(Validation.login), Controller.userLogIn);
 // Route to signup a user
 router.post('/user/signup', [adminAuth, validator(Validation.signup)], Controller.userSignUp);
 
-// Route to get the logged in user
-// router.get('/user', Controller)
+// Route to get logged-in User
+router.get('/user', userAuth, Controller.getLoggedInUser);
+
+// Route to get a user by id
+router.get('/user/:id', userAuth, Controller.getUserByUserId);
 
 // Route to update the user's profile picture
 router.patch('/user/update-profile-picture', [userAuth], Controller.updateProfilePicture);
