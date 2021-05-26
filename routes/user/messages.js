@@ -14,9 +14,11 @@ const router = express.Router();
 // router.get('/:id', [auth, validateObjectId], userController.getUserMessage);
 
 // Route to add/update the user message
-// router.put('/', [auth, validator(validateMessage)], userController.updateMessage);
+// router.put('/', [auth, validator(validateMessage)],
+// userController.updateMessage);
 
 // Route to delete the message for another user
-// router.delete('/:id', [auth, validateObjectId], userController.deleteMessage);
+// router.delete('/:id', [auth, validateObjectId],
+// userController.deleteMessage);
 
 module.exports = router;

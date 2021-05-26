@@ -5,8 +5,9 @@ const fileUpload = require('express-fileupload');
 const { error } = require('../middlewares');
 const routes = require('../routes');
 // const { info, answers, messages } = require('../routes/user');
-// const { welcome, loginUser, signup, resetPassword } = require('../routes/public');
-// const { loginAdmin, adminRegister, userQuestions, polls } = require('../routes/admin');
+// const { welcome, loginUser, signup, resetPassword } =
+// require('../routes/public'); const { loginAdmin, adminRegister,
+// userQuestions, polls } = require('../routes/admin');
 
 module.exports = (app) => {
   app.use(

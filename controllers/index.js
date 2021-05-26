@@ -42,7 +42,9 @@ class Controller {
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
-    return res.status(201).send(_.pick(user, ['userId', 'name', 'department', 'section']));
+    return res
+      .status(201)
+      .send(_.pick(user, ['userId', 'name', 'department', 'section']));
   }
 
   static async getUserById(req, res) {
@@ -87,10 +89,7 @@ class Controller {
   static async getAllUsersOfAClass(req, res) {
     const user = await User.findById(req.user._id);
     const users = await User.find({
-      $and: [
-        { _id: { $ne: req.user._id } },
-        { deptSection: user.deptSection },
-      ],
+      $and: [{ _id: { $ne: req.user._id } }, { deptSection: user.deptSection }],
     });
     return res.status(200).send(users);
   }
@@ -213,7 +212,7 @@ class Controller {
   }
 
   /**
-   * Function to add a new answer or update existing one. 
+   * Function to add a new answer or update existing one.
    */
   static async upsertAnswer(req, res) {
     const { titleId, content } = req.body;
@@ -224,7 +223,6 @@ class Controller {
     );
     return res.status(200).send(answer);
   }
-
 
   /**
    * Function to delete a slambook answer.
@@ -248,14 +246,15 @@ class Controller {
     return res.status(200).send(question);
   }
 
-
   /**
    * Function to get all slambook questions
    */
   static async getAllSlambookQuestions(req, res) {
     const questions = await Question.find({});
     if (!questions && !questions.length) {
-      return res.status(404).send('Looks like there are no questions for the user to answer!');
+      return res
+        .status(404)
+        .send('Looks like there are no questions for the user to answer!');
     }
     return res
       .status(200)
@@ -269,7 +268,7 @@ class Controller {
     let question = await Question.findOne({
       title: new RegExp(`^${req.body.title}$`, 'i'),
     });
-  
+
     if (question) {
       return res.status(400).send('Question already exist!');
     }
