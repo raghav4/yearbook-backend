@@ -3,7 +3,7 @@ const config = require('config');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const imgBBUploader = require('imgbb-uploader');
-const { User, Answer, Message, Question } = require('../models');
+const { User, Answer, Message, Question, Poll } = require('../models');
 
 class Controller {
   static async userLogIn(req, res) {
@@ -162,7 +162,7 @@ class Controller {
   /**
    * Function to get all messages of a user by receiverId.
    */
-  static async getAllMessagesReceivedByUserId(req, res) {
+  static async getAllReceivedMessages(req, res) {
     const messages = await Message.find({
       receiverId: req.user._id,
       isDeleted: false,
@@ -291,6 +291,50 @@ class Controller {
     }
     await question.delete();
     return res.status(200).send('Successfully deleted question!');
+  }
+
+  /**
+   * Function to get a poll by pollId
+   */
+  static async getPollById(req, res) {
+    const poll = await Poll.findById(req.params.id);
+    if (!poll) {
+      return res.status(404).send('Invalid Poll Id!');
+    }
+    return res.status(200).send(poll);
+  }
+
+  /**
+   * Function to get all polls.
+   * !! No 404 here.
+   */
+  static async getAllPolls(req, res) {
+    const polls = await Poll.find({});
+    return res.status(200).send(polls);
+  }
+
+  /**
+   * Function to create a new poll.
+   */
+  static async createPoll(req, res) {
+    const poll = new Poll({
+      title: req.body.title,
+    });
+
+    await poll.save();
+    return res.status(201).send('Successfully created poll!');
+  }
+
+  /**
+   * Function to delete a poll.
+   */
+  static async deletePoll(req, res) {
+    const poll = await Poll.findById(req.params.id);
+    if (!poll) {
+      return res.status(400).send('Invalid Poll Id');
+    }
+    await poll.delete();
+    return res.status(200).send('Successfully deleted poll!');
   }
 }
 
