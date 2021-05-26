@@ -31,28 +31,28 @@ const generatedOTP = () => {
   });
 };
 
-exports.loginUser = async (req, res) => {
-  const { email, password } = req.body;
+// exports.loginUser = async (req, res) => {
+//   const { email, password } = req.body;
 
-  const user = await User.findOne({
-    'credentials.email': email,
-  });
-  if (!user) return res.status(400).send('Invalid Email or Password');
+//   const user = await User.findOne({
+//     'credentials.email': email,
+//   });
+//   if (!user) return res.status(400).send('Invalid Email or Password');
 
-  const validPassword = await bcrypt.compare(password, user.credentials.password);
-  if (!validPassword) return res.status(401).send('Invalid Email or Password');
+//   const validPassword = await bcrypt.compare(password, user.credentials.password);
+//   if (!validPassword) return res.status(401).send('Invalid Email or Password');
 
-  const token = user.generateAuthToken();
-  return res.header('x-auth-token', token).send('Login Successful');
-};
+//   const token = user.generateAuthToken();
+//   return res.header('x-auth-token', token).send('Login Successful');
+// };
 
-exports.getClassUsers = async (req, res) => {
-  const user = await User.findById(req.user._id);
-  const users = await User.find({
-    $and: [{ _id: { $ne: req.user._id } }, { deptSection: user.deptSection }],
-  });
-  return res.send(users);
-};
+// exports.getClassUsers = async (req, res) => {
+//   const user = await User.findById(req.user._id);
+//   const users = await User.find({
+//     $and: [{ _id: { $ne: req.user._id } }, { deptSection: user.deptSection }],
+//   });
+//   return res.send(users);
+// };
 
 exports.validateSignUpAccess = async (req, res) => {
   const { email, phoneNo } = req.body;
@@ -141,45 +141,45 @@ exports.resetPassword = async (req, res) => {
   return res.send(user);
 };
 
-exports.getUser = async (req, res) => {
-  let user = await User.findById(req.user._id);
-  user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
-  if (!user) return res.status(400).send('User not found');
+// exports.getUser = async (req, res) => {
+//   let user = await User.findById(req.user._id);
+//   user.credentials = _.omit(user.credentials, 'password');
+//   user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
+//   if (!user) return res.status(400).send('User not found');
 
-  return res.status(200).send(user);
-};
+//   return res.status(200).send(user);
+// };
 
-exports.allUsers = async (req, res) => {
-  const users = await User.find({ _id: { $ne: req.user._id } });
+// exports.allUsers = async (req, res) => {
+//   const users = await User.find({ _id: { $ne: req.user._id } });
 
-  if (!users.length) return res.status(404).send('No User is there in the DB');
-  return res.status(200).send(users);
-};
+//   if (!users.length) return res.status(404).send('No User is there in the DB');
+//   return res.status(200).send(users);
+// };
 
-exports.updateUser = async (req, res) => {
-  let user = await User.findById(req.user._id);
-  if (!user) return res.status(404).send('User not found');
+// exports.updateUser = async (req, res) => {
+//   let user = await User.findById(req.user._id);
+//   if (!user) return res.status(404).send('User not found');
 
-  const { info, socialHandles } = req.body;
+//   const { info, socialHandles } = req.body;
 
-  user = await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      info: {
-        bio: info.bio,
-        profilePicture: user.info.profilePicture,
-      },
-      socialHandles,
-    },
-    {
-      new: true,
-    },
-  );
-  user.credentials = _.omit(user.credentials, 'password');
-  user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
-  return res.status(200).send(user);
-};
+//   user = await User.findByIdAndUpdate(
+//     req.user._id,
+//     {
+//       info: {
+//         bio: info.bio,
+//         profilePicture: user.info.profilePicture,
+//       },
+//       socialHandles,
+//     },
+//     {
+//       new: true,
+//     },
+//   );
+//   user.credentials = _.omit(user.credentials, 'password');
+//   user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
+//   return res.status(200).send(user);
+// };
 
 exports.updateUserProfilePicture = async (req, res) => {
   const user = await User.findById(req.user._id);
@@ -208,53 +208,53 @@ exports.updateUserProfilePicture = async (req, res) => {
   });
 };
 
-exports.getUserMessage = async (req, res) => {
-  const message = await Message.findOne({
-    sendTo: req.params.id,
-    sentBy: req.user._id,
-  });
+// exports.getUserMessage = async (req, res) => {
+//   const message = await Message.findOne({
+//     sendTo: req.params.id,
+//     sentBy: req.user._id,
+//   });
 
-  if (!message) return res.status(404).send('No message found');
+//   if (!message) return res.status(404).send('No message found');
 
-  return res.status(200).send(message);
-};
+//   return res.status(200).send(message);
+// };
 
-exports.getMessages = async (req, res) => {
-  const messages = await Message.find({
-    sendTo: req.user._id,
-  }).populate('sendTo sentBy');
+// exports.getMessages = async (req, res) => {
+//   const messages = await Message.find({
+//     sendTo: req.user._id,
+//   }).populate('sendTo sentBy');
 
-  const result = messages.map((message) => ({
-    ..._.pick(message, ['message']),
-    ..._.pick(message, ['_id']),
-    sendTo: _.get(message, 'sendTo.credentials.name'),
-    sentBy: _.get(message, 'sentBy.credentials.name'),
-  }));
+//   const result = messages.map((message) => ({
+//     ..._.pick(message, ['message']),
+//     ..._.pick(message, ['_id']),
+//     sendTo: _.get(message, 'sendTo.credentials.name'),
+//     sentBy: _.get(message, 'sentBy.credentials.name'),
+//   }));
 
-  if (!messages) return res.status(404).send('No messages found for the user');
-  return res.status(200).send(result);
-};
+//   if (!messages) return res.status(404).send('No messages found for the user');
+//   return res.status(200).send(result);
+// };
 
-exports.writeMessage = async (req, res) => {
-  const { sendTo, message } = req.body;
-  if (_.isEqual(sendTo, req.user._id)) {
-    return res.status(400).send('sendTo cannot be equal to sender ID');
-  }
-  const validateReceiver = await User.findById(sendTo);
-  if (!validateReceiver) return res.status(404).send('Invalid Receiver ID..');
+// exports.writeMessage = async (req, res) => {
+//   const { sendTo, message } = req.body;
+//   if (_.isEqual(sendTo, req.user._id)) {
+//     return res.status(400).send('sendTo cannot be equal to sender ID');
+//   }
+//   const validateReceiver = await User.findById(sendTo);
+//   if (!validateReceiver) return res.status(404).send('Invalid Receiver ID..');
 
-  // const doneAlready = await Message.findOne({ sendTo, sentBy });
-  // if (doneAlready) await Message.findByIdAndDelete(doneAlready._id);
+//   // const doneAlready = await Message.findOne({ sendTo, sentBy });
+//   // if (doneAlready) await Message.findByIdAndDelete(doneAlready._id);
 
-  let content = new Message({
-    sendTo,
-    sentBy: req.user._id,
-    message,
-  });
-  await content.save();
-  content = content.populate('sendTo sendBy');
-  return res.send(content);
-};
+//   let content = new Message({
+//     sendTo,
+//     sentBy: req.user._id,
+//     message,
+//   });
+//   await content.save();
+//   content = content.populate('sendTo sendBy');
+//   return res.send(content);
+// };
 
 exports.updateMessage = async (req, res) => {
   const filter = {
