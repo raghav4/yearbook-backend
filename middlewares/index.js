@@ -47,7 +47,7 @@ class Middleware {
     return next();
   }
 
-  static async validator(validator) {
+  static async validatorHelper(validator) {
     return (req, res, next) => {
       const { error } = validator(req.body);
       if (error) {
