@@ -2,7 +2,7 @@ const express = require('express');
 const Controller = require('../controllers');
 const Validation = require('../validation');
 const validator = require('../middlewares/validator');
-const { userAuth, validateObjectId } = require('../middlewares');
+const { userAuth, validateObjectId, adminAuth } = require('../middlewares');
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/user/login', validator(Validation.login), Controller.userLogIn);
 
 // Route to signup a user
-router.post('/user/signup', validator(Validation.signup), Controller.userSignUp);
+router.post('/user/signup', [adminAuth, validator(Validation.signup)], Controller.userSignUp);
 
 // Route to get the logged in user
 // router.get('/user', Controller)
@@ -47,7 +47,7 @@ router.get('/messages', userAuth, Controller.getAllReceivedMessages);
 router.get('/message/:id', [userAuth, validateObjectId], Controller.getMessageByReceiverId);
 
 // Route to update a message
-router.put('/message/new', [userAuth, validator(Validation.message)], Controller.updateMessage);
+router.put('/message/new', [adminAuth, validator(Validation.message)], Controller.updateMessage);
 
 // Route to delete a message
 router.delete('/message/delete/:id', [userAuth, validateObjectId], Controller.deleteMessage);
@@ -79,9 +79,16 @@ router.get('/poll/:id', [userAuth, validateObjectId], Controller.getPollById);
 router.get('/polls/all', userAuth, Controller.getAllPolls);
 
 // Route to create a new poll
-router.post('/poll/new', [userAuth, validator(Validation.title)], Controller.createPoll);
+router.post('/poll/new', [adminAuth, validator(Validation.title)], Controller.createPoll);
 
 // Route to delete a poll by pollId
 router.delete('/poll/delete/:id', [userAuth, validateObjectId], Controller.deletePoll);
+
+/**
+ * ADMIN
+ */
+
+// Route to login an admin
+router.post('/admin/login', Controller.adminLogIn);
 
 module.exports = router;
