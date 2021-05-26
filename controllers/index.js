@@ -3,7 +3,7 @@ const config = require('config');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const imgBBUploader = require('imgbb-uploader');
-const { User, Answer, Message, Question, Poll } = require('../models');
+const { User, Answer, Message, Question, Poll, Admin } = require('../models');
 
 class Controller {
   static async userLogIn(req, res) {
@@ -337,6 +337,26 @@ class Controller {
     }
     await poll.delete();
     return res.status(200).send('Successfully deleted poll!');
+  }
+
+  /**
+   * Function to login an admin
+   */
+  static async adminLogIn(req, res) {
+    const { username, password } = req.body;
+
+    const admin = await Admin.findOne({ username });
+    if (!admin) {
+      return res.status(400).send('Invalid username or Password');
+    }
+
+    const validatePassword = await bcrypt.compare(password, admin.password);
+    if (!validatePassword) {
+      return res.status(401).send('Invalid username or Password');
+    }
+
+    const token = admin.generateAuthToken();
+    return res.header('x-auth-token', token).send('Successfully Logged-in!');
   }
 }
 

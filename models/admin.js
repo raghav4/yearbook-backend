@@ -11,15 +11,6 @@ const Schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isAdmin: {
-    // TODO: #35 Remove This Property
-    type: Boolean,
-    default: true,
-  },
-  isSuperAdmin: {
-    type: Boolean,
-    default: false,
-  },
 });
 
 // eslint-disable-next-line func-names
@@ -27,13 +18,10 @@ Schema.methods.generateAuthToken = function () {
   return jwt.sign(
     {
       _id: this._id,
-      isSuperAdmin: this.isSuperAdmin,
-      isAdmin: this.isAdmin,
+      isAdmin: true,
     },
     config.get('jwtPrivateKey'),
   );
 };
 
-const Admin = mongoose.model('Admin', Schema);
-
-module.exports = Admin;
+module.exports = mongoose.model('Admin', Schema);
