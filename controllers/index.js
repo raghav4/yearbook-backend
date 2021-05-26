@@ -42,7 +42,7 @@ class Controller {
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
-    return res.status(201).send(_.pick(user, ['userId', 'name', 'department', 'section'])));
+    return res.status(201).send(_.pick(user, ['userId', 'name', 'department', 'section']));
   }
 
   static async getUserById(req, res) {
