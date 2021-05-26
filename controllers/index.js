@@ -54,7 +54,7 @@ class Controller {
       return res.status(404).send('User not found!');
     }
     delete user.password;
-    return res.status(200).send(_.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio']));
+    return res.status(200).send(_.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles']));
   }
 
   static async getUserByUserId(req, res) {
@@ -62,34 +62,30 @@ class Controller {
     if (!user) {
       return res.status(404).send('Invalid User Id');
     }
-    return res.status(200).send(_.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio']));
+    return res.status(200).send(_.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles']));
   }
 
-  // TODO: #40 Fix user metadata
-
+  /**
+   * Function to update user details (bio, Social media handles!)
+   */
   static async updateUserDetails(req, res) {
     let user = await User.findById(req.user._id);
     if (!user) {
       return res.status(400).send('Invalid User Id');
     }
-    const { info, socialHandles } = req.body;
+    const { bio, socialHandles } = req.body;
 
     user = await User.findByIdAndUpdate(
       req.user._id,
       {
-        info: {
-          bio: info.bio,
-          profilePicture: user.info.profilePicture,
-        },
+        bio,
         socialHandles,
       },
       {
         new: true,
       },
     );
-    user.credentials = _.omit(user.credentials, 'password');
-    user = _.pick(user, ['credentials', 'info', 'deptSection', 'socialHandles', '_id']);
-    return res.status(200).send(user);
+    return res.status(200).send(_.pick(user, ['_id', 'name', 'userId', 'profilePicture', 'bio', 'socialHandles']));
   }
 
   // eslint-disable-next-line consistent-return
@@ -129,7 +125,7 @@ class Controller {
       $and: [
         { _id: { $ne: req.user._id } }, { department: user.department, section: user.section }],
     });
-    return res.status(200).send(users.map((datum) => _.pick(datum, ['name', 'userId', 'profilePicture', '_id', 'bio'])));
+    return res.status(200).send(users.map((datum) => _.pick(datum, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles'])));
   }
 
   /**
@@ -138,7 +134,7 @@ class Controller {
    */
   static async getAllUsers(req, res) {
     const users = await User.find({ _id: { $ne: req.user._id } });
-    return res.status(200).send(users.map((datum) => _.pick(datum, ['name', 'userId', 'profilePicture', '_id', 'bio'])));
+    return res.status(200).send(users.map((datum) => _.pick(datum, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles'])));
   }
 
   /**
