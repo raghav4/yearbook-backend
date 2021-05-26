@@ -10,7 +10,11 @@ const router = express.Router();
 router.post('/user/login', validator(Validation.login), Controller.userLogIn);
 
 // Route to signup a user
-router.post('/user/signup', [adminAuth, validator(Validation.signup)], Controller.userSignUp);
+router.post(
+  '/user/signup',
+  [adminAuth, validator(Validation.signup)],
+  Controller.userSignUp,
+);
 
 // Route to get logged-in User
 router.get('/user', userAuth, Controller.getLoggedInUser);
@@ -38,10 +42,18 @@ router.patch('/user/update', Controller.updateUserDetails);
 router.get('/answers', userAuth, Controller.getAllAnswersOfAUser);
 
 // Route to upsert (Add/Update) an answer for the logged-in user.
-router.post('/answer/new', [userAuth, validator(Validation.answer)], Controller.upsertAnswer);
+router.post(
+  '/answer/new',
+  [userAuth, validator(Validation.answer)],
+  Controller.upsertAnswer,
+);
 
 // Route to delete an answer for the logged-in user.
-router.delete('/answer/delete/:id', [userAuth, validateObjectId], Controller.deleteAnswer);
+router.delete(
+  '/answer/delete/:id',
+  [userAuth, validateObjectId],
+  Controller.deleteAnswer,
+);
 
 /**
  * MESSAGES
@@ -50,13 +62,25 @@ router.delete('/answer/delete/:id', [userAuth, validateObjectId], Controller.del
 router.get('/messages', userAuth, Controller.getAllReceivedMessages);
 
 // Route to get a Message by receiverId
-router.get('/message/:id', [userAuth, validateObjectId], Controller.getMessageByReceiverId);
+router.get(
+  '/message/:id',
+  [userAuth, validateObjectId],
+  Controller.getMessageByReceiverId,
+);
 
 // Route to update a message
-router.put('/message/new', [adminAuth, validator(Validation.message)], Controller.updateMessage);
+router.put(
+  '/message/new',
+  [adminAuth, validator(Validation.message)],
+  Controller.updateMessage,
+);
 
 // Route to delete a message
-router.delete('/message/delete/:id', [userAuth, validateObjectId], Controller.deleteMessage);
+router.delete(
+  '/message/delete/:id',
+  [userAuth, validateObjectId],
+  Controller.deleteMessage,
+);
 
 /**
  * SLAMBOOK QUESTIONS
@@ -66,13 +90,25 @@ router.delete('/message/delete/:id', [userAuth, validateObjectId], Controller.de
 router.get('/questions/all', userAuth, Controller.getAllSlambookQuestions);
 
 // Route to get a question by id.
-router.get('/question/:id', [userAuth, validateObjectId], Controller.getSlambookQuestionById);
+router.get(
+  '/question/:id',
+  [userAuth, validateObjectId],
+  Controller.getSlambookQuestionById,
+);
 
 // Route to create a new question.
-router.post('/question/new', [userAuth, validator(Validation.title)], Controller.createSlambookQuestion);
+router.post(
+  '/question/new',
+  [userAuth, validator(Validation.title)],
+  Controller.createSlambookQuestion,
+);
 
 // Route to delete a question
-router.delete('/question/delete/:id', [userAuth, validateObjectId], Controller.deleteSlambookQuestion);
+router.delete(
+  '/question/delete/:id',
+  [userAuth, validateObjectId],
+  Controller.deleteSlambookQuestion,
+);
 
 /**
  * POLLS

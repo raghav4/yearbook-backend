@@ -54,7 +54,11 @@ class Controller {
       return res.status(404).send('User not found!');
     }
     delete user.password;
-    return res.status(200).send(_.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles']));
+    return res
+      .status(200)
+      .send(
+        _.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles']),
+      );
   }
 
   static async getUserByUserId(req, res) {
@@ -62,7 +66,11 @@ class Controller {
     if (!user) {
       return res.status(404).send('Invalid User Id');
     }
-    return res.status(200).send(_.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles']));
+    return res
+      .status(200)
+      .send(
+        _.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles']),
+      );
   }
 
   /**
@@ -85,7 +93,11 @@ class Controller {
         new: true,
       },
     );
-    return res.status(200).send(_.pick(user, ['_id', 'name', 'userId', 'profilePicture', 'bio', 'socialHandles']));
+    return res
+      .status(200)
+      .send(
+        _.pick(user, ['_id', 'name', 'userId', 'profilePicture', 'bio', 'socialHandles']),
+      );
   }
 
   // eslint-disable-next-line consistent-return
@@ -104,7 +116,8 @@ class Controller {
       }
       try {
         const { url } = await imgBBUploader(
-          config.get('IMGBBKEY'), `${__dirname}/../tmp/${file.name}`,
+          config.get('IMGBBKEY'),
+          `${__dirname}/../tmp/${file.name}`,
         );
         user.profilePicture = url;
         await user.save();
@@ -123,9 +136,24 @@ class Controller {
     const user = await User.findById(req.user._id);
     const users = await User.find({
       $and: [
-        { _id: { $ne: req.user._id } }, { department: user.department, section: user.section }],
+        { _id: { $ne: req.user._id } },
+        { department: user.department, section: user.section },
+      ],
     });
-    return res.status(200).send(users.map((datum) => _.pick(datum, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles'])));
+    return res
+      .status(200)
+      .send(
+        users.map((datum) =>
+          _.pick(datum, [
+            'name',
+            'userId',
+            'profilePicture',
+            '_id',
+            'bio',
+            'socialHandles',
+          ]),
+        ),
+      );
   }
 
   /**
@@ -134,7 +162,20 @@ class Controller {
    */
   static async getAllUsers(req, res) {
     const users = await User.find({ _id: { $ne: req.user._id } });
-    return res.status(200).send(users.map((datum) => _.pick(datum, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles'])));
+    return res
+      .status(200)
+      .send(
+        users.map((datum) =>
+          _.pick(datum, [
+            'name',
+            'userId',
+            'profilePicture',
+            '_id',
+            'bio',
+            'socialHandles',
+          ]),
+        ),
+      );
   }
 
   /**
