@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-const adminSchema = new mongoose.Schema({
+const Schema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -11,7 +11,7 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isAdmin: {
+  isAdmin: { // TODO: #35 Remove This Property
     type: Boolean,
     default: true,
   },
@@ -21,13 +21,14 @@ const adminSchema = new mongoose.Schema({
   },
 });
 
-adminSchema.methods.generateAuthToken = function () {
+// eslint-disable-next-line func-names
+Schema.methods.generateAuthToken = function () {
   return jwt.sign(
     { _id: this._id, isSuperAdmin: this.isSuperAdmin, isAdmin: this.isAdmin },
     config.get('jwtPrivateKey'),
   );
 };
 
-const Admin = mongoose.model('Admin', adminSchema);
+const Admin = mongoose.model('Admin', Schema);
 
-exports.Admin = Admin;
+module.exports = Admin;

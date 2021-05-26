@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
-const Joi = require('@hapi/joi');
-Joi.objectId = require('joi-objectid')(Joi);
 
-const answerSchema = new mongoose.Schema({
-  questionId: {
+const Answer = mongoose.model('Answer', new mongoose.Schema({
+  titleId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Question',
     required: true,
@@ -15,9 +13,8 @@ const answerSchema = new mongoose.Schema({
   },
   answer: {
     type: String,
+    required: true,
   },
-});
+}));
 
-const Answer = mongoose.model('Answer', answerSchema);
-
-exports.Answer = Answer;
+module.exports = Answer;

@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
+const mongoose = require('mongoose');
 
-const userPollsSchema = new mongoose.Schema({
-  questionId: {
+const Vote = mongoose.model('Vote', new mongoose.Schema({
+  titleId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
@@ -11,12 +11,11 @@ const userPollsSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-  votedForId: {
+  candidateId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-});
+}));
 
-const UserPoll = mongoose.model('UserPoll', userPollsSchema);
-
-exports.UserPoll = UserPoll;
+// exports.Vote = Vote;
+module.exports = Vote;

@@ -3,7 +3,15 @@ const mongoose = require('mongoose');
 require('mongoose-type-url');
 const jwt = require('jsonwebtoken');
 
-const userSchema = new mongoose.Schema({
+const Schema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
   credentials: {
     name: { type: String, required: true },
     phoneNo: { type: String, required: true },
@@ -48,9 +56,9 @@ const userSchema = new mongoose.Schema({
 });
 
 // eslint-disable-next-line func-names
-userSchema.methods.generateAuthToken = function () {
+Schema.methods.generateAuthToken = function () {
   return jwt.sign({ _id: this._id }, process.env.jwtPrivateKey);
 };
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', Schema);
 
 exports.User = User;

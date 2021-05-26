@@ -2,7 +2,7 @@ const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const { Admin } = require('../models/admin');
 const { AllowedUsers } = require('../models/grantAccess');
-const { Question } = require('../models/admin/question');
+const { Question } = require('../models/slambookQuestion');
 
 exports.logInAdmin = async (req, res) => {
   const { username, password } = req.body;
