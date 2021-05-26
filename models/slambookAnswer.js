@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 
 const Answer = mongoose.model('Answer', new mongoose.Schema({
-  titleId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Question',
-    required: true,
+  titleId : {
+    type : mongoose.Schema.Types.ObjectId,
+    ref : 'Question',
+    required : true,
   },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
+  userId : {
+    type : mongoose.Schema.Types.ObjectId,
+    ref : 'User',
+    required : true,
   },
-  answer: {
-    type: String,
-    required: true,
+  answer : {
+    type : String,
+    required : true,
   },
 }));
 
