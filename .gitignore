@@ -4,3 +4,4 @@ coverage/
 .env
 uncaughtExceptions.log
 package-lock.json
+tmp/

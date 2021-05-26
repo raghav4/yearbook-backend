@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
-const AllowedUsers = mongoose.model(
-  'AllowedUsers',
+const Question = mongoose.model(
+  'Question',
   new mongoose.Schema({
-    phoneNumber: {
+    title: {
       type: String,
+      trim: true,
       required: true,
     },
   }),
 );
 
-exports.AllowedUsers = AllowedUsers;
+module.exports = Question;
