@@ -16,18 +16,18 @@ const config = require('config');
 const sgMail = require('@sendgrid/mail');
 const otpGenerator = require('otp-generator');
 const imgBBUploader = require('imgbb-uploader');
-const {User} = require('../../models/user');
-const {AllowedUsers} = require('../../models/grantAccess');
-const {Message} = require('../../models/user');
-const {OTPModel} = require('../../models/otpVerification');
+const { User } = require('../../models/user');
+const { AllowedUsers } = require('../../models/grantAccess');
+const { Message } = require('../../models/user');
+const { OTPModel } = require('../../models/otpVerification');
 
 sgMail.setApiKey(config.get('SGAPI'));
 
 const generatedOTP = () => {
   return otpGenerator.generate(4, {
-    upperCase : false,
-    specialChars : false,
-    alphabets : false,
+    upperCase: false,
+    specialChars: false,
+    alphabets: false,
   });
 };
 
@@ -138,11 +138,10 @@ const generatedOTP = () => {
 // TODO: later
 exports.resetPassword = async (req, res) => {
   const user = await User.find().or([
-    {'credentials.email' : req.body.input},
-    {'credentials.phoneNo' : req.body.input},
+    { 'credentials.email': req.body.input },
+    { 'credentials.phoneNo': req.body.input },
   ]);
-  if (!user)
-    return res.send('Try again later');
+  if (!user) return res.send('Try again later');
   return res.send(user);
 };
 
@@ -189,21 +188,20 @@ exports.resetPassword = async (req, res) => {
 exports.updateUserProfilePicture = async (req, res) => {
   const user = await User.findById(req.user._id);
 
-  if (!user)
-    return res.status(404).send('No user found!');
+  if (!user) return res.status(404).send('No user found!');
 
   if (req.files === null) {
     return res.status(400).send('Please send a valid file');
   }
-  const {file} = req.files;
+  const { file } = req.files;
 
   file.mv(`${__dirname}/../tmp/${file.name}`, async (err) => {
     if (err) {
       return res.status(500).send(err);
     }
     try {
-      const {url} = await imgBBUploader(
-          config.get('IMGBBKEY') `${__dirname}/../tmp/${file.name}`,
+      const { url } = await imgBBUploader(
+        config.get('IMGBBKEY')`${__dirname}/../tmp/${file.name}`,
       );
       user.info.profilePicture = url;
       await user.save();

@@ -1,16 +1,15 @@
 const bcrypt = require('bcryptjs');
-const {Admin} = require('../models/admin');
+const { Admin } = require('../models/admin');
 // const { AllowedUsers } = require('../models/grantAccess');
 // const { Question } = require('../models/slambookQuestion');
 
 exports.logInAdmin = async (req, res) => {
-  const {username, password} = req.body;
+  const { username, password } = req.body;
 
   const admin = await Admin.findOne({
     username,
   });
-  if (!admin)
-    return res.status(400).send('Invalid username or password');
+  if (!admin) return res.status(400).send('Invalid username or password');
 
   const validPassword = await bcrypt.compare(password, admin.password);
   if (!validPassword) {
@@ -22,18 +21,16 @@ exports.logInAdmin = async (req, res) => {
 };
 
 exports.registerAdmin = async (req, res) => {
-  if (!req.admin.isSuperAdmin)
-    return res.status(401).send('Access Denied!');
+  if (!req.admin.isSuperAdmin) return res.status(401).send('Access Denied!');
 
-  const {username, password} = req.body;
-  const admin = new Admin({username, password});
+  const { username, password } = req.body;
+  const admin = new Admin({ username, password });
 
   try {
     const salt = await bcrypt.genSalt(15);
     admin.password = await bcrypt.hash(admin.password, salt);
     await admin.save();
-  } catch (ex) {
-  }
+  } catch (ex) {}
   return res.status(200).send(admin);
 };
 
