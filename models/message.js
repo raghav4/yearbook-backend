@@ -21,6 +21,10 @@ const Message = mongoose.model(
       type: Boolean,
       default: false,
     },
+    isAnonymous: {
+      type: Boolean,
+      default: false,
+    },
   }),
 );
 

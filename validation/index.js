@@ -25,6 +25,7 @@ class Validation {
     const schema = Joi.object({
       content: Joi.string().label('Message Content').required(),
       receiverId: Joi.objectId().label('Receiver Id').required(),
+      isAnonymous: Joi.boolean().label('Is Anonymous'),
     });
     return schema.validate(messageContent);
   }

@@ -200,40 +200,51 @@ class Controller {
   /**
    * Function to create a Message
    */
-  static async createMessage(req, res) {
-    const { receiverId, content } = req.body;
-    if (_.isEqual(receiverId, req.user._id)) {
-      return res.status(400).send('User trying to write a message to self!');
-    }
+  // static async createMessage(req, res) {
+  //   const { receiverId, content, isAnonymous } = req.body;
+  //   if (_.isEqual(receiverId, req.user._id)) {
+  //     return res.status(400).send('User trying to write a message to self!');
+  //   }
 
-    const receiver = await User.findById(receiverId);
-    if (!receiver) return res.status(404).send('Invalid receiverId!');
+  //   const receiver = await User.findById(receiverId);
+  //   if (!receiver) return res.status(404).send('Invalid receiverId!');
 
-    // const doneAlready = await Message.findOne({ receiverId, senderId });
-    // if (doneAlready) await Message.findByIdAndDelete(doneAlready._id);
+  //   // Todo: save vs create!
+  //   // let message = new Message({
+  //   //   receiverId,
+  //   //   senderId: req.user._id,
+  //   //   content,
+  //   // });
+  //   // await message.save();
 
-    // Todo: save vs create!
-    let message = new Message({
-      receiverId,
-      senderId: req.user._id,
-      content,
-      isDeleted: false,
-    });
-    await message.save();
-    message = message.populate('receiverId senderId');
-    return res.status(201).send(message);
-  }
+  //   let message = await Message.create({
+  //     receiverId,
+  //     senderId: req.user._id,
+  //     content,
+  //   });
+  //   message = message.populate('receiverId senderId');
+  //   return res.status(201).send(message);
+  // }
+
+  // TODO: SAVE UPDATES
 
   static async updateMessage(req, res) {
+    const { content, receiverId, isAnonymous = false } = req.body;
     const filter = {
-      receiverId: req.body.receiverId,
+      receiverId,
       senderId: req.user._id,
     };
 
+    const anonymousMessages = await Message.find({ senderId: req.user._id, isAnonymous: true });
+
+    if (isAnonymous && anonymousMessages && anonymousMessages.length >= 3) {
+      return res.status(400).send('You can only write 3 anonymous messages');
+    }
+
     const message = await Message.findOneAndUpdate(
       filter,
-      { content: req.body.content },
-      { new: true, upsert: true },
+      { content, isAnonymous },
+      { new: true, upsert: true, setDefaultsOnInsert: true },
     );
 
     return res.status(200).send(message);
@@ -246,6 +257,7 @@ class Controller {
     const filter = {
       receiverId: req.params.id,
       senderId: req.user._id,
+      isDeleted: false,
     };
 
     const message = await Message.findOneAndUpdate(
@@ -266,7 +278,7 @@ class Controller {
   static async getAllReceivedMessages(req, res) {
     const messages = await Message.find({
       receiverId: new ObjectId(req.user._id),
-      // isDeleted: false,
+      isDeleted: false,
     }).populate('senderId');
 
     if (!messages || (messages && !messages.length)) {
@@ -277,9 +289,9 @@ class Controller {
     const result = messages.map((message) => ({
       ..._.pick(message, ['_id']),
       ..._.pick(message, ['content']),
+      ..._.pick(message, ['isAnonymous']),
       sender: _.get(message, 'senderId.name'),
-    }));
-
+    })).map((message) => ({ ...message, sender: message.isAnonymous ? 'Anonymous' : message.sender }));
     return res.status(200).send(result);
   }
 
@@ -290,12 +302,13 @@ class Controller {
     const message = await Message.findOne({
       receiverId: req.params.id,
       senderId: req.user._id,
-      // isDeleted: false,
+      isDeleted: false,
     });
 
     if (!message) {
       return res.status(404).send('No message found');
     }
+    if (message.isAnonymous) delete message.sender;
     return res.status(200).send(message);
   }
 
