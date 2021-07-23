@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-nested-ternary */
 require('dotenv').config();
 const config = require('config');
 const _ = require('lodash');
@@ -82,13 +84,29 @@ class Controller {
     if (!user) {
       return res.status(400).send('Invalid User Id');
     }
+
+    const dataToBeUpdated = {};
+
     const { bio, socialHandles } = req.body;
+
+    if (bio) dataToBeUpdated.bio = bio;
+    if (socialHandles) dataToBeUpdated.socialHandles = socialHandles;
+
+    const socialHandlesObject = {
+      email: socialHandles && socialHandles.email ? socialHandles.email : (user.socialHandles && user.socialHandles.email ? user.socialHandles.email : null),
+      phone: socialHandles && socialHandles.phone ? socialHandles.phone : (user.socialHandles && user.socialHandles.phone ? user.socialHandles.phone : null),
+      linkedin: socialHandles && socialHandles.linkedin ? socialHandles.linkedin : (user.socialHandles && user.socialHandles.linkedin ? user.socialHandles.linkedin : null),
+      instagram: socialHandles && socialHandles.instagram ? socialHandles.instagram : (user.socialHandles && user.socialHandles.instagram ? user.socialHandles.instagram : null),
+      facebook: socialHandles && socialHandles.facebook ? socialHandles.facebook : (user.socialHandles && user.socialHandles.facebook ? user.socialHandles.facebook : null),
+      snapchat: socialHandles && socialHandles.snapchat ? socialHandles.snapchat : (user.socialHandles && user.socialHandles.snapchat ? user.socialHandles.snapchat : null),
+    };
+
+    dataToBeUpdated.socialHandles = socialHandlesObject;
 
     user = await User.findByIdAndUpdate(
       req.user._id,
       {
-        bio,
-        socialHandles,
+        ...dataToBeUpdated,
       },
       {
         new: true,
@@ -97,7 +115,7 @@ class Controller {
     return res
       .status(200)
       .send(
-        _.pick(user, ['_id', 'name', 'userId', 'profilePicture', 'bio', 'socialHandles']),
+        _.pick(user, ['_id', 'name', 'userId', 'profilePicture', 'bio', 'socialHandles', 'department', 'section']),
       );
   }
 
@@ -225,11 +243,17 @@ class Controller {
    * Function to delete a message (Soft Delete)
    */
   static async deleteMessage(req, res) {
-    const message = await Message.findOneAndUpdate({
+    const filter = {
       receiverId: req.params.id,
       senderId: req.user._id,
-      isDeleted: true,
-    });
+    };
+
+    const message = await Message.findOneAndUpdate(
+      filter, {
+        isDeleted: true,
+      }, { new: true },
+    );
+
     if (!message) {
       return res.status(404).send('Message does not exist!');
     }

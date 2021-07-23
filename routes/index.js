@@ -32,7 +32,7 @@ router.get('/users/class', userAuth, Controller.getAllUsersOfAClass);
 router.get('/users/all', userAuth, Controller.getAllUsers);
 
 // Route to update the user details/metadata
-router.patch('/user/update', Controller.updateUserDetails);
+router.patch('/user/update', userAuth, Controller.updateUserDetails);
 
 /**
  * SLAMBOOK ANSWERS
