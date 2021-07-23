@@ -71,7 +71,7 @@ router.get(
 // Route to update a message
 router.put(
   '/message/new',
-  [adminAuth, validator(Validation.message)],
+  [userAuth, validator(Validation.message)],
   Controller.updateMessage,
 );
 

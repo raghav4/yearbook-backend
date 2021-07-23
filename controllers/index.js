@@ -3,6 +3,7 @@ const config = require('config');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 const imgBBUploader = require('imgbb-uploader');
+const { ObjectId } = require('mongoose').Types;
 // eslint-disable-next-line object-curly-newline
 const { User, Answer, Message, Question, Poll, Admin } = require('../models');
 
@@ -57,7 +58,7 @@ class Controller {
     return res
       .status(200)
       .send(
-        _.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles']),
+        _.pick(user, ['name', 'userId', 'profilePicture', '_id', 'bio', 'socialHandles', 'department', 'section']),
       );
   }
 
@@ -143,16 +144,16 @@ class Controller {
     return res
       .status(200)
       .send(
-        users.map((datum) =>
-          _.pick(datum, [
-            'name',
-            'userId',
-            'profilePicture',
-            '_id',
-            'bio',
-            'socialHandles',
-          ]),
-        ),
+        users.map((datum) => _.pick(datum, [
+          'name',
+          'userId',
+          'profilePicture',
+          '_id',
+          'bio',
+          'socialHandles',
+          'department',
+          'section',
+        ])),
       );
   }
 
@@ -165,16 +166,16 @@ class Controller {
     return res
       .status(200)
       .send(
-        users.map((datum) =>
-          _.pick(datum, [
-            'name',
-            'userId',
-            'profilePicture',
-            '_id',
-            'bio',
-            'socialHandles',
-          ]),
-        ),
+        users.map((datum) => _.pick(datum, [
+          'name',
+          'userId',
+          'profilePicture',
+          '_id',
+          'bio',
+          'socialHandles',
+          'department',
+          'section',
+        ])),
       );
   }
 
@@ -193,10 +194,12 @@ class Controller {
     // const doneAlready = await Message.findOne({ receiverId, senderId });
     // if (doneAlready) await Message.findByIdAndDelete(doneAlready._id);
 
+    // Todo: save vs create!
     let message = new Message({
       receiverId,
       senderId: req.user._id,
       content,
+      isDeleted: false,
     });
     await message.save();
     message = message.populate('receiverId senderId');
@@ -211,7 +214,7 @@ class Controller {
 
     const message = await Message.findOneAndUpdate(
       filter,
-      { message: req.body.message },
+      { content: req.body.content },
       { new: true, upsert: true },
     );
 
@@ -238,11 +241,11 @@ class Controller {
    */
   static async getAllReceivedMessages(req, res) {
     const messages = await Message.find({
-      receiverId: req.user._id,
-      isDeleted: false,
-    }).populate('senderId receiverId');
+      receiverId: new ObjectId(req.user._id),
+      // isDeleted: false,
+    }).populate('senderId');
 
-    if (!messages) {
+    if (!messages || (messages && !messages.length)) {
       // Status 200 instead of 404 here.
       return res.status(200).send('No messages found for the user!');
     }
@@ -250,8 +253,7 @@ class Controller {
     const result = messages.map((message) => ({
       ..._.pick(message, ['_id']),
       ..._.pick(message, ['content']),
-      senderId: _.get(message, 'senderId.credentials.name'),
-      receiverId: _.get(message, 'receiverId.credentials.name'),
+      sender: _.get(message, 'senderId.name'),
     }));
 
     return res.status(200).send(result);
@@ -264,7 +266,7 @@ class Controller {
     const message = await Message.findOne({
       receiverId: req.params.id,
       senderId: req.user._id,
-      isDeleted: false,
+      // isDeleted: false,
     });
 
     if (!message) {
@@ -283,7 +285,9 @@ class Controller {
     })
       .select('-userId -__v')
       .populate('titleId');
-    return res.status(200).send(answers);
+    return res.status(200).send(answers.map((answer) => (
+      { _id: answer._id, content: answer.content, title: answer.titleId.title }
+    )));
   }
 
   /**
