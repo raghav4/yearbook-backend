@@ -272,6 +272,20 @@ class Controller {
     return res.status(200).send('Successfully deleted message!');
   }
 
+  static async deleteMessageById(req, res) {
+    const message = await Message.findOneAndUpdate({
+      _id: req.params.id,
+      isDeleted: false,
+    }, { isDeleted: true }, {
+      new: true,
+    });
+
+    if (!message) {
+      return res.status(404).send('Message does not exist!');
+    }
+    return res.status(200).send('Successfully deleted message!');
+  }
+
   /**
    * Function to get all messages of a user by receiverId.
    */
@@ -283,7 +297,7 @@ class Controller {
 
     if (!messages || (messages && !messages.length)) {
       // Status 200 instead of 404 here.
-      return res.status(200).send('No messages found for the user!');
+      return res.status(200).send([]);
     }
 
     const result = messages.map((message) => ({
@@ -323,7 +337,7 @@ class Controller {
       .select('-userId -__v')
       .populate('titleId');
     return res.status(200).send(answers.map((answer) => (
-      { _id: answer._id, content: answer.content, title: answer.titleId.title }
+      { _id: answer._id, content: answer.content, title: answer.titleId.title, titleId: answer.titleId._id }
     )));
   }
 

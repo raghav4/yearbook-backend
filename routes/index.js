@@ -82,6 +82,12 @@ router.delete(
   Controller.deleteMessage,
 );
 
+router.delete(
+  '/message/delete-by-id/:id',
+  [userAuth, validateObjectId],
+  Controller.deleteMessageById,
+);
+
 /**
  * SLAMBOOK QUESTIONS
  */
